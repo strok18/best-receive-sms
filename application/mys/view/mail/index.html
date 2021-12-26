@@ -1,0 +1,399 @@
+{include file="../application/mys/view/header.html" title="<?php echo $mail_heads['title'];?>" description="<?php echo $mail_heads['description'];?>" keywords="<?php echo $mail_heads['keywords'];?>" /}
+<div class="info-top">
+    <div class="info-top-h1"><h1>{$Think.lang.mail_info_top_h1}</h1></div>
+    <div class="info-top-h4"><h4>{$Think.lang.mail_info_top_h4}</h4></div>
+</div>
+<link rel="stylesheet" href="/static/sms/css/mail.css?version=0.0.1">
+{include file="../application/template/adsense/mail_banner_top.html" /}
+        <div class="main" style="margin-top:10px;">
+            <div class="layui-row">
+                <div class="layui-col-lg12 card">
+                    <div class="layui-card" style="min-height:250px;">
+                        <div class="layui-card-header">
+                            {$Think.lang.mail_main_title}
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="main-body-name">
+                                <span class="copy" data-clipboard-text="{$email|default = ''}" id="email">{$email | default = ''}</span>
+                            </div>
+                            <div class="mail-body-middle layui-form">
+                                <div class="layui-row layui-col-space10">
+                                    <div class="layui-col-lg2 layui-col-sm1"></div>
+                                    <div class="layui-col-lg4 layui-col-sm5 layui-col-xs12">
+                                            <input type="text" name="email_name" lay-verify="required" placeholder="{$Think.lang.mail_main_tip}" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-col-lg4 layui-col-sm5 layui-col-xs12">
+                                            <select name="site" lay-verify="required" lay-filter="aihao">
+                                            </select>
+                                    </div>
+                                    <div class="layui-col-lg2 layui-col-sm1">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mail-body-top">
+                                <button class="layui-btn" onclick="mail_apply('apply')">{$Think.lang.mail_main_apply}</button>
+                                <button class="layui-btn" onclick="mail_apply()">{$Think.lang.mail_main_apply_random}</button>
+                                <button class="layui-btn" onclick="mail_delete()">{$Think.lang.mail_main_delete}</button>
+                                <button class="layui-btn" onclick="mail_transpond()" id="mail-transpond" title="{$Think.lang.mail_main_transpond_explain}">{$Think.lang.mail_main_transpond}</button>
+                                <button class="layui-btn" onclick="mail_list()" id="mail-list" title="If you can’t get the email, please try to change the email">{$Think.lang.mail_main_list} <i id="get-email-icon" class="layui-icon layui-icon-release"></i></button>
+
+                            </div>
+                            <div class="mail-body-bottom">
+                                <table class="layui-table" lay-size="lg">
+                                    <colgroup>
+                                        <col width="20%">
+                                        <col width="60%">
+                                        <col width="20%">
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>{$Think.lang.mail_main_table_header_1}</th>
+                                        <th>{$Think.lang.mail_main_table_header_2}</th>
+                                        <th>{$Think.lang.mail_main_table_header_3}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="mail_list">
+                                    <tr>
+                                        <td colspan="3" class="mail-null" onclick="mail_list()" id="mail-td-list">{$Think.lang.mail_main_click}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div style="margin-top:10px;">
+                {include file="../application/template/adsense/mail_matched.html" /}
+         </div>
+    </div>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
+    <script>
+        $(function () {
+            layui.use(['form'], function () {
+                var form = layui.form
+                
+                var mails = {:json_encode($mails)};
+                var option = ''
+                for (var m = 0; m < mails.length; m++){
+                    option += '<option value="'+[m]+'">@'+mails[m]['site']+'</option>'
+                }
+                $("select[name='site']").html(option)
+                form.render('select')
+                var email = getCookie('temp_email')
+                if(email){
+                    $("span[id='email']").text(email)
+                    $("span[id='email']").attr('data-clipboard-text', email)
+                }else{
+                    $("span[id='email']").text('')
+                    $("span[id='email']").attr('data-clipboard-text', '')
+                }
+                var email_list = localStorage.getItem('email_list_' + email)
+                if (email_list){
+                    $("tbody[id='mail_list']").html(email_list)
+                }
+            })
+            
+        })
+        function mail_open(id) {
+            var email = getCookie('temp_email')
+            var email_array = JSON.parse(localStorage.getItem('email_array_' + email))[id]
+            layer.open({
+                type: 1,
+                title: email_array['subject'],
+                shadeClose: true,
+                shade: false,
+                maxmin: true, 
+                area: 'auto',
+                content: "<div class='mail-detail'>{$Think.lang.mail_alert_from}：<xmp>"+ email_array['from'] +"</xmp></div>" +
+                    "<br />" +
+                    "<div class='mail-detail'>"+ email_array['html'] +"</div>" +
+                    "<div class='mail-detail' style='text-align: right'>{$Think.lang.mail_alert_receiving}："+ transformTime(email_array['time']) +"</div>" + 
+                    "<ins class='adsbygoogle' style='display:block' data-ad-client='ca-pub-5224126064747013' data-ad-slot='1310228344' data-ad-format='auto' data-full-width-responsive='true'></ins>" +
+                    "<script>"+
+                    "(adsbygoogle = window.adsbygoogle || []).push({}); "+
+                    "<\/script>"
+            })
+        }
+        
+        function mail_notify(title, body){
+            //notify
+            Push.Permission.request();
+            Push.create(title, {
+                    body: body,
+                    icon: '/static/sms/images/logo.png',
+                    timeout: 8000
+                });
+        }
+        
+        function mail_new_remind(email, number, body){
+            let email_number_name = email + "_number";
+            let email_number = getCookie(email_number_name)
+            if(!email_number){
+                email_number = 0
+            }
+            if(number > email_number){
+                layer.msg('Receive new mail', {icon: 1})
+                clearTimeout(auto)
+                auto = undefined
+                $('#get-email-icon').attr('class', 'layui-icon layui-icon-release')
+                document.cookie = email_number_name + "=" + number
+                if(localStorage.getItem('temp_email_notify') !== 'deny'){
+                    mail_notify('Receive new mail', body)
+                }
+            }
+        }
+        
+        var num = 0
+        function mail_list() {
+            num = 1
+            var email = getCookie('temp_email')
+            if (!email) {
+                layer.msg('{$Think.lang.mail_alert_apply}')
+                return
+            }
+            $("button[id='mail-list']").attr('disabled',"disabled")
+            $("td[id='mail-td-list']").attr('onclick',"")
+            //更换图标//layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop
+            $('#get-email-icon').attr('class', 'layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop')
+            mail_get()
+            if(typeof(auto) === 'undefined'){
+                auto = setInterval(mail_get, 8000)
+            }
+        }
+        
+        function mail_get(){
+            var email = getCookie('temp_email')
+            $.ajax({
+                url: '/api/email_get',
+                type: 'post',
+                data: {email: email},
+                beforeSend: function(){
+                    
+                    var index = layer.load(2)
+                },
+                success: function (e) {
+                    if (e.error_code == 0) {
+                        let data = e.data
+                        let email_number = data.length
+                        let tr = ''
+                        mail_new_remind(email, email_number, data[0]['subject'])
+                        for (let i = 0; i < email_number; i++) {
+                            tr += "<tr id='"+ i +"' onclick='mail_open(this.id)'>" +
+                                "<td id='mail_from'><xmp>" + data[i]['from'] + "</xmp></td>" +
+                                "<td id='mail_subject'>" + data[i]['subject'] + "</td>" +
+                                "<td id='mail_time'>" + transformTime(data[i]['time']) + "</td>" +
+                                "</tr>"
+                        }
+                        localStorage.setItem('email_list_' + email, tr)
+                        localStorage.setItem('email_array_' + email, JSON.stringify(data))
+                        $("tbody[id='mail_list']").html(tr)
+                    } else if (e.error_code == 1) {
+                        layer.msg('{$Think.lang.mail_alert_no_mail}')
+                    }else if(e.error_code == 4003){
+                        window.location.href="/spi";
+                    } else {
+                        layer.msg(e.msg)
+                    }
+                },
+                complete: function () {
+                    num++
+                    click(3)
+                    if(num > 30){
+                        layer.msg('Too many requests, automatic suspension')
+                        clearTimeout(auto)
+                        auto = undefined
+                        $('#get-email-icon').attr('class', 'layui-icon layui-icon-release')
+                    }
+                    layer.closeAll('loading');
+                }
+            })
+        }
+
+        function mail_apply(e) {
+            var name = $("input[name='email_name']").val()
+            var site = $("select[name='site']").find("option:selected").text()
+            var email = getCookie('temp_email')
+            if (email) {
+                layer.msg('{$Think.lang.mail_alert_use}：' + email)
+                return
+            }
+            if (e) {
+                if (!name) {
+                    layer.msg('{$Think.lang.mail_alert_nlll}')
+                    return
+                }
+                $.ajax({
+                    url: '/api/email_apply',
+                    type: 'post',
+                    data: {email_name: name, site: site},
+                    beforeSend: function(){
+                        var index = layer.load(2)
+                    },
+                    success: function (e) {
+                        if (e.error_code == 0) {
+                            $("span[id='email']").text(e.data)
+                            $("span[id='email']").attr('data-clipboard-text', e.data)
+                            document.cookie="temp_email=" + e.data
+                            request_notify()
+                        }else if(e.error_code == 4003){
+                            window.location.href="/spi";
+                        } else {
+                            layer.msg(e.msg)
+                        }
+                    },
+                    complete: function () {
+                        layer.closeAll('loading');
+                    }
+                })
+            } else {
+                $.ajax({
+                    url: '/api/email_apply',
+                    type: 'post',
+                    data: {site: site},
+                    beforeSend: function(){
+                        var index = layer.load(2)
+                    },
+                    success: function (e) {
+                        if (e.error_code == 0) {
+                            $("span[id='email']").text(e.data)
+                            $("span[id='email']").attr('data-clipboard-text', e.data)
+                            document.cookie="temp_email=" + e.data
+                            request_notify()
+                        }else if(e.error_code == 4003){
+                            window.location.href="/spi";
+                        } else {
+                            layer.msg(e.msg)
+                        }
+                    },
+                    complete: function () {
+                        layer.closeAll('loading');
+                    }
+                })
+            }
+
+        }
+        
+        function request_notify(){
+            if(!localStorage.getItem('temp_email_notify')){
+                layer.confirm('After Allow, you will be automatically reminded when you receive new mail.', {
+                  btn: ['Allow', 'Not now'],
+                  title: 'Turn on desktop notifications？',
+                  //offset: ['0px','170px'],
+                  btn2: function(){
+                      localStorage.setItem('temp_email_notify', 'deny')
+                  }
+                }, function(){
+                  mail_notify('New email notification', 'New email notification set successfully')
+                  localStorage.setItem('temp_email_notify', 'allow')
+                  layer.close(layer.index);
+                })
+            }
+        }
+
+        function mail_delete() {
+            var email = getCookie('temp_email')
+            if (!email) {
+                layer.msg('{$Think.lang.mail_alert_apply}')
+                return
+            }
+            $.ajax({
+                url: '/api/email_user_delete',
+                type: 'post',
+                data: {email: email, transpond_email: localStorage.getItem('transpond_email')},
+                beforeSend: function(){
+                    var index = layer.load(2);
+                },
+                success: function (e) {
+                    if (e.error_code == 0) {
+                        if(typeof(auto) !== 'undefined'){
+                            clearTimeout(auto)
+                        }
+                        auto = undefined
+                        $('#get-email-icon').attr('class', 'layui-icon layui-icon-release')
+                        document.cookie = "temp_email=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        document.cookie = email + "_number=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        $("span[id='email']").text('')
+                        localStorage.removeItem('email_list_' + email)
+                        localStorage.removeItem('email_array_' + email)
+                        localStorage.removeItem('transpond_email')
+                        var email_list = "<tr><td colspan='3' class='mail-null'>{$Think.lang.mail_alert_click_receive}</td></tr>"
+                        $("tbody[id='mail_list']").html(email_list)
+                        layer.msg(email + '{$Think.lang.mail_alert_delete_success}')
+                    } else {
+                        layer.msg(email + '{$Think.lang.mail_alert_delete_failed}')
+                    }
+                },
+                complete: function () {
+                    layer.closeAll('loading');
+                }
+            })
+        }
+
+        function transformTime(time) {
+            var unixtime = time;
+            var unixTimestamp = new Date(unixtime * 1000);
+            var Y = unixTimestamp.getFullYear(),
+                M = ((unixTimestamp.getMonth() + 1) > 9 ? (unixTimestamp.getMonth() + 1) : '0' + (unixTimestamp.getMonth() + 1)),
+                D = (unixTimestamp.getDate() > 10 ? unixTimestamp.getDate() : '0' + unixTimestamp.getDate()),
+                h = (unixTimestamp.getHours() < 10) ? "0" + unixTimestamp.getHours() : unixTimestamp.getHours(),
+                min = (unixTimestamp.getMinutes() < 10) ? "0" + unixTimestamp.getMinutes() : unixTimestamp.getMinutes(),
+                s = (unixTimestamp.getSeconds() < 10) ? "0" + unixTimestamp.getSeconds() : unixTimestamp.getSeconds();
+            var toDay = Y + '-' + M + '-' + D + " " + h + ":" + min + ":" + s;
+            return toDay
+        }
+
+        function click(second) {
+            setTimeout(function () {
+                $("button[id='mail-list']").removeAttr('disabled')
+                $("td[id='mail-td-list']").attr('onclick',"mail_list()")
+            }, second*1000)
+        }
+        function mail_transpond() {
+            var email = getCookie('temp_email')
+            if (!email) {
+                layer.msg('{$Think.lang.mail_alert_apply}')
+                return
+            }
+            layer.prompt({title: '{$Think.lang.mail_main_transpond_alert_title}', formType: 3, value: localStorage.getItem('transpond_email')}, function(transpond_email, pop){
+                $.ajax({
+                    url: '/api/email_transpond',
+                    type: 'post',
+                    data: {email: email, transpond_email:transpond_email},
+                    beforeSend: function(){
+                        var index = layer.load(2);
+                    },
+                    success: function (e) {
+                        if (e.error_code == 0) {
+                            localStorage.setItem('transpond_email', transpond_email)
+                            layer.close(pop)
+                            layer.msg(e.msg + ' ' + transpond_email, {icon: 1})
+                        } else {
+                            layer.msg(e.msg, {icon: 2})
+                        }
+                    },
+                    complete: function () {
+                        layer.closeAll('loading');
+                    }
+                })
+
+
+            })
+        }
+        
+        function getCookie(cname)
+        {
+          var name = cname + "=";
+          var ca = document.cookie.split(';');
+          for(var i=0; i<ca.length; i++) 
+          {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+          }
+          return "";
+        }
+    </script>
+    {include file="../application/mys/view/foot.html" /}

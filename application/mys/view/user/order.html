@@ -1,0 +1,60 @@
+{include file="../application/mys/view/header.html" title="会员中心--隐私小号" /}
+<link rel="stylesheet" href="/static/sms/css/user.css?version=1.10.334451">
+<div class="middle">
+    <div class="navslid layui-col-md2 layui-col-sm2 layui-col-xs2" id="left">
+        <nav class="left-nav">
+            <ul class="left-nav-ul">
+                <li class="left-nav-li">
+                    <a href="/user.html">用户中心</a>
+                </li>
+                <li class="left-nav-li link-hr">
+                    <a href="{:url('order')}">已购号码</a>
+                </li>
+                <li class="left-nav-li">
+                    <a href="{:url('buy')}">订购号码</a>
+                </li>
+                <li class="left-nav-li">
+                    <a href="{:url('index/login/loginout')}">退出</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <i class="layui-icon btn layui-icon-prev" id="click"></i>
+    <div id="right" class="right layui-col-md12 layui-col-sm12 layui-col-xs12">
+        <div class="layui-card">
+            <div class="layui-card-header"><b>已购号码订单</b></div>
+            <div class="layui-card-body">
+                <table class="layui-hide" id="phone_list"></table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+</body>
+<script type="text/html" id="setting">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#phone_list'
+            ,url:'/demo/table/user/'
+            ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            ,cols: [[
+                ,{field:'phone_num', title: '电话号码'}
+                ,{field:'sex', title: '号码状态'}
+                ,{field:'sex', title: '过期时间'}
+                ,{field:'sex', title: '订购时间'}
+                ,{field:'sex', title: '过期时间'}
+                ,{fixed: 'setting', title:'操作', toolbar: '#setting'}
+            ]]
+        });
+    });
+</script>
+
+{include file="../application/mys/view/user/user_foot.html" /}

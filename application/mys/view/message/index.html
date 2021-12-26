@@ -1,0 +1,214 @@
+{include file="../application/mys/view/header.html" title="<?php echo $message_heads['title'];?>" description="<?php echo $message_heads['description'];?>" keywords="<?php echo $message_heads['keywords'];?>" /}
+<style>
+    .layui-table img {
+        max-width: 250px;
+    }
+</style>
+<div class="info-top">
+    <div class="info-top-h1"><h1><?php echo $message_heads['info_top_h1'];?></h1></div>
+    <div class="info-top-h4" style="color: red"><h4><STRONG>{$Think.lang.message_info_top_h4}</STRONG></h4></div>
+</div>
+{include file="../application/template/adsense/message_banner_top.html" /}
+<div class="main-title">
+
+    <div class="copy" style="color: #0C0C0C;font-weight:500;font-size: 28px;margin:10px;">
+        <img style="width: 40px;height: 40px;margin-top: -5px" src="/static/sms/images/guoqi/{if $phone_info['country']['id']==11}Canada{else /}{$phone_info['country']['bh']}{/if}.png" alt="{$phone_info.country.en_title}{$Think.lang.common_number}"> <img src="/static/phone/{$phone_info['uid']}.png">
+    </div>
+    <button id="{$phone_info['uid']}" class="layui-btn" style="background-color: #4462AF" onclick="load(this.id)"><i class="layui-icon">&#xe669;</i> {$Think.lang.message_main_new}</button>
+    <button class="layui-btn clickA" style="background-color: #4462AF" onclick="random()"><i class="layui-icon">&#xe674;</i> {$Think.lang.message_main_random}</button>
+    <div style="font-size:10px; margin: 5px 0;"></div>
+    <button type="button" class="layui-btn layui-btn-xs" style="background-color: #C6C7C8" onclick="report(this.id)" id="{$phone_info['uid']}"><i class="layui-icon">&#xe69c;</i> {$Think.lang.message_main_failed}</button>
+</div>
+<div class="main">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;margin-bottom:5px;">
+      <legend>
+          <div class="breadcrumb text-center">
+            <span class="layui-breadcrumb">
+                {volist name="bread_crumb" id="vo"}
+                    {if $i != count($bread_crumb)}
+                        <a href="{$vo.url}">{$vo.title}</a>
+                    {else /}
+                        <a><cite>{$vo.title}</cite></a>
+                    {/if}
+                {/volist}
+            </span>
+        </div>
+      </legend>
+    </fieldset>
+	
+    <div class="layui-row">
+        <table class="layui-table" lay-even="" lay-skin="row" lay-size="lg" style="margin-top: 0;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th style="background-color: #545D66;color: #ffffff;text-align:center">{$Think.lang.message_table_1}</th>
+                <th style="background-color: #545D66;color: #ffffff;text-align:center">{$Think.lang.message_table_2}</th>
+                <th style="background-color: #545D66;color: #ffffff;text-align:center">{$Think.lang.message_table_3}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="data" id="vo" empty="$empty"}
+            {if $i == 3}
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                	{include file="../application/template/adsense/message_banner_middle.html" /}
+                </td>
+            </tr>
+            {elseif $i == 11 /}
+            	<tr>
+                <td colspan="3" style="text-align:center;">
+                	{include file="../application/template/adsense/message_banner_middle_bottom.html" /}
+                </td>
+            </tr>
+            {else /}
+            <tr>
+                <td style="text-align:center;">
+                     <?php if(array_key_exists('url',$vo)){?>
+                        <?php if($vo['url'] !== ''){?>
+                            <a href="/receive-sms-from/{$vo.url}">{$vo.url}</a>
+                        <?php }else{?>
+                            *{$vo.smsNumber|substr=-5}
+                        <?php }?>    
+                    <?php }else{?>
+                        *{$vo.smsNumber|substr=-5}
+                    <?php }?>
+                </td>
+                <td style="word-break:break-word;">
+                    {if $vo.smsContent == '已屏蔽'}This short message verification code violation, has been blocked.
+                    {else /}<?php echo strip_tags($vo['smsContent'], "<img>") ?>
+                    {/if}
+                </td>
+                <td style="text-align: center">{$vo.smsDate}</td>
+            </tr>
+            {/if}
+            {/volist}
+            </tbody>
+        </table>
+        <div style="text-align: center">
+        	{include file="../application/template/adsense/message_banner_bottom.html" /}
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="page" style="text-align: center">
+    {$page|raw}
+</div>
+<script src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".copy").attr({"data-clipboard-text" : {$phone_info['phone_num']}})
+        /*var online = {$phone_info['online']};
+        if (online == 0){
+            layer.msg('{$Think.lang.message_js_offline}')
+        }*/
+    })
+/*    function report(phone_num) {
+        layer.prompt({
+            formType: 2,
+            value: '',
+            title: '{$Think.lang.feedback_need_title}',
+            offset: (document.documentElement.clientHeight/2)-157,
+        }, function(value, index, elem){
+            $.ajax({
+                url: '/api/feedback',
+                type: 'post',
+                data: {content: value, email: $("#email").val(), type: 2},
+                beforeSend: function(){
+                    var index = layer.load(2);
+                },
+                success: function (e) {
+                    if (e.error_code == 0) {
+                        layer.msg(e.msg , {icon: 1})
+                        layer.close(index);
+                    } else {
+                        layer.msg(e.msg, {icon: 2})
+                    }
+                },
+                complete: function () {
+                    $.ajax({
+                        url: '{:url('/report')}',
+                        type: 'post',
+                        data: {phone_num: phone_num},
+                        success: function (e) {
+/*                            if (e.error_code != 0) {
+                                layer.msg(e.msg, {icon: 2, anim: 6})
+                            } else {
+                                layer.msg(e.msg, {icon: 1, anim: 6})
+                            }
+                        },
+                        complete: function () {
+                            layer.closeAll('loading');
+                        }
+                    })
+                }
+            })
+        })
+        $(".layui-layer-input").attr("placeholder", "{$Think.lang.feedback_need_placeholder}")
+        $(".layui-layer-content").append('<div style="margin-top: 10px;"><input type="text" id="email" name="email" lay-verify="email" placeholder="{$Think.lang.feedback_email}" class="layui-input"></div>')
+        $(".layui-layer-btn0").css({"border-color":"#4A5E77", "background-color":"#4A5E77", "color":"#FFF"})
+    }*/
+    function report(phone_num) {
+        layer.confirm('{$Think.lang.message_js_report}', {
+            btn: ['{$Think.lang.message_js_report_yes}','{$Think.lang.message_js_report_no}']
+        }, function(){
+            $.ajax({
+                url: '{:url('/report')}',
+                type: 'post',
+                data: {phone_num: phone_num},
+                beforeSend: function(){
+						var index = layer.load(2);
+					},
+                success: function (e) {
+                    if (e.error_code != 0) {
+                        layer.msg(e.msg, {icon: 2, anim: 6})
+                    } else {
+                        layer.alert(e.msg, {icon: 1, anim: 6})
+                    }
+                },
+				complete: function () {
+					layer.closeAll('loading');
+				}
+            })
+        }, function(){
+            location.reload();
+        });
+    }
+    function random() {
+        $.ajax({
+            url: '{:url('/random')}',
+            type: 'post',
+            success: function (e) {
+                if (e.error_code != 0) {
+                    layer.msg(e.msg, {icon: 2, anim: 6})
+                } else {
+                    layer.msg('{$Think.lang.message_js_random}', {
+                        time: 0,
+                        icon: 16,
+                        shade: 0.05
+                    })
+                    window.location.href = e.data;
+                }
+            }
+        })
+    }
+    function load(e) {
+        layer.msg('{$Think.lang.message_js_loading}', {
+            time: 0,
+            icon: 16,
+            shade: 0.05
+        })
+        let urls = window.location.pathname.split('/')
+        if (urls.length == 3){
+            location.reload(true)
+        }else {
+            window.location.href = '/'+urls[1]+'/' + urls[2] + '.html'
+        }
+    }
+</script>
+{include file="../application/mys/view/foot.html" /}

@@ -1,0 +1,78 @@
+.navslid {
+    width: 300px;
+    background-color: #38485D;
+    display: inline-block;
+}
+
+@keyframes show {
+    from {
+        width: 0;
+    }
+    to {
+        width: 300px;
+    }
+}
+
+@keyframes hide {
+    from {
+        width: 300px;
+    }
+    to {
+        width: 0;
+    }
+}
+
+.navslid-show {
+    animation-name: show;
+    animation-duration: 1s;
+}
+
+.navslid-hide {
+    animation-name: hide;
+    animation-duration: 1s;
+    width: 0;
+    display: none;
+}
+
+.btn {
+    /*position: absolute;*/
+    z-index: 999;
+    color: #BAB7BB;
+}
+
+.middle{
+    display: flex;
+    flex-direction: row;
+}
+.layui-container{
+    padding: 0;
+}
+.right{
+    margin-top: 18px;
+    margin-right: 16px;
+}
+
+.left-nav-li{
+    height: 60px;
+    line-height: 60px;
+    color: white;
+    padding-left: 30px;
+}
+.left-nav-li{
+    color: white;
+}
+.left-nav-li a{
+    color: #ffffff;
+}
+.left-nav-li a:hover{
+    color: #ffffff;
+}
+.left-nav-li a:visited{
+    color: #ffffff;
+}
+.nav-active{
+
+}
+.link-hr{
+    border-bottom:4px solid #5FB878;
+}

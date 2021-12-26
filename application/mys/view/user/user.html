@@ -1,0 +1,64 @@
+{include file="../application/mys/view/user/header.html" title="会员中心--隐私小号" /}
+<link rel="stylesheet" href="/static/sms/css/user.css?version=1.10.334451">
+<div class="middle">
+    <div id="right" class="right layui-col-md12 layui-col-sm12 layui-col-xs12">
+        <div class="layui-card">
+            <div class="layui-card-header"><b>用户中心</b></div>
+            <div class="layui-card-body">
+                帐 户：<span class="layui-badge layui-bg-green" id="username">绿</span>
+                余 额：<span class="layui-badge layui-bg-green" id="money"></span>
+            </div>
+            <div>
+                <table id="tablePhone" lay-filter="tablePhone"></table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+</body>
+<script src="/static/layui/layui.all.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: '/api/user/get_user_money',
+            type: 'post',
+            success: function (e) {
+                console.log(e)
+                $("#username").html(e.data.user)
+                $("#money").html(e.data.money)
+            },
+            complete: function () {
+            }
+        })
+    })
+    function get_user_info() {
+    }
+</script>
+<script>
+    var element = layui.element
+    var table = layui.table
+    var form = layui.form
+    //展示已知数据
+    table.render({
+        elem: '#tablePhone'
+        , url: '/api/jiema/jiema_order'
+        ,totalRow: true
+        , cols: [[
+            , {field: 'type', title: '类型', totalRowText: '合计行'}
+            , {field: 'order', title: '订单号'}
+            , {field: 'number', title: '号码'}
+            , {field: 'message', title: '短信内容'}
+            , {field: 'title', title: '项目名称'}
+            , {field: 'money', title: '金额', width: 100, totalRow: true}
+            , {field: 'before_money', title: '变动前余额', width: 100}
+            , {field: 'create_time', title: '创建时间', width:200}
+        ]]
+        , skin: 'line' //表格风格
+        , even: true
+        , page: true //是否显示分页
+        , limit: 15 //每页默认显示的数量
+    })
+</script>
+{include file="../application/mys/view/user/foot.html" /}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>用户接码中心</title>
+    <!--hreflang-->
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <!--<link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css">-->
+    <link rel="stylesheet" href="/static/sms/nav/okayNav.temp.min.css?version=1.0.1">
+    <link rel="stylesheet" href="/static/sms/css/index.css?version=1.1.61">
+    <script src="/static/layui/layui.js"></script>
+    <script src="/static/sms/js/jquery-3.4.1.min.js"></script>
+    <script>
+        layui.use(['layer', 'element'], function () {
+            var layer = layui.layer
+        })
+    </script>
+    </head>
+    <body>
+    <div class="container">
+        <div class="top-bar-box"></div>
+            <div class="layui-container">
+                <div id="header" class="okayNav-header header" style="max-height: 70px;">
+                    <a class="okayNav-header__logo" href="{$Request.domain}{:url('/user')}">
+                        
+                    </a>
+                    <nav role="navigation" id="nav-main" class="okayNav">
+                        <ul>
+                            <li class="layui-nav-item"><a href="{$Request.domain}{:url('/user')}" id="user">用户中心</a></li>
+                            <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive_sms')}" id="receive_sms">接码中心</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        <div class="nav-null"></div>
+        <div class="layui-container">
+
+            <div class="index-warn" style="display: none">
+                <blockquote class="site-text layui-elem-quote" style="background-color: #FBF6DE">
+                    <div class="layui-row">
+                        <div class="layui-col-md10 quote-left">
+                            <span><i class="layui-icon">&#xe645;</i> 平台新上线【网盘密码获取器】，欢迎大家测试使用！</span>
+                        </div>
+                        <div class="layui-col-md2 quote-right">
+                            <span><a href="/article/33.html">查看详情</a></span>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            <div>
+
+            </div>

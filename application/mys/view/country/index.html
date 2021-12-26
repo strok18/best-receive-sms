@@ -1,0 +1,41 @@
+{include file="../application/mys/view/header.html" title="<?php echo $country_heads['title'];?>" description="<?php echo $country_heads['description'];?>" keywords="<?php echo $country_heads['keywords'];?>" /}
+<div class="info-top">
+    <div class="info-top-h1"><h1>{$Think.lang.country_info_top_h1}</h1></div>
+    <div class="info-top-h4"><h4>{$Think.lang.country_info_top_h4}</h4></div>
+</div>
+{include file="../application/template/adsense/country_banner_top.html" /}
+<div class="main" style="margin-top:10px;">
+    <div class="layui-row layui-col-space15">
+        {if !empty($data)}
+        {volist name="data" id="vo"}
+        {if $i == 5 || $i == 9}
+        <div class="layui-col-lg12 layui-col-md12 layui-col-sm12 layui-col-xs12 card">
+            <div class="layui-card">
+                {include file="../application/template/adsense/country_banner_middle.html" /}
+            </div>
+        </div>
+        {/if}
+        <div class="layui-col-lg6 layui-col-md6 layui-col-sm6 layui-col-xs12 card">
+            <div class="layui-card">
+                <a href="{$Request.domain}/receive-sms-online/{if $vo['en_title'] == 'Hong Kong Macao Taiwan'}gat{else /}{$vo['en_title'] | strtolower}{/if}-phone-number.html">
+                    <div class="country-box">
+                        <div class="country-image-box"><img class="country-image" src="/static/sms/images/guoqi/list/<?php if($vo['id'] == 11){echo 'Canada';}else{echo $vo['bh'];};?>.png" alt="{$vo.country_image_title}"></div>
+                        <div class="country-title"><h3>{$vo.country_title}</h3></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {/volist}
+        {else /}
+        <div class="none"><i class="layui-icon layui-icon-face-surprised"></i> {$Think.lang.common_empty_data}</div>
+        {/if}
+    </div>
+</div>
+    <div class="page" style="text-align: center">
+        {$page|raw}
+    </div>
+</div>
+<div style="text-align: center;margin-top:10px;">
+	{include file="../application/template/adsense/country_banner_bottom.html" /}
+</div>
+{include file="../application/mys/view/foot.html" /}

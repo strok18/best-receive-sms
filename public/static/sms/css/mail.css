@@ -1,0 +1,48 @@
+.layui-btn{
+    background-color:#4462AF;
+    margin-top: 5px;
+}
+.layui-btn+.layui-btn{
+    margin-left: 0px;
+}
+.mail-body-top{
+    text-align: center;
+}
+.mail-body-middle , .mail-body-bottom, .mail-body-top, .main-body-name{
+    margin-top: 20px;
+}
+.layui-form-select dl dd.layui-this {
+    background-color: #fff;
+    color: #555555;
+}
+.layui-row input{
+    height: 50px;
+}
+.main-body-name{
+    text-align: center;
+}
+.main-body-name span{
+    color: #272727;
+    font-weight: bold;
+    font-size: 3vw;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+@media only screen and (max-width: 750px) {
+    .main-body-name span{
+        font-size: 6vw;
+    }
+}
+td{
+    cursor: pointer;
+}
+.mail-detail{
+    margin: 10px;
+}
+.mail-null{
+    text-align: center;
+}
+.layui-layer-btn .layui-layer-btn0{
+    border-color: #4462AF;
+    background-color: #4462AF;
+    color: #fff;
+}

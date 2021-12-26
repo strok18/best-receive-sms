@@ -1,0 +1,22 @@
+{include file="../application/mys/view/header.html" title="<?php echo $article_detail_heads['title']; ?>" description="<?php echo $article_detail_heads['description'];?>" keywords="<?php echo $article_detail_heads['keywords'];?>" /}
+{include file="../application/template/adsense/article_page_banner_top.html" /}
+        <div class="breadcrumb">
+	        <span class="layui-breadcrumb">
+	          <a href="">{$Think.lang.website_name}</a>
+	          <a href="/receive-sms-online/blog.html">{$Think.lang.article_header_title}</a>
+	          <a><cite>{$article['title']}</cite></a>
+        </span>
+        </div>
+        <div class="main">
+            <div class="layui-row article">
+                <div class="article-title">
+                    <h1>{$article['title']}</h1>
+                </div>
+                <div class="article-content">
+                    {$article['content']|raw|htmlspecialchars_decode}
+                </div>
+            </div>
+        </div>
+        {include file="../application/template/adsense/article_banner_bottom.html" /}
+    </div>
+{include file="../application/mys/view/foot.html" /}

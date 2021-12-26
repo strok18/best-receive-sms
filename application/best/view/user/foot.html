@@ -1,0 +1,150 @@
+
+	<div id="foot-null" class="foot-null"></div>
+<!--    <div id="foot" class="foot">
+        <p class="">Copyright © 2020 <a class="foot-link" href="{$Request.domain}">{$Think.lang.foot_link1}</a> <a class="foot-link" href="{$Request.domain}">{$Think.lang.foot_link2}</a><a class="foot-link" href="{$Request.domain}"> {$Think.lang.foot_link3}</a><a class="foot-link" href="{$Request.domain}/{if ($Request.subDomain != 'www') AND ($Request.subDomain != '')}{$Request.subDomain}.{/if}{$Request.rootDomain}_sitemap.xml" target="_blank"> Sitemap</a>
+        </p>
+    </div>-->
+</div>
+
+
+	</body>
+<script src="/static/sms/js/clipboard.js"></script>
+<script src="/static/sms/nav/jquery.okayNav-min.js.js"></script>
+<script type="text/javascript">
+    var navigation = $('#nav-main').okayNav({
+        swipe_enabled: true,
+    });
+</script>
+
+    <script>
+		//nav link当前
+		let get_region = window.location.pathname
+		if(get_region !== '/'){
+            let regExp = /[a-zA-Z]+\_*[a-zA-Z]*/
+			link_title = regExp.exec(get_region)
+			link_title = link_title[0]
+
+			$('#' + link_title).addClass('link-hr')
+		}
+    //点击复制
+    $('.copy').click(function (e) {
+        var clipboard = new Clipboard('.copy')
+        clipboard.on('success', function (e) {
+            layer.msg('{$Think.lang.foot_copy}' + e.text + '{$Think.lang.foot_copy_success}', {icon: 1})
+        })
+        clipboard.on('error', function (e) {
+            layer.msg('{$Think.lang.foot_copy}' + e.text + '{$Think.lang.foot_copy_failed}', {icon: 2})
+        })
+    })
+
+    $('.clickA').click(function (e) {
+        if(window.matchMedia("(min-width: 767px)").matches){
+            layer.msg('{$Think.lang.foot_alert_title}', {
+            	time: 0,
+				icon: 16,
+				shade: 0.05
+				})
+        }
+    })
+    
+    	//top
+        layui.use('util', function(){
+        var util = layui.util;
+        util.fixbar({
+            bar1: false
+            ,click: function(type){
+            	if (type === 'bar1'){
+					layer.prompt({
+						formType: 2,
+						value: '',
+						title: '{$Think.lang.feedback_title}',
+						offset: (document.documentElement.clientHeight/2)-157,
+					}, function(value, index, elem){
+						$.ajax({
+							url: '/api/feedback',
+							type: 'post',
+							data: {content: value, email: $("#email").val(), type: 1},
+							beforeSend: function(){
+								var index = layer.load(2);
+							},
+							success: function (e) {
+								if (e.error_code == 0) {
+									layer.msg(e.msg , {icon: 1})
+									layer.close(index);
+								} else {
+									layer.msg(e.msg, {icon: 2})
+								}
+							},
+							complete: function () {
+								layer.closeAll('loading');
+							}
+						})
+					})
+					$(".layui-layer-input").attr("placeholder", "{$Think.lang.feedback_placeholder}")
+					$(".layui-layer-content").append('<div style="margin-top: 10px;"><input type="text" id="email" name="email" lay-verify="email" placeholder="{$Think.lang.feedback_email}" class="layui-input"></div>')
+					$(".layui-layer-btn0").css({"border-color":"#4A5E77", "background-color":"#4A5E77", "color":"#FFF"})
+				}
+            }
+        })
+    })
+/*
+		//高度
+		var windows_height = $(window).height()
+		var full_height = $(".foot-null").offset().top
+		var height = windows_height - full_height - 100
+        console.log(windows_height + '-' + full_height + '-' + height)
+		if (height > 0){
+			$('.foot-null').height(height)
+		}
+*/
+
+    //
+/*    grecaptcha.ready(function() {
+        var renderKey = '6Lea0MAUAAAAAEjQFEvEUEdPK_gJmntXnudEG6mA'
+        grecaptcha.execute(renderKey, {action: 'meessage'}).then(function(token) {
+            $.ajax({
+                url: "{:url('/recaptcha')}",
+                type: 'post',
+                data: {token:token},
+                success: function (e) {
+                    console.log(e)
+                }
+            })
+        })
+    })*/
+		function subscription_mailbox (){
+
+			layer.prompt({
+				formType: 3,
+				value: '',
+				title: '{$Think.lang.mailbox_title}',
+				offset: (document.documentElement.clientHeight/2)-157
+				//content: '<div><div style="text-align: center;"><img src="/static/sms/images/mailbox.png" width="90px" height="90px" /></div><p style="margin-top: 5px;color: #FF0000">订阅成功后，您将第一时间获取平台最新号码邮件通知</p><input type="text" name="mailbox" placeholder="邮箱地址..." class="layui-input" style="margin-top: 5px;"></div>',
+			}, function(value, index, elem){
+				$.ajax({
+					url: '/api/mailbox',
+					type: 'post',
+					data: {mailbox: value},
+					beforeSend: function(){
+						var index = layer.load(2);
+					},
+					success: function (e) {
+						if (e.error_code == 0) {
+							layer.msg(e.msg , {icon: 1})
+							layer.close(index);
+						} else {
+							layer.msg(e.msg, {icon: 2})
+						}
+					},
+					complete: function () {
+						layer.closeAll('loading');
+					}
+				})
+
+			})
+			$(".layui-layer-content").prepend('<div style="text-align: center;margin-bottom: 10px;"><img src="/static/sms/images/mailbox.png" width="90px" height="90px" /></div>')
+			$(".layui-layer-content").append('<p style="color: #FF0000;margin-top: 10px;text-align: center;">{$Think.lang.mailbox_explain}</p>')
+			$(".layui-layer-btn0").css({"border-color":"#4A5E77", "background-color":"#4A5E77", "color":"#FFF"})
+		}
+</script>
+</html>

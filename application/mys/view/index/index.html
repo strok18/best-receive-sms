@@ -1,0 +1,93 @@
+{include file="../application/mys/view/header.html" title="<?php echo $index_heads['title'];?>" description="<?php echo $index_heads['description'];?>" keywords="<?php echo $index_heads['keywords'];?>" /}
+<div class="info-top">
+    <div class="info-top-h1"><h1>{$Think.lang.index_info_top_h1}</h1></div>
+    <div class="info-top-h4"><h4>{$Think.lang.index_info_top_h4}</h4></div>
+</div>
+<!--        <div class="search">
+            <form class="layui-form search-form" action="">
+                <i class="layui-icon layui-icon-search search-search"></i>
+                <input type="text" name="phone_num" required="" lay-verify="required"
+                       placeholder="{$Think.get.phone_num|default='请输入要查询的号码'}"
+                       autocomplete="off"
+                       class="layui-input search-input">
+                <i class="layui-icon layui-icon-close search-close"></i>
+            </form>
+        </div>-->
+        <!-- 首页顶部banner自适应 -->
+		<ins class="adsbygoogle"
+		     style="display:block"
+		     data-ad-client="ca-pub-5224126064747013"
+		     data-ad-slot="6256725935"
+		     data-ad-format="auto"
+		     data-full-width-responsive="true"></ins>
+		<script>
+		     (adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
+        <div class="main" style="">
+            <div class="layui-row layui-col-space15">
+                {if !empty($data)}
+                {volist name="data" id="vo"}
+                {if $i == 4}
+	                <div class="layui-col-lg4 layui-col-md4 layui-col-sm6 layui-col-xs12 card">
+		                	<div class="layui-card" style="height:150px;">
+		                		<ins class="adsbygoogle"
+								     style="display:block"
+								     data-ad-format="fluid"
+								     data-ad-layout-key="-fb+5z+3v-d0+94"
+								     data-ad-client="ca-pub-5224126064747013"
+								     data-ad-slot="4150954651"></ins>
+									<script>
+									     (adsbygoogle = window.adsbygoogle || []).push({});
+									</script>
+							</div>
+	                </div>
+	            {elseif $i == 12 /}
+	            	<div class="layui-col-lg4 layui-col-md4 layui-col-sm6 layui-col-xs12 card">
+		                	<div class="layui-card" style="height:150px;">
+		                		<ins class="adsbygoogle"
+							     style="display:block"
+							     data-ad-format="fluid"
+							     data-ad-layout-key="-gn-9+54-75-4e"
+							     data-ad-client="ca-pub-5224126064747013"
+							     data-ad-slot="8877840215"></ins>
+								<script>
+								     (adsbygoogle = window.adsbygoogle || []).push({});
+								</script>
+							</div>
+	                </div>
+                {else /}
+                <div class="layui-col-lg4 layui-col-md4 layui-col-sm6 layui-col-xs12 card">
+                    <div class="layui-card" style="height:150px;">
+                        <div class="layui-card-header">
+                            {if $vo.online == 1}
+                            <span class="layui-badge-dot layui-bg-green"></span> <span style="color: #8D8D8D" title="{$Think.lang.common_phone_online_title}">{$Think.lang.common_phone_online}</span>
+                            {else /}
+                            <span class="layui-badge-dot"></span> <span style="color: #8D8D8D">{$Think.lang.common_phone_offline}</span>
+                            {/if}
+                            <img class="guoqi" src="/static/sms/images/guoqi/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.png" alt="<?php echo $index_heads['guoqi'];?>">
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list">
+                            <p class="layuiadmin-big-font card-phone" id="{$vo.phone_num}" lang="{$vo.warehouse_id}"
+                               title="{$Think.lang.index_main_click}">
+                                <a href="/{$vo.country.en_title}-Number-Phone/{$vo.phone_num}.html" class="clickA" target="_self"><span class="country-bh">+{$vo.country.bh}</span> {$vo.phone_num}</a>
+                            </p>
+                            <p>
+                                &nbsp;
+                                <span class="layuiadmin-span-color" style="margin-top:15px;">{$Think.lang.index_main_view} {$vo.total_num+100} {$Think.lang.index_main_view_1}  &nbsp;<span class="copy"
+                                                                                                           data-clipboard-text="{$vo.phone_num}" title="{$Think.lang.index_main_copy_title}">{$Think.lang.index_main_copy}</span></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+                {/volist}
+                {else /}
+                <div class="none"><i class="layui-icon layui-icon-face-surprised"></i> {$Think.lang.index_main_search}</div>
+                {/if}
+            </div>
+        </div>
+             <div class="page" style="text-align: center">
+                {$page|raw}
+            </div>
+    </div>
+    {include file="../application/mys/view/foot.html" /}

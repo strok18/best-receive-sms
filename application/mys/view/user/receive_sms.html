@@ -1,0 +1,346 @@
+{include file="../application/mys/view/user/header.html" title="会员中心--隐私小号" /}
+<link rel="stylesheet" href="/static/sms/css/user.css?version=1.10.334451">
+<div class="middle">
+    <div id="right" class="right layui-col-md12 layui-col-sm12 layui-col-xs12">
+        <div class="layui-card">
+            <div class="layui-card-header">接码中心</div>
+            <form class="layui-form layui-card-body">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">项 目：</label>
+                    <div class="layui-col-md10">
+                        <select name="project" lay-verify="required" lay-filter="project" lay-search>
+                            <option value="">搜索一个项目</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" id="send" style="display: none">
+                    <label class="layui-form-label">发 送：</label>
+                    <div class="layui-col-md5">
+                        <input type="text" name="nr" id="nr" placeholder="输入需要发送的内容" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-col-md5">
+                        <select name="com" id="com" lay-filter="com">
+                            <option value="">请选择需要发送的端口</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">号 码：</label>
+                    <div class="layui-col-md10">
+                        <input type="text" name="number" id="number" placeholder="点击获取号码成功后会显示" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item" id="message_div">
+                    <label class="layui-form-label">短 信：</label>
+                    <div class="layui-col-md10">
+                        <input type="text" id="message" placeholder="短信获取成功后，会自动显示" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-blue" lay-submit lay-filter="get_number" id="get_number">获取号码</button>
+                        <button type="button" class="layui-btn layui-btn-blue" lay-submit lay-filter="send_message" id="send_message" style="display: none">发送短信</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" lay-submit lay-filter="blacklist">拉黑号码</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" lay-submit lay-filter="put_number">释放当前号码</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" lay-submit lay-filter="put_all_number">释放所有号码</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</div>
+</body>
+<script src="/static/layui/layui.all.js"></script>
+<script>
+    $(function () {
+        get_project()
+    })
+</script>
+<script type="text/javascript">
+    var form = layui.form
+        ,layer = layui.layer
+</script>
+<script>
+    form.on('select(project)', function(data){
+        let value = data.value.split(',')
+        let project_id = value[0]
+        let type = value[1]
+        localStorage.setItem('project_id', project_id)
+        if (type === '发送'){
+            $.ajax({
+                url: '/api/jiema/get_project_port',
+                type: 'post',
+                data: {pid:project_id},
+                success: function (e) {
+                    console.log(e)
+                    if(e.error_code == 0){
+                        let data = e.data.split(',')
+                        for (var i in data){
+                            console.log(data[i])
+                            $("select[name='com']").append("<option value='" + data[i] +"'>" + data[i] + "</option>")
+                            form.render('select');
+                        }
+                    }
+                }
+            })
+            $("#send").css('display', 'block')
+            $("#send_message").css('display', '')
+        }else{
+            $("#send").css('display', 'none')
+            $("#get_number").css('display', '')
+            $("#send_message").css('display', 'none')
+        }
+    })
+
+    form.on('submit(get_number)', function (data) {
+        console.log(data)
+        $("#number").val('')
+        $("#message").val('')
+        $.ajax({
+            url: '/api/jiema/get_number',
+            type: 'post',
+            data: {project_id: localStorage.getItem('project_id')},
+            beforeSend: function(){
+                var index = layer.load(2)
+            },
+            success: function (e) {
+                if(e.error_code == 0){
+                    $("#number").val(e.data.number)
+                    if (data.field.project != 144922){
+                        console.log(data.field.project)
+                        get_message(e.data)
+                    }
+                    $("#get_number").attr('disabled', true)
+                    layer.msg(e.msg, {icon:1,anim:6}, function () {
+                        //window.location.reload()
+                    })
+                }else{
+                    layer.msg(e.msg, {icon:2,anim:6})
+                }
+            },
+            complete: function () {
+                layer.closeAll('loading');
+            }
+        })
+    })
+
+    form.on('submit(send_message)', function (data) {
+        localStorage.setItem('timing', 0)
+        console.log(data.field)
+        if (!$("#number").val()){
+            layer.msg('请先获取号码')
+            return
+        }
+        if (!data.field.com || !data.field.nr || !data.field.project || !data.field.number){
+            layer.msg('请填好发送内容和发送的端口，再点击发送短信')
+            return
+        }
+        $.ajax({
+            url: '/api/jiema/send_message',
+            type: 'post',
+            data: {data: data.field},
+            beforeSend: function(){
+                var index = layer.load(2)
+            },
+            success: function (e) {
+                if(e.error_code == 0){
+                    $("#send_message").attr('disabled', true)
+                    $("#message").val(e.data)
+                    send_state(data.field.project, data.field.number, data.field.nr)
+                    layer.msg(e.msg, {icon:1,anim:6}, function () {
+                        //window.location.reload()
+                    })
+                }
+            },
+            complete: function () {
+                layer.closeAll('loading');
+            }
+        })
+    })
+
+    form.on('submit(blacklist)', function (data) {
+        console.log(data)
+        $.ajax({
+            url: '/api/jiema/blacklist',
+            type: 'post',
+            data: {number: data.field.number, project: data.field.project},
+            beforeSend: function(){
+                var index = layer.load(2)
+            },
+            success: function (e) {
+                if(e.error_code == 0){
+                    $("#get_number").attr('disabled', false)
+                    $("#number").val('')
+                    localStorage.removeItem('number')
+                    localStorage.removeItem('project_id')
+                    localStorage.setItem('timing', 0)
+                    layer.msg(e.msg, {icon:1,anim:6}, function () {
+                        //window.location.reload()
+                    })
+                }else{
+                    layer.msg(e.msg, {icon:2,anim:6})
+                }
+            },
+            complete: function () {
+                layer.closeAll('loading');
+            }
+        })
+    })
+
+    form.on('submit(put_number)', function (data) {
+        $.ajax({
+            url: '/api/jiema/put_number',
+            type: 'post',
+            data: {number: localStorage.getItem('number')},
+            beforeSend: function(){
+                var index = layer.load(2)
+            },
+            success: function (e) {
+                if(e.error_code == 0){
+                    $("#get_number").attr('disabled', false)
+                    $("#number").val('')
+                    localStorage.removeItem('number')
+                    localStorage.removeItem('project_id')
+                    localStorage.setItem('timing', 0)
+                    layer.msg(e.msg, {icon:1,anim:6}, function () {
+                        //window.location.reload()
+                    })
+                }else{
+                    layer.msg(e.msg, {icon:2,anim:6})
+                }
+            },
+            complete: function () {
+                layer.closeAll('loading');
+            }
+        })
+    })
+
+    form.on('submit(put_all_number)', function (data) {
+        $.ajax({
+            url: '/api/jiema/put_all_number',
+            type: 'post',
+            beforeSend: function(){
+                var index = layer.load(2)
+            },
+            success: function (e) {
+                if(e.error_code == 0){
+                    $("#get_number").attr('disabled', false)
+                    $("#number").val('')
+                    localStorage.removeItem('number')
+                    localStorage.removeItem('project_id')
+                    localStorage.setItem('timing', 0)
+                    $("#get_number").attr('disabled', false)
+                    layer.msg(e.msg, {icon:1,anim:6}, function () {
+                        //window.location.reload()
+                    })
+                }else{
+                    layer.msg(e.msg, {icon:2,anim:6})
+                }
+            },
+            complete: function () {
+                layer.closeAll('loading');
+            }
+        })
+    })
+
+    function get_message(data) {
+        localStorage.setItem('timing', 1)
+        var t = 0
+        var t5 = window.setInterval(function(){
+            if (localStorage.getItem('timing') < 1){
+                window.clearTimeout(t5);
+                return false
+            }
+            t++
+            $("#message").val('正在获取第'+ t + '次...')
+            $.ajax({
+                url: '/api/jiema/get_message',
+                type: 'post',
+                data: {data: data},
+                beforeSend: function(){
+                    var index = layer.load(2)
+                },
+                success: function (e) {
+                    if(e.error_code == 0){
+                        $("#get_number").attr('disabled', false)
+                        $("#message").val(e.data)
+                        localStorage.setItem('timing', 0)
+                        layer.msg(e.msg, {icon:1,anim:6}, function () {
+                            //window.location.reload()
+                        })
+                    }
+                    if (e.error_code == 3000){
+                        $("#get_number").attr('disabled', false)
+                        $("#message").val(e.data)
+                        localStorage.setItem('timing', 0)
+                        layer.msg(e.data, {icon:2,anim:6}, function () {
+                            //window.location.reload()
+                        })
+                    }
+                },
+                complete: function () {
+                    layer.closeAll('loading');
+                }
+            })
+        }, 5000)
+    }
+
+    function send_state(project,number,nr) {
+        var t = 0
+        localStorage.setItem('timing', 1)
+        var t5 = window.setInterval(function(){
+            if (localStorage.getItem('timing') < 1){
+                window.clearTimeout(t5);
+                return false
+            }
+            t++
+            //$("#message").val('等待成功回执第'+ t + '次...')
+            $.ajax({
+                url: '/api/jiema/send_state',
+                type: 'post',
+                data: {number: number, project: project, nr: nr},
+                beforeSend: function(){
+                    var index = layer.load(2)
+                },
+                success: function (e) {
+                    $("#message").val(e.data)
+                    if(e.error_code == 0){
+                        $("#get_number").attr('disabled', false)
+                        $("#send_message").attr('disabled', false)
+                        window.clearTimeout(t5);
+                        layer.msg(e.msg, {icon:1,anim:6}, function () {
+                        })
+                    }
+                },
+                complete: function () {
+                    layer.closeAll('loading');
+                }
+            })
+        }, 5000)
+    }
+
+    function get_project() {
+        $.ajax({
+            url: '/api/jiema/get_project',
+            type: 'get',
+            success: function (e) {
+                if(e.error_code == 0){
+                    var data = e.data
+                    for (var i in e.data){
+                        $("select[name='project']").append("<option value='" + data[i]['pid'] + "," +data[i]['type'] +"'>【" + data[i]['type'] + "】"+ data[i]['title'] + "</option>")
+                        form.render('select');
+                    }
+                }
+            }
+        })
+    }
+</script>
+{include file="../application/mys/view/user/foot.html" /}

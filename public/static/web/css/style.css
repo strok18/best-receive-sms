@@ -1,0 +1,138 @@
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #F8F8F8;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:link {
+	color: #3F3F3F;
+}
+
+/* 未访问链接*/
+a:visited {
+	color: #3F3F3F;
+}
+
+/* 已访问链接 */
+a:hover {
+	color: #334e68;
+}
+
+/* 鼠标移动到链接上 */
+a:active {
+	color: #666666;
+}
+
+/* 鼠标点击时 */
+
+.link-white a:link {
+	color: #FFFFFF;
+}
+
+@font-face {
+	font-family: 'number';
+	src: url('numberfont/fontello.eot');
+	src: url('numberfont/fontello.eot') format('embedded-opentype'),
+		url('numberfont/fontello.woff2') format('woff2'),
+		url('numberfont/fontello.woff') format('woff'),
+		url('numberfont/fontello.ttf') format('truetype'),
+		url('numberfont/fontello.svg') format('svg');
+}
+
+.number-font {
+	font-family: 'number';
+}
+
+.container {
+	max-width: 1200px;
+}
+
+.bg-primary {
+	background-color: #334e68 !important;
+}
+
+.bg-primary-light {
+	background-color: #4e6e8c;
+}
+
+.btn-primary-light {
+	background-color: #066ac9;
+}
+
+.little-font {
+	font-size: 13px;
+}
+
+.nav-link {
+	color: #334e68;
+}
+
+.top:focus{
+	box-shadow:none!important;   
+}
+
+/* 分页颜色更改 */
+.pagination>li>a {
+	background-color: white;
+	color: #334e68;
+}
+
+.pagination>li>a:focus,
+.pagination>li>a:hover,
+.pagination>li>span:focus,
+.pagination>li>span:hover {
+	color: #5a5a5a;
+	background-color: #eee;
+	border-color: #ddd;
+}
+
+.pagination>.active>a {
+	color: white;
+	background-color: #334e68 !Important;
+	border: solid 1px #334e68 !Important;
+}
+
+.pagination>.active>a:hover {
+	background-color: #334e68 !Important;
+	border: solid 1px #334e68;
+}
+
+/* 分页颜色更改end */
+.notify {
+	z-index: -1;
+}
+
+ .email-font {
+	font-size: 3rem;
+}
+
+@media only screen and (max-width: 3000px) {
+	.email-font {
+		font-size: 3rem;
+	}
+}
+
+
+@media only screen and (max-width: 768px) {
+	.email-font {
+		font-size: 2rem;
+	}
+}
+
+
+@media only screen and (max-width: 576px) {
+	.email-font {
+		font-size: 1.5rem;
+	}
+	.top{
+		width: 5rem;
+	}
+}
+
+.cursor{
+	cursor: pointer;
+}
+

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="{$Think.lang.header_locale}">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>[title]</title>
+    <meta name="description" content="[description]">
+    <meta name="keywords" content="[keywords]">
+    <meta property="og:title" content="[title]" />
+    <meta property="og:url" content= "{$Request.domain}" />
+    <meta property="og:description" content="[description]" />
+    <meta property="og:image" content="{$Request.domain}/favicon.ico">
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="{$Think.lang.header_locale}" />
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/sms/nav/okayNav.temp.min.css?version=1.0.1">
+    <link rel="stylesheet" href="/static/sms/css/index.css?version=1.1.82">
+    <!--hreflang-->
+    <link rel="alternate" hreflang="en" href="{$Request.scheme}://mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="ru" href="{$Request.scheme}://ru.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="ja" href="{$Request.scheme}://ja.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="cn" href="{$Request.scheme}://cn.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="tw" href="{$Request.scheme}://tw.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="ko" href="{$Request.scheme}://ko.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="es" href="{$Request.scheme}://es.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="fr" href="{$Request.scheme}://fr.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="de" href="{$Request.scheme}://de.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="ar" href="{$Request.scheme}://ar.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="vi" href="{$Request.scheme}://vi.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="bd" href="{$Request.scheme}://bd.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="it" href="{$Request.scheme}://it.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="ir" href="{$Request.scheme}://ir.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="id" href="{$Request.scheme}://id.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="pt" href="{$Request.scheme}://pt.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="in" href="{$Request.scheme}://in.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="my" href="{$Request.scheme}://my.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="az" href="{$Request.scheme}://az.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="al" href="{$Request.scheme}://al.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="pk" href="{$Request.scheme}://pk.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="tr" href="{$Request.scheme}://tr.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="th" href="{$Request.scheme}://th.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="za" href="{$Request.scheme}://za.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="mm" href="{$Request.scheme}://mm.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="tz" href="{$Request.scheme}://tz.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="ua" href="{$Request.scheme}://ua.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="pl" href="{$Request.scheme}://pl.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="uz" href="{$Request.scheme}://uz.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="se" href="{$Request.scheme}://se.mytempsms.com{$Request.url}" />
+    <link rel="alternate" hreflang="nl" href="{$Request.scheme}://nl.mytempsms.com{$Request.url}" />
+    <!--hreflang-->
+	<script src="/static/layui/layui.js"></script>
+    <script src="/static/sms/js/jquery-3.4.1.min.js"></script>
+    <script>
+        layui.use(['layer', 'element'], function () {
+            var layer = layui.layer
+        })
+    </script>
+    </head>
+    <body>
+    <div class="container">
+        <div class="top-bar-box"></div>
+        <div class="layui-container">
+            <div id="header" class="okayNav-header header" style="max-height: 70px;">
+                <a class="okayNav-header__logo" href="/">
+                	<span class="logo-font"><font style="font-size: 18px">{if $Request.subDomain}{$Request.subDomain}.{/if}</font>M{$Request.rootDomain|substr=1,1}<font style="color:#FF0000">T{$Request.rootDomain|substr=3,3}</font>S{$Request.rootDomain|strtoupper|substr=7,2}<font style="font-size: 18px">.com</font></span>
+                </a>
+                <nav role="navigation" id="nav-main" class="okayNav">
+                    <ul>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/france-phone-number')}" id="france" title="{$Think.lang.header_nav_FRANCE}">{$Think.lang.header_nav_FRANCE}</a></li>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/uk-phone-number')}" id="uk" title="{$Think.lang.header_nav_UK}">{$Think.lang.header_nav_UK}</a></li>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/usa-phone-number')}" id="usa" title="{$Think.lang.header_nav_USA_title}">{$Think.lang.header_nav_USA}</a></li>
+                        
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/netherlands-phone-number')}" id="netherlands" title="netherlands mobile phone number receive sms">NL</a></li>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/sweden-phone-number')}" id="sweden" title="sweden mobile phone number receive sms">SWEDEN</a></li>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/mail')}" id="mail" title="{$Think.lang.header_nav_mail_title}">{$Think.lang.header_nav_mail} <span class="layui-badge-dot"></span></a></li>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/china-phone-number')}" id="china" title="{$Think.lang.header_nav_China}">{$Think.lang.header_nav_China}</a></li>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/upcoming-phone-number')}" id="upcoming" title="Upcoming Phone Number">Upcoming <span class="layui-badge-dot"></span></a></li>
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/country')}" id="country" title="{$Think.lang.header_nav_all_Country_title}">{$Think.lang.header_nav_all_Country}</a></li>
+                        
+                        <li class="layui-nav-item"><a href="{$Request.domain}{:url('/receive-sms-online/blog')}" id="blog" title="{$Think.lang.header_nav_article_title}">{$Think.lang.header_nav_article}</a></li>
+                        <li class="layui-nav-item"><a href="javascript:subscription_mailbox()" id="subscription" title="{$Think.lang.header_nav_subscription}">{$Think.lang.header_nav_subscription}</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="nav-null"></div>
+        <div class="layui-container">
+            
+            <div class="index-warn" style="display:;">
+                <blockquote class="site-text layui-elem-quote">
+                    <div class="layui-row">
+                        <div class="layui-col-md10 quote-left">
+                            <span><i class="layui-icon">&#xe645; <a href="/receive-sms-online/upcoming-phone-number.html">Click to view the latest update number...</a></i></span>
+                        </div>
+                        <div class="layui-col-md2 quote-right">
+                            <span></span>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+            <div>
+            	
+            </div>

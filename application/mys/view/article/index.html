@@ -1,0 +1,18 @@
+{include file="../application/mys/view/header.html" title="<?php echo $article_heads['title'];?>" description="<?php echo $article_heads['description'];?>" keywords="<?php echo $article_heads['keywords'];?>" /}
+{include file="../application/template/adsense/article_banner_top.html" /}
+        <div class="main">
+            <div class="layui-row article">
+                <div class="article-notice"><h1>{$Think.lang.article_header_title}</h1></div>
+                <div class="article-list">
+                    {volist name="article" id="vo"}
+                        <h3><a href="/receive-sms-online/blog/{$vo.a_id}.html">{$vo.title}</a>&nbsp;<font style="font-size: 12px;margin-left: 5px;color: #C0BFBF"><i class="layui-icon layui-icon-triangle-r"></i>{$vo.create_time|date='Y-m-d'}</font></h3>
+
+                    <hr />
+                    {/volist}
+                </div>
+                {$article|raw}
+            </div>
+        </div>
+        {include file="../application/template/adsense/article_banner_bottom.html" /}
+    </div>
+{include file="../application/mys/view/foot.html" /}

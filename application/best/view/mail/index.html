@@ -1,0 +1,467 @@
+{include file="../application/best/view/header.html" title="<?php echo $mail_heads['title'];?>" description="<?php echo $mail_heads['description'];?>" keywords="<?php echo $mail_heads['keywords'];?>" /}
+<!-- Main content -->
+<div class="content">
+    <div class="banner">
+        <div class="container" style="margin: 30px auto;">
+            <div class="row">
+                <h1 class="text-center">(Permanent Free) Receive SMS Online</h1>
+                <span> IS A FREE SERVICE FOR RECEIVING SMS MESSAGES AND VOICE MAILS ONLINE. THERE IS NO NEED TO
+							REGISTER. JUST SELECT YOUR PHONE NUMBER FROM THE LIST BELOW. YOU CAN USE IT TO RECEIVE
+							MESSAGES FROM FACEBOOK, TELEGRAM, WECHAT, VK, PAYPAL, ALIPAY AND MORE</span>
+            </div>
+        </div>
+    </div>
+    <div class="container my-3 d-none">
+        <img alt="..." class="img-thumbnail" src="ad.png">
+    </div>
+    <div class="phone" style="margin-top: 40px;">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
+                        <div class="bg-white">
+                            <p class="card-text little-font fw-bold fs-6 text-start">TEMP EMAIL</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="email email-font fw-bold cursor copy" id="email" onclick="copy()"></div>
+                            <div class="email-input mt-3">
+                                <div class="row g-2 justify-content-center">
+                                    <div class="col-sm-4">
+                                        <div class="form-floating mb-3 text-end">
+                                            <input class="form-control" id="floatingInput" type="email" name="email_name">
+                                            <label for="floatingInput">Email address</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select name="site" aria-label="Default select example" class="form-select"
+                                                style="height: 58px;">
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="email-buttom mt-1">
+                                <button class="btn btn-primary-light text-light mt-1" id="apply_email" onclick="mail_apply('apply')"
+                                        type="button">APPLY
+                                </button>
+                                <button class="btn btn-primary-light text-light mt-1" id="random_email" onclick="mail_apply()"
+                                        type="button">RANDOM
+                                </button>
+                                <button class="btn btn-primary-light text-light mt-1" id="delete_email" onclick="mail_delete()"
+                                        type="button">DELETE
+                                </button>
+                                <button class="btn btn-primary-light text-light mt-1" id="forwarding_email" onclick="mail_transpond()"
+                                        type="button">FORWARDING
+                                </button>
+                                <button class="btn btn-primary-light text-light mt-1" id="receive_email" onclick="mail_list()"
+                                        type="button">RECEIVE
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white text-muted border-0 text-end text-success">
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container my-3 d-none">
+                    <img alt="..." class="img-thumbnail" src="ad.png">
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
+                        <div class="card-body pb-0">
+                            <div class="row">
+                                <div class="fw-bold col-sm-3 text-start d-block d-sm-none">INBOX</div>
+                                <div class="fw-bold col-sm-3 text-start d-none d-sm-block">SENDER</div>
+                                <div class="fw-bold col-sm-6 text-start d-none d-sm-block">SUBJECT</div>
+                                <div class="fw-bold col-sm-3 text-start d-none d-sm-block">TIME</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="empty">
+                                <img src="/static/web/images/empty-mail.svg">
+                                <p class="fw-bold">No emails yet</p>
+                            </div>
+                            <div id="mail_list"></div>
+                        </div>
+                        <div class="bg-white text-muted border-0 text-end text-success">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Phone list end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- main content end-->
+<script src="/static/web/js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
+<script src="/static/web/js/clipboard.js"></script>
+<script>
+    $(function () {
+        let mails = {:json_encode($mails)};
+        let option = ''
+        for (let m = 0; m < mails.length; m++) {
+            option += '<option value="' + [m] + '">@' + mails[m]['site'] + '</option>'
+        }
+        $("select[name='site']").html(option)
+        let email = getCookie('temp_email')
+        if (email) {
+            $("#email").text(email)
+            $("#email").attr('data-clipboard-text', email)
+        } else {
+            $("#email").text('')
+            $("#email").attr('data-clipboard-text', '')
+        }
+        let email_list = localStorage.getItem('email_list_' + email)
+        if (email_list) {
+            $("#mail_list").html(email_list)
+            $("#empty").addClass('d-none')
+        }
+
+    })
+
+    function copy(){
+        let clipboard = new Clipboard('.copy')
+        toast('{$Think.lang.foot_copy} ' + $("#email").text() + ' {$Think.lang.foot_copy_success}')
+    }
+
+    function mail_open(id) {
+        let email = getCookie('temp_email');
+        let email_array = JSON.parse(localStorage.getItem('email_array_' + email))[id];
+        let time = email_array['time'] + '000';
+        let emailHtml = `
+                        <div class="container">
+                                    <div class="row">
+                                        <div class="email-head-left col-sm-1">
+                                            <svg height="52" viewBox="0 0 56 56" width="52"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <g transform="translate(-485 -372)">
+                                                    <circle cx="28" cy="28" fill="#ececec"
+                                                            r="28" transform="translate(485 372)"></circle>
+                                                    <g transform="translate(485 386)">
+                                                        <g transform="translate(16 0)">
+                                                            <g>
+                                                                <circle cx="5.5" cy="5.5" fill="#4a4949"
+                                                                        r="5.5" transform="translate(7 1)">
+                                                                </circle>
+                                                                <path
+                                                                        d="M36.694,228.127a14.36,14.36,0,0,0-20.389,0,1.039,1.039,0,0,0-.3.748v5.009a1.886,1.886,0,0,0,1.75,2h17.5a1.886,1.886,0,0,0,1.75-2v-4.617C37,228.585,36.888,228.313,36.694,228.127Z"
+                                                                        fill="#4a4949"
+                                                                        transform="translate(-14 -209.88)"></path>
+                                                            </g>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <p class="mb-0">深蓝</p>
+                                            <p>`+email_array['from']+`</p>
+                                        </div>
+                                        <div class="email-head-right col-sm-6 text-end little-font"
+                                             style="line-height: 50px;">
+                                            `+new Date(Number(time))+`
+                                        </div>
+                                    </div>
+                                    <hr class="mt-0"/>
+                                    <div class="row fw-bold">
+                                        <p class="mb-0">Subject：`+email_array['subject']+`</p>
+                                    </div>
+                                    <hr/>
+                                    <div class="">
+                                        `+email_array['html']+`
+                                    </div>
+                                </div>
+                        `;
+        modal(emailHtml,{title: email_array['subject']});
+    }
+
+    function mail_notify(title, body) {
+        //notify
+        Push.Permission.request();
+        Push.create(title, {
+            body: body,
+            icon: '/static/sms/images/logo.png',
+            timeout: 8000
+        });
+    }
+
+    function mail_new_remind(email, number, body) {
+        let email_number_name = email + "_number";
+        let email_number = getCookie(email_number_name)
+        if (!email_number) {
+            email_number = 0
+        }
+        if (number > email_number) {
+            toast('Receive new mail')
+            clearTimeout(auto)
+            auto = undefined
+            $('#receive_email').removeAttr('disabled')
+            document.cookie = email_number_name + "=" + number
+            if (localStorage.getItem('temp_email_notify') !== 'deny') {
+                mail_notify('Receive new mail', body)
+            }
+        }
+    }
+
+    var num = 0
+
+    function mail_list() {
+        num = 1
+        var email = getCookie('temp_email')
+        if (!email) {
+            toast('{$Think.lang.mail_alert_apply}', {type: 'danger'})
+            return
+        }
+        $("button[id='receive_email']").attr('disabled', "disabled")
+        $("td[id='mail-td-list']").attr('onclick', "")
+        //更换图标//layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop
+        $('#get-email-icon').attr('class', 'layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop')
+        mail_get()
+        if (typeof (auto) === 'undefined') {
+            auto = setInterval(mail_get, 8000)
+        }
+    }
+
+    function mail_get() {
+        var email = getCookie('temp_email')
+        $.ajax({
+            url: '/api/email_get',
+            type: 'post',
+            data: {email: email},
+            beforeSend: function () {
+                loading();
+            },
+            success: function (e) {
+                if (e.error_code == 0) {
+                    let data = e.data
+                    let email_number = data.length
+                    let mails = ''
+                    mail_new_remind(email, email_number, data[0]['subject'])
+                    for (let i = 0; i < email_number; i++) {
+                        let time = data[i]['time'] + '000';
+                        mails += `<div class="row cursor" onclick="mail_open(`+i+`)">
+                                      <div class="col-sm-3 text-start">`+data[i]['from']+`</div>
+                                      <div class="col-sm-6 text-start text-truncate">`+data[i]['subject']+`</div>
+                                      <div class="col-sm-3 text-start">`+new Date(Number(time))+`</div>
+                                      <hr class="mt-2" />
+                                   </div>`;
+                    }
+                    localStorage.setItem('email_list_' + email, mails)
+                    localStorage.setItem('email_array_' + email, JSON.stringify(data))
+                    $("#mail_list").html(mails)
+                    $("#empty").addClass('d-none')
+                    toast('Email application successful');
+                } else if (e.error_code == 1) {
+                    toast('{$Think.lang.mail_alert_no_mail}', {type: 'secondary'})
+                } else if (e.error_code == 4003) {
+                    window.location.href = "/spi";
+                } else {
+                    toast('{$Think.lang.mail_alert_no_mail}', {type: 'danger'})
+                }
+            },
+            complete: function () {
+                num++
+                click(3)
+                if (num > 30) {
+                    layer.msg('Too many requests, automatic suspension')
+                    toast('Too many requests, automatic suspension', {type: 'secondary'})
+                    clearTimeout(auto)
+                    auto = undefined
+                    $('#receive_email').removeAttr('disabled')
+                }
+                loading(false);
+            }
+        })
+    }
+
+    function mail_apply(e) {
+        let name = $("input[name='email_name']").val()
+        let site = $("select[name='site']").find("option:selected").text()
+        let email = getCookie('temp_email')
+        if (email) {
+            toast('{$Think.lang.mail_alert_use}' + email, {type: 'danger'})
+            return
+        }
+        if (e) {
+            if (!name) {
+                toast('{$Think.lang.mail_alert_nlll}',{type: 'danger'})
+                return
+            }
+            $.ajax({
+                url: '/api/email_apply',
+                type: 'post',
+                data: {email_name: name, site: site},
+                beforeSend: function () {
+                    loading();
+                },
+                success: function (e) {
+                    console.log(e)
+                    if (e.error_code == 0) {
+                        $("#email").text(e.data)
+                        $("#email").attr('data-clipboard-text', e.data)
+                        document.cookie = "temp_email=" + e.data
+                        request_notify()
+                    } else if (e.error_code == 4003) {
+                        window.location.href = "/spi";
+                    } else {
+                        toast(e.msg, {type: 'danger'})
+                    }
+                },
+                complete: function () {
+                    loading(false)
+                }
+            })
+        } else {
+            $.ajax({
+                url: '/api/email_apply',
+                type: 'post',
+                data: {site: site},
+                beforeSend: function () {
+                    loading()
+                },
+                success: function (e) {
+                    if (e.error_code == 0) {
+                        $("#email").text(e.data)
+                        $("#email").attr('data-clipboard-text', e.data)
+                        document.cookie = "temp_email=" + e.data
+                        request_notify()
+                    } else if (e.error_code == 4003) {
+                        window.location.href = "/spi";
+                    } else {
+                        toast(e.msg, {type: 'danger'})
+                    }
+                },
+                complete: function () {
+                    loading(false)
+                }
+            })
+        }
+
+    }
+
+    function request_notify() {
+        if (!localStorage.getItem('temp_email_notify')) {
+            modal('After Allow, you will be automatically reminded when you receive new mail.',
+                {title: 'Turn on desktop notifications？', closeButton: 'Not now', confirmButton: 'Allow'}
+                ,function () {
+                mail_notify('New email notification', 'New email notification set successfully')
+                localStorage.setItem('temp_email_notify', 'allow')
+            }, function (){
+                localStorage.setItem('temp_email_notify', 'deny')
+            })
+        }
+    }
+
+    function mail_delete() {
+        var email = getCookie('temp_email')
+        if (!email) {
+            toast('{$Think.lang.mail_alert_apply}', {type: 'danger'})
+            return
+        }
+        $.ajax({
+            url: '/api/email_user_delete',
+            type: 'post',
+            data: {email: email, transpond_email: localStorage.getItem('transpond_email')},
+            beforeSend: function () {
+                loading()
+            },
+            success: function (e) {
+                if (e.error_code == 0) {
+                    if (typeof (auto) !== 'undefined') {
+                        clearTimeout(auto)
+                    }
+                    auto = undefined
+                    document.cookie = "temp_email=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                    document.cookie = email + "_number=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                    $("#email").text('')
+                    localStorage.removeItem('email_list_' + email)
+                    localStorage.removeItem('email_array_' + email)
+                    localStorage.removeItem('transpond_email')
+                    $("#mail_list").html('')
+                    $("#empty").removeClass('d-none')
+                    toast(email + '{$Think.lang.mail_alert_delete_success}')
+                } else {
+                    toast(email + '{$Think.lang.mail_alert_delete_failed}', {type: 'danger'})
+                }
+            },
+            complete: function () {
+                loading(false)
+            }
+        })
+    }
+
+    function transformTime(time) {
+        var unixtime = time;
+        var unixTimestamp = new Date(unixtime * 1000);
+        var Y = unixTimestamp.getFullYear(),
+            M = ((unixTimestamp.getMonth() + 1) > 9 ? (unixTimestamp.getMonth() + 1) : '0' + (unixTimestamp.getMonth() + 1)),
+            D = (unixTimestamp.getDate() > 10 ? unixTimestamp.getDate() : '0' + unixTimestamp.getDate()),
+            h = (unixTimestamp.getHours() < 10) ? "0" + unixTimestamp.getHours() : unixTimestamp.getHours(),
+            min = (unixTimestamp.getMinutes() < 10) ? "0" + unixTimestamp.getMinutes() : unixTimestamp.getMinutes(),
+            s = (unixTimestamp.getSeconds() < 10) ? "0" + unixTimestamp.getSeconds() : unixTimestamp.getSeconds();
+        var toDay = Y + '-' + M + '-' + D + " " + h + ":" + min + ":" + s;
+        return toDay
+    }
+
+    function click(second) {
+        setTimeout(function () {
+            $("button[id='mail-list']").removeAttr('disabled')
+            $("td[id='mail-td-list']").attr('onclick', "mail_list()")
+        }, second * 1000)
+    }
+
+    function mail_transpond() {
+        toast('Updating',{type: 'secondary'});
+        return
+        var email = getCookie('temp_email')
+        if (!email) {
+            toast('{$Think.lang.mail_alert_apply}', {type: 'danger'})
+            return
+        }
+        layer.prompt({
+            title: '{$Think.lang.mail_main_transpond_alert_title}',
+            formType: 3,
+            value: localStorage.getItem('transpond_email')
+        }, function (transpond_email, pop) {
+            $.ajax({
+                url: '/api/email_transpond',
+                type: 'post',
+                data: {email: email, transpond_email: transpond_email},
+                beforeSend: function () {
+                    var index = layer.load(2);
+                },
+                success: function (e) {
+                    if (e.error_code == 0) {
+                        localStorage.setItem('transpond_email', transpond_email)
+                        layer.close(pop)
+                        layer.msg(e.msg + ' ' + transpond_email, {icon: 1})
+                    } else {
+                        layer.msg(e.msg, {icon: 2})
+                    }
+                },
+                complete: function () {
+                    layer.closeAll('loading');
+                }
+            })
+
+
+        })
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+</script>
+{include file="../application/best/view/foot.html" /}

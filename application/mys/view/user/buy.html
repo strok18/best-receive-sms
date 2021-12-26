@@ -1,0 +1,124 @@
+{include file="../application/mys/view/header.html" title="会员中心--隐私小号" /}
+<link rel="stylesheet" href="/static/sms/css/user.css?version=1.10.334451">
+<div class="middle">
+    <div class="navslid layui-col-md2 layui-col-sm2 layui-col-xs2" id="left">
+        <nav class="left-nav">
+            <ul class="left-nav-ul">
+                <li class="left-nav-li">
+                    <a href="/user.html">用户中心</a>
+                </li>
+                <li class="left-nav-li">
+                    <a href="{:url('order')}">已购号码</a>
+                </li>
+                <li class="left-nav-li link-hr">
+                    <a href="{:url('buy')}">订购号码</a>
+                </li>
+                <li class="left-nav-li">
+                    <a href="{:url('index/login/loginout')}">退出</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <i class="layui-icon btn layui-icon-prev" id="click"></i>
+    <div id="right" class="right layui-col-md12 layui-col-sm12 layui-col-xs12">
+        <div class="layui-card">
+            <div class="layui-card-header"><b>订购号码</b></div>
+            <div class="layui-card-body">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">选择号码</label>
+                        <div class="layui-input-block">
+                            <select name="interest" lay-filter="aihao" lay-verify="required">
+                                <option value="" selected="">请选择号码</option>
+                                <option value="0">88888</option>
+                                <option value="0">88888</option>
+                                <option value="0">88888</option>
+                                <option value="0">88888</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" pane="">
+                        <label class="layui-form-label">订购时长</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="time" value="1" title="30天" checked="">
+                            <input type="radio" name="time" value="2" title="90天">
+                            <input type="radio" name="time" value="3" title="180天">
+                            <input type="radio" name="time" value="4" title="360天">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">合计金额</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" autocomplete="off" disabled class="layui-input" value="¥ 30.00">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" pane="">
+                        <label class="layui-form-label">支付方式</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="pay" value="1" title="加微信转帐：" checked="">
+                            <input type="radio" name="pay" value="2" title="在线支付" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn" lay-submit="" lay-filter="demo2">跳转式提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+</body>
+<script src="/static/layui/layui.all.js"></script>
+<script src="/static/common/js/jquery.min.js"></script>
+<script src="/static/sms/nav/jquery.okayNav-min.js.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var form = layui.form
+            , layer = layui.layer
+        $("#click").height($(document).height() - 84);
+        $("#click").click(function () {
+            if ($("#left").hasClass("navslid-hide")) {
+                $("#left").addClass("navslid-show");
+                $("#left").removeClass("navslid-hide");
+                $("#click").removeClass("layui-icon-next");
+                $("#click").addClass("layui-icon-prev");
+            } else if ($("#left").hasClass("navslid-show")) {
+                $("#left").addClass("navslid-hide");
+                $("#left").removeClass("navslid-show");
+                $("#click").removeClass("layui-icon-prev");
+                $("#click").addClass("layui-icon-next");
+            } else {
+                $("#left").addClass("navslid-hide");
+                console.log("default no");
+                $("#click").removeClass("layui-icon-prev");
+                $("#click").addClass("layui-icon-next");
+            }
+        })
+        //首页导航
+        var navigation = $('#nav-main').okayNav({
+            swipe_enabled: false,
+        });
+        var get_region = window.location.pathname
+        if (get_region == '/') {
+            get_region = '/index/index.html'
+        }
+        switch (get_region) {
+            case '/index/index.html':
+                $('#dl').addClass('link-hr')
+                break;
+            case '/index/gat.html':
+                $('#gat').addClass('link-hr')
+                break;
+            case '/index/gw.html':
+                $('#gw').addClass('link-hr')
+                break;
+            case '/article.html':
+                $('#article').addClass('link-hr')
+                break;
+        }
+    });
+</script>
+</html>

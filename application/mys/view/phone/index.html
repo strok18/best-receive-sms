@@ -1,0 +1,131 @@
+{include file="../application/mys/view/header.html" title="<?php echo $phone_heads['title'];?>" description="<?php echo $phone_heads['description'];?>" keywords="<?php echo $phone_heads['keywords'];?>" /}
+<div class="info-top">
+    <div class="info-top-h1"><h1><?php echo $phone_heads['info_top_h1'];?></h1></div>
+    <div class="info-top-h4"><h4><?php echo $phone_heads['info_top_h4'];?></h4></div>
+</div>
+<!--        <div class="search">
+            <form class="layui-form search-form" action="">
+                <i class="layui-icon layui-icon-search search-search"></i>
+                <input type="text" name="phone_num" required="" lay-verify="required"
+                       placeholder="{$Think.get.phone_num|default='Search Phone'}"
+                       autocomplete="off"
+                       class="layui-input search-input">
+                <i class="layui-icon layui-icon-close search-close"></i>
+            </form>
+        </div>-->
+        {if $Think.server.REQUEST_URI == '/'}
+		    {include file="../application/template/adsense/index_banner_top.html" /}
+            <div class="main" style="margin-top:10px;">
+        {elseif $Think.server.REQUEST_URI == '/receive-sms-online/upcoming-phone-number.html'}
+            {include file="../application/template/adsense/upcoming_banner.html" /}
+            <div class="main" style="margin-top:10px;">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;margin-bottom:5px;">
+                <legend>
+                <div class="breadcrumb">
+                    <span class="layui-breadcrumb">
+                        {volist name="bread_crumb" id="vo"}
+                            {if $i != count($bread_crumb)}
+                                <a href="{$vo.url}">{$vo.title}</a>
+                            {else /}
+                                <a><cite>{$vo.title}</cite></a>
+                            {/if}
+                        {/volist}
+                    </span>
+            </div>
+            </legend>
+    </fieldset>
+        {else /}
+            {include file="../application/template/adsense/phone_banner_top.html" /}
+            <div class="main" style="margin-top:10px;">
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;margin-bottom:5px;">
+                <legend>
+                <div class="breadcrumb">
+                    <span class="layui-breadcrumb">
+                        {volist name="bread_crumb" id="vo"}
+                            {if $i != count($bread_crumb)}
+                                <a href="{$vo.url}">{$vo.title}</a>
+                            {else /}
+                                <a><cite>{$vo.title}</cite></a>
+                            {/if}
+                        {/volist}
+                    </span>
+            </div>
+            </legend>
+    </fieldset>
+        {/if}
+            <div class="layui-row layui-col-space15">
+                {if !empty($data)}
+                {volist name="data" id="vo"}
+                {if $i == 5}
+	                <div class="layui-col-lg12 layui-col-md12 layui-col-sm12 layui-col-xs12 card">
+		                	<div class="layui-card" style="height:150px;">
+		                		{if $Think.server.REQUEST_URI == '/'}
+		                			{include file="../application/template/adsense/index_banner_middle_1.html" /}
+		                		{elseif $Think.server.REQUEST_URI == '/receive-sms-online/upcoming-phone-number.html'}
+                                    {include file="../application/template/adsense/upcoming_banner.html" /}
+		                		{else /}
+		                			{include file="../application/template/adsense/phone_banner_middle_1.html" /}
+		                		{/if}
+							</div>
+	                </div>
+                {else /}	
+                <div class="layui-col-lg6 layui-col-md6 layui-col-sm6 layui-col-xs12 card">
+                    <div class="layui-card" style="height:150px;">
+                        <div class="layui-card-header">
+                            {if $vo.online == 1}
+                            <span style="color: #8D8D8D" title="{$Think.lang.common_phone_online_title}"><img height="15px" src="/static/sms/images/online.png"></span>
+                            {else /}
+                            <span style="color: #8D8D8D"><img height="13px" src="/static/sms/images/offline.png"></span>
+                            {/if}
+                            {if ((time() - strtotime($vo['create_time'])) < 86400*7)}
+                            <img src="/static/sms/images/new.png" height="25px;" style="margin-top: -2px">
+                            {/if}
+                            <a href="/receive-sms-online/{$vo.country.en_title | strtolower}-phone-number.html">
+                            <img class="guoqi" src="/static/sms/images/guoqi/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.png"
+                                 alt="{$vo.country.en_title}{$Think.lang.common_number}">
+                            </a>
+                        </div>
+                        <div class="layui-card-body layuiadmin-card-list" style="text-align: center;">
+                            <p class="layuiadmin-big-font card-phone" lang="{$vo.warehouse_id}"
+                               title="{$Think.lang.phone_main_click}">
+                                <a href="/receive-sms-online/{$vo.country.en_title | strtolower}-phone-number-{$vo.uid}.html" class="clickA" target="_self"><span class="country-bh"><img src="/static/phone/{$vo['uid']}.png"></a>
+                            </p>
+                            <p>
+                                &nbsp;
+                                <span class="layuiadmin-span-color" style="margin-top:15px;"> <span class="copy" id="{$vo.uid}" title="{$Think.lang.phone_main_copy_title}"><img height="20px" src="/static/sms/images/copy.png"></span></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+                {/volist}
+                {else /}
+                <div class="none"><i class="layui-icon layui-icon-face-surprised"></i> {$Think.lang.common_empty_data}</div>
+                {/if}
+            </div>
+        </div>
+             <div class="page" style="text-align: center">
+                {$page|raw}
+            </div>
+    </div>
+    <div style="text-align: center;margin-top:10px;">
+    	{if $Think.server.REQUEST_URI == '/'}
+			{include file="../application/template/adsense/index_banner_bottom.html" /}
+		{elseif $Think.server.REQUEST_URI == '/receive-sms-online/upcoming-phone-number.html'}
+            {include file="../application/template/adsense/upcoming_banner.html" /}
+		{else /}
+			{include file="../application/template/adsense/phone_banner_bottom.html" /}
+		{/if}
+	</div>
+	<script>
+    $(document).ready(function(){
+        var phone = {:json_encode($js_data)};
+        var length = Object.keys(phone).length;
+        console.log(length)
+        for(var i = 0; i < length; i++){
+            console.log(i)
+            $("#" + phone[i]['uid']).attr({"data-clipboard-text" : phone[i]['phone_num']})
+        }
+    })
+    </script>
+    {include file="../application/mys/view/foot.html" /}

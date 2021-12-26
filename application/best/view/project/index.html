@@ -1,0 +1,70 @@
+{include file="../application/mys/view/header.html" title="<?php echo $project_heads['title'];?>" description="<?php echo $project_heads['description'];?>" keywords="<?php echo $project_heads['keywords'];?>" rel_url="<?php echo $rel_url?>" /}
+<div class="info-top">
+    <div class="info-top-h1"><h1><?php echo $project_heads['info_top_h1'];?></h1></div>
+    <div class="info-top-h4"><h4><?php echo $project_heads['info_top_h4'];?></h4></div>
+</div>
+{include file="../application/template/adsense/country_banner_top.html" /}
+<div class="main" style="margin-top:10px;">
+    <div class="layui-row">
+        Popular project：
+        {volist name = "recommend" id = "re"}
+        <a href="/receive-sms-from/{$re}" style="margin-right: 2px;">Receive SMS From {$re}</a>
+        {/volist}
+        <table class="layui-table" lay-even="" lay-skin="row" lay-size="lg" style="margin-top: 0;">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">Project</th>
+                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">{$Think.lang.message_table_1}</th>
+                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">{$Think.lang.message_table_2}</th>
+                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">{$Think.lang.message_table_3}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {if !empty($data)}
+            {volist name="data" id="vo"}
+            {if $i == 3}
+            <tr>
+                <td colspan="4" style="text-align:center;">
+                    {include file="../application/template/adsense/message_insider_top.html" /}
+                </td>
+            </tr>
+            {elseif $i == 11 /}
+            <tr>
+                <td colspan="4" style="text-align:center;">
+                    {include file="../application/template/adsense/message_matched.html" /}
+                </td>
+            </tr>
+            {else /}
+            <tr>
+               <td style="text-align:center;"><a href="/receive-sms-from/{$vo.url}">{$vo.url}</a></td>
+                <td style="text-align:center;"><a href="/receive-sms-online/{$vo.en_title | strtolower}-phone-number-{$vo.uid}.html">{$vo.uid}</a></td>
+                <td style="word-break:break-word;">{$vo.smsContent}</td>
+                <td style="text-align: center">...</td>
+            </tr>
+            {/if}
+            {/volist}
+            {else /}
+            <tr>
+                <td colspan="4" style="text-align:center;">
+                    <div class="none"><i class="layui-icon layui-icon-face-surprised"></i> {$Think.lang.common_empty_data}</div>
+                </td>
+            </tr>
+            {/if}
+            </tbody>
+        </table>
+        <div style="text-align: center">
+            {include file="../application/template/adsense/message_banner_bottom.html" /}
+        </div>
+    </div>
+</div>
+</div>
+<div style="text-align: center;margin-top:10px;">
+    {include file="../application/template/adsense/country_banner_bottom.html" /}
+</div>
+{include file="../application/mys/view/foot.html" /}

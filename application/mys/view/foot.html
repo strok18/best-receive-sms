@@ -1,0 +1,251 @@
+	<div id="foot-null" class="foot-null"></div>
+	<div class="adslot_mobile_bottom_matched">
+	    {include file="../application/template/adsense/mobile_bottom_matched.html" /}
+	</div>
+    <div id="foot" class="foot" style="margin-bottom: 60px">
+        <p class="">Copyright © 2021 <a class="foot-link" href="{$Request.domain}">{$Think.lang.foot_link1}</a> <a class="foot-link" href="{$Request.domain}">{$Think.lang.foot_link2}</a><a class="foot-link" href="{$Request.domain}"> {$Think.lang.foot_link3}</a><a class="foot-link" href="https://mytempsms.com" target="_blank"> receive sms online</a> <a class="foot-link" href="/receive-sms-online/upcoming-phone-number.html">Upcoming</a> {include file="../application/mys/view/domain.html" /}
+        </p>
+    </div>
+    <div class="main-right">
+		{include file="../application/template/adsense/web_right.html" /}
+    </div>
+    <div class="main-left">
+        {include file="../application/template/adsense/web_left.html" /}
+    </div>
+    <div class="main-bottom-center">
+        {include file="../application/template/adsense/web_bottom.html" /}
+    </div>
+</div>
+
+	</body>
+<!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5224126064747013" crossorigin="anonymous"></script>-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-207169520-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-207169520-1');
+</script>
+
+<script src="/static/sms/js/clipboard.js"></script>
+<script src="/static/sms/nav/jquery.okayNav-min.js.js?version=1.12"></script>
+<script src="https://recaptcha.net/recaptcha/api.js?render=6Lf71VQcAAAAAG1lsIdsb3aeTivSf_rkKUKaCu7V"></script>
+<script type="text/javascript">
+    var navigation = $('#nav-main').okayNav({
+        swipe_enabled: false,
+    });
+</script>
+
+    <script>
+		//nav link current
+		let get_region = window.location.pathname
+		if(get_region == '/' || get_region == '/mail.html'){
+			let regExp = /([a-zA-Z]+)/
+			link_title = regExp.exec(get_region)
+			if(link_title){
+			   link_title = link_title[1]
+			   $('#' + link_title).addClass('link-hr') 
+			}
+		}else{
+		    let regExp = /\/receive-sms-online\/([a-zA-Z]+)/
+			link_title = regExp.exec(get_region)
+			//console.log(link_title)
+			link_title = link_title[1]
+			$('#' + link_title).addClass('link-hr')
+		}
+		
+    //copy
+    $('.copy').click(function (e) {
+        var clipboard = new Clipboard('.copy')
+        clipboard.on('success', function (e) {
+            layer.msg('{$Think.lang.foot_copy} ' + e.text + ' {$Think.lang.foot_copy_success}', {icon: 1})
+        })
+        clipboard.on('error', function (e) {
+            layer.msg('{$Think.lang.foot_copy} ' + e.text + ' {$Think.lang.foot_copy_failed}', {icon: 2})
+        })
+    })
+
+    $('.clickA').click(function (e) {
+        if(window.matchMedia("(min-width: 767px)").matches){
+            layer.msg('{$Think.lang.foot_alert_title}', {
+            	time: 0,
+				icon: 16,
+				shade: 0.05
+				})
+        }
+    })
+  
+    //vertical
+    var win_width =  $(window).width()
+/*    if (win_width < 800){
+        $('.main-right').width(0);
+        $('.main-left').width(0);
+    }*/
+    if (win_width > 772 && win_width < 990){
+        $('.main-right').width((win_width - 772)/2);
+        $('.main-left').width(((win_width - 772)/2)-60);
+    }
+    if (win_width > 992 && win_width < 1200){
+        $('.main-right').width((win_width - 992)/2);
+        $('.main-left').width(((win_width - 992)/2)-60);
+    }
+    if (win_width > 1200 && win_width < 1996){
+        $('.main-right').width((win_width - 1200)/2);
+        $('.main-left').width(((win_width - 1200)/2)-60);
+    }
+    if (win_width > 1996){
+        $('.main-right').width((win_width - 1200)/2);
+        $('.main-left').width(336);
+        $('.main-left').height(280);
+    }
+    
+    if (win_width < 500){
+        var feedback_top = 30;
+    }else {
+        var feedback_top = (document.documentElement.clientHeight/2)-157;
+    }
+    
+    	//top
+        layui.use('util', function(){
+        var util = layui.util;
+        util.fixbar({
+            bar1: true
+            ,click: function(type){
+            	if (type === 'bar1'){
+					layer.prompt({
+						formType: 2,
+						value: '',
+						title: '{$Think.lang.feedback_title}',
+						offset: feedback_top,
+					}, function(value, index, elem){
+						$.ajax({
+							url: '/api/feedback',
+							type: 'post',
+							data: {content: value, email: $("#email").val(), type: 1},
+							beforeSend: function(){
+								var index = layer.load(2);
+							},
+							success: function (e) {
+								if (e.error_code == 0) {
+									layer.msg(e.msg , {icon: 1})
+									layer.close(index);
+								} else {
+									layer.msg(e.msg, {icon: 2})
+								}
+							},
+							complete: function () {
+								layer.closeAll('loading');
+							}
+						})
+					})
+					$(".layui-layer-input").attr("placeholder", "{$Think.lang.feedback_placeholder}")
+					$(".layui-layer-content").append('<div style="margin: 10px auto 0px;width: 300px;"><input type="text" id="email" name="email" lay-verify="email" placeholder="{$Think.lang.feedback_email}" class="layui-input"></div>')
+					$(".layui-layer-btn0").css({"border-color":"#4A5E77", "background-color":"#4A5E77", "color":"#FFF"})
+				}
+            }
+        })
+    })
+		//height
+		var windows_height = $(window).height()
+		var full_height = $(".foot-null").offset().top
+		var height = windows_height - full_height - 100
+		if (height > 0){
+			$('.foot-null').height(height)
+		}
+
+    //
+    grecaptcha.ready(function() {
+        var renderKey = '6Lf71VQcAAAAAG1lsIdsb3aeTivSf_rkKUKaCu7V'
+        grecaptcha.execute(renderKey, {action: 'meessage'}).then(function(token) {
+            $.ajax({
+                url: "{:url('/recaptcha')}",
+                type: 'post',
+                data: {token:token},
+                success: function (e) {
+                    //console.log(e)
+                }
+            })
+        })
+    })
+	function subscription_mailbox (){
+    	layer.prompt({
+    		formType: 3,
+    		value: '',
+    		title: '{$Think.lang.mailbox_title}',
+    		btn: ['Confirm','Send Test', 'Cancel'],
+    		btn2: function(index){
+    		    let value = $('#layui-layer'+index + " .layui-layer-input").val()
+                if(!value){
+                    layer.msg('Email Can not be empty')
+                    return false
+                }
+                if(!check_email(value)){
+        	        layer.msg('Email format error', {icon: 2})
+        	        return false
+        	    }
+        	    $.ajax({
+        			url: '/api/sendTestmail',
+        			type: 'post',
+        			data: {mailbox: value},
+        			beforeSend: function(){
+        				var index = layer.load(2);
+        			},
+        			success: function (e) {
+        				if (e.error_code == 0) {
+        					layer.alert(e.msg, {
+                              icon: 1,
+                              'title': 'Sent Success',
+                              btn:['Confirm']
+                            })
+        				} else {
+        					layer.msg(e.msg, {icon: 2})
+        				}
+        			},
+        			complete: function () {
+        				layer.closeAll('loading');
+        			}
+        		})
+    		},
+    		offset: feedback_top
+    	}, function(value, index, elem){
+    	    if(!check_email(value)){
+    	        layer.msg('Email format error', {icon: 2})
+    	        return false
+    	    }
+    		$.ajax({
+    			url: '/api/mailbox',
+    			type: 'post',
+    			data: {mailbox: value},
+    			beforeSend: function(){
+    				var index = layer.load(2);
+    			},
+    			success: function (e) {
+    				if (e.error_code == 0) {
+    					layer.msg(e.msg , {icon: 1})
+    					//layer.close(index);
+    				} else {
+    					layer.msg(e.msg, {icon: 2})
+    				}
+    			},
+    			complete: function () {
+    				layer.closeAll('loading');
+    			}
+    		})
+    
+    	})
+    	$(".layui-layer-content").prepend('<div style="text-align: center;margin-bottom: 10px;"><img src="/static/sms/images/mailbox.png" width="90px" height="90px" /></div>')
+    	$(".layui-layer-content").append('<p style="color: #FF0000;margin: 10px auto 0px;width:230px;">{$Think.lang.mailbox_explain}</p>')
+    	$(".layui-layer-btn0").css({"border-color":"#4A5E77", "background-color":"#4A5E77", "color":"#FFF"})
+    }
+
+    function check_email(email){
+        if(!/^[0-9a-zA-Z_.-]+[@][0-9a-zA-Z_.-]+([.][a-zA-Z]+){1,2}$/.test(email)){
+          return false
+        }else{
+          return true
+        }
+    }
+</script>
+	<script type="text/javascript" src="/static/sms/js/addthis_widget.js#pubid=ra-61398470708911c6" async></script>
+</html>
