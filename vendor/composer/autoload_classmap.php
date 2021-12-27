@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Ip2Region' => $vendorDir . '/zoujingli/ip2region/Ip2Region.php',
     'JonnyW\\PhantomJs\\Cache\\CacheInterface' => $vendorDir . '/jonnyw/php-phantomjs/src/JonnyW/PhantomJs/Cache/CacheInterface.php',
     'JonnyW\\PhantomJs\\Cache\\FileCache' => $vendorDir . '/jonnyw/php-phantomjs/src/JonnyW/PhantomJs/Cache/FileCache.php',

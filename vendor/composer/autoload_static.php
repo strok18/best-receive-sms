@@ -156,6 +156,7 @@ class ComposerStaticInit940f4b90fca05e7eb2f6931b62fccda9
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Ip2Region' => __DIR__ . '/..' . '/zoujingli/ip2region/Ip2Region.php',
         'JonnyW\\PhantomJs\\Cache\\CacheInterface' => __DIR__ . '/..' . '/jonnyw/php-phantomjs/src/JonnyW/PhantomJs/Cache/CacheInterface.php',
         'JonnyW\\PhantomJs\\Cache\\FileCache' => __DIR__ . '/..' . '/jonnyw/php-phantomjs/src/JonnyW/PhantomJs/Cache/FileCache.php',
