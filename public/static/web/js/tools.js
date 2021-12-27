@@ -109,11 +109,16 @@ function modal(body,params = {}, confirmCallback, closeCallback){
 }
 
 //loading
-function loading(type = true){
+function loading(type = true, shadeType = true){
 	let loading = document.getElementById('loading');
+	let shade = document.getElementById('shade');
 	if (type){
 		loading.classList.remove("d-none");
+		if (shadeType){
+			shade.classList.remove("d-none");
+		}
 	}else {
 		loading.classList.add("d-none");
+		shade.classList.add("d-none");
 	}
 }

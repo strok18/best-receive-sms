@@ -21,7 +21,7 @@
                 <div class="col-sm-12">
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="bg-white">
-                            <p class="card-text little-font fw-bold fs-6 text-start">TEMP EMAIL</p>
+                            <p class="card-text little-font fw-bold fs-6 text-start">TEMPORARY EMAIL</p>
                         </div>
                         <div class="card-body">
                             <div class="email email-font fw-bold cursor copy" id="email" onclick="copy()"></div>
@@ -30,7 +30,7 @@
                                     <div class="col-sm-4">
                                         <div class="form-floating mb-3 text-end">
                                             <input class="form-control" id="floatingInput" type="email" name="email_name">
-                                            <label for="floatingInput">Email address</label>
+                                            <label for="floatingInput">Email User name</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -54,8 +54,9 @@
                                 <button class="btn btn-primary-light text-light mt-1" id="forwarding_email" onclick="mail_transpond()"
                                         type="button">FORWARDING
                                 </button>
-                                <button class="btn btn-primary-light text-light mt-1" id="receive_email" onclick="mail_list()"
-                                        type="button">RECEIVE
+                                <button class="btn btn-primary-light text-light mt-1" id="receive_email" onclick="mail_list()" type="button">
+                                    <span id="receive_email_loading" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    <span>RECEIVE</span>
                                 </button>
                             </div>
                         </div>
@@ -160,8 +161,8 @@
                                             </svg>
                                         </div>
                                         <div class="col-sm-5">
-                                            <p class="mb-0">深蓝</p>
-                                            <p>`+email_array['from']+`</p>
+                                            <p class="mb-0">`+split_email(email_array['from']).name+`</p>
+                                            <p>`+split_email(email_array['from']).email+`</p>
                                         </div>
                                         <div class="email-head-right col-sm-6 text-end little-font"
                                              style="line-height: 50px;">
@@ -202,6 +203,7 @@
             clearTimeout(auto)
             auto = undefined
             $('#receive_email').removeAttr('disabled')
+            $("#receive_email_loading").addClass('d-none')
             document.cookie = email_number_name + "=" + number
             if (localStorage.getItem('temp_email_notify') !== 'deny') {
                 mail_notify('Receive new mail', body)
@@ -218,10 +220,8 @@
             toast('{$Think.lang.mail_alert_apply}', {type: 'danger'})
             return
         }
-        $("button[id='receive_email']").attr('disabled', "disabled")
-        $("td[id='mail-td-list']").attr('onclick', "")
-        //更换图标//layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop
-        $('#get-email-icon').attr('class', 'layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop')
+        $("#receive_email").attr('disabled', "disabled")
+        $("#receive_email_loading").removeClass('d-none')
         mail_get()
         if (typeof (auto) === 'undefined') {
             auto = setInterval(mail_get, 8000)
@@ -246,9 +246,9 @@
                     for (let i = 0; i < email_number; i++) {
                         let time = data[i]['time'] + '000';
                         mails += `<div class="row cursor" onclick="mail_open(`+i+`)">
-                                      <div class="col-sm-3 text-start">`+data[i]['from']+`</div>
+                                      <div class="col-sm-3 text-start text-truncate">`+split_email(data[i]['from']).emails+`</div>
                                       <div class="col-sm-6 text-start text-truncate">`+data[i]['subject']+`</div>
-                                      <div class="col-sm-3 text-start">`+new Date(Number(time))+`</div>
+                                      <div class="col-sm-3 text-start text-truncate">`+new Date(Number(time))+`</div>
                                       <hr class="mt-2" />
                                    </div>`;
                     }
@@ -256,7 +256,7 @@
                     localStorage.setItem('email_array_' + email, JSON.stringify(data))
                     $("#mail_list").html(mails)
                     $("#empty").addClass('d-none')
-                    toast('Email application successful');
+                    //toast('Email application successful');
                 } else if (e.error_code == 1) {
                     toast('{$Think.lang.mail_alert_no_mail}', {type: 'secondary'})
                 } else if (e.error_code == 4003) {
@@ -269,8 +269,7 @@
                 num++
                 click(3)
                 if (num > 30) {
-                    layer.msg('Too many requests, automatic suspension')
-                    toast('Too many requests, automatic suspension', {type: 'secondary'})
+                    toast('Too many requests, automatic suspension', {type: 'danger', isClose: false})
                     clearTimeout(auto)
                     auto = undefined
                     $('#receive_email').removeAttr('disabled')
@@ -278,6 +277,12 @@
                 loading(false);
             }
         })
+    }
+
+    function split_email(emailString){
+        let email = emailString.substring(emailString.indexOf("<") + 1, emailString.indexOf(">"))
+        let name = emailString.substring(0,emailString.indexOf("<"));
+        return {email: email, name: name, emails: name + '(' +email + ')'};
     }
 
     function mail_apply(e) {
@@ -301,7 +306,6 @@
                     loading();
                 },
                 success: function (e) {
-                    console.log(e)
                     if (e.error_code == 0) {
                         $("#email").text(e.data)
                         $("#email").attr('data-clipboard-text', e.data)
@@ -385,6 +389,7 @@
                     localStorage.removeItem('transpond_email')
                     $("#mail_list").html('')
                     $("#empty").removeClass('d-none')
+                    $('#receive_email').removeAttr('disabled')
                     toast(email + '{$Think.lang.mail_alert_delete_success}')
                 } else {
                     toast(email + '{$Think.lang.mail_alert_delete_failed}', {type: 'danger'})

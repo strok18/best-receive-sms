@@ -29,7 +29,7 @@ class CountryModel extends BaseModel
         $result = self::where('show', '=', 1)
             ->order('sort', 'desc')
             ->cache(3600)
-            ->paginate(12);
+            ->paginate(8);
         return $result;
     }
     
