@@ -21,11 +21,11 @@
                 <div class="col-sm-6">
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="bg-white">
-                            <a href="{$Request.domain}/receive-sms-online/country/{$vo['en_title'] | strtolower}">
+                            <a href="{$Request.domain}/receive-sms-from-{$vo['en_title'] | strtolower}">
                             <p class="card-text little-font fw-bold fs-6 text-uppercase">{$vo.country_title}</p>
                             </a>
                         </div>
-                        <a href="{$Request.domain}/receive-sms-online/country/{$vo['en_title'] | strtolower}">
+                        <a href="{$Request.domain}/receive-sms-from-{$vo['en_title'] | strtolower}">
                         <div class="card-body">
                             <img class="w-50" height="170" src="/static/web/images/flag/<?php if($vo['id'] == 11){echo 'Canada';}else{echo $vo['bh'];};?>.svg" alt="{$vo.country_image_title}">
                             <p class="card-text little-font mt-2 text-uppercase">({$vo['en_title']} - <mark>{$vo['phone_number']}</mark> Phone Number IN TOTAL.)</p>

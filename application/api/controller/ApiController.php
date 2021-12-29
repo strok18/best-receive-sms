@@ -282,6 +282,7 @@ class ApiController extends Controller
         for ($i = 1; $i < $number+1; $i++) {
             $redis->zAdd($this->messageKey . $phone_num, $redis->getRedisSet($this->messageKey . $phone_num . '_score'), serialize($data[$number-$i]));
         }
+        $redis->hIncrby(Config::get('cache.prefix') . 'phone_receive', $phone_num);
         //如果集合内数据超过50条,就把该条数据加入队列入库处理
         $number = $redis->checkZset($this->messageKey . $phone_num);
 

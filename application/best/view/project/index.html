@@ -21,12 +21,9 @@
                 <div class="col-sm-12">
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="card-body pb-0 text-start">
-									<span class="badge bg-primary link-white"><a href="#"
-                                                                                 title="receive sms from tikitok">google</a></span>
-                            <span class="badge bg-danger link-white"><a href="#"
-                                                                        title="receive sms from tikitok">telegram</a></span>
-                            <span class="badge bg-warning link-white"><a href="#"
-                                                                         title="receive sms from tikitok">tikitok</a></span>
+                            {volist name = "recommend" id = "re"}
+									<span class="badge bg-danger link-white"><a href="/receive-sms-from-{$re}" title="receive sms from tikitok">{$re}</a></span>
+                            {/volist}
                         </div>
                         <div class="card-body">
                             <div class="d-none">
@@ -60,31 +57,6 @@
                     </div>
                 </div>
                 <!-- Phone list end -->
-                <!-- Page start -->
-                <div class="container">
-                    <div class="row">
-                        <div class="page">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-                <!-- Page end-->
             </div>
         </div>
     </div>

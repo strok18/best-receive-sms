@@ -203,6 +203,136 @@ class QueueController extends Controller
         }
         return $ul;
     }
+
+    public function generateSMSHistoryPage($url, $current_page, $page_count = 10){
+        if ($page_count < 7){
+            $left = $current_page - 1;
+            if ($left < 1){
+                $left = 1;
+            }
+            $ul = '<ul class="pagination justify-content-center"><li class="page-item"><a class="page-link" href="/'.$url.'/'.$left.'">&laquo;</a></li>';
+            for ($i = 1; $i < $page_count + 1; $i++){
+                //当前页
+                if ($current_page == $i){
+                    $ul .= '<li class="page-item active"><span class="page-link">' . $current_page . '</span></li>';
+                }else{
+                    $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
+                }
+            }
+            $right = $current_page + 1;
+            if ($current_page == $page_count){
+                $right = $page_count;
+            }
+            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$right.'">&raquo;</a></li></ul>';
+            return $ul;
+        }else{
+            $left = $current_page - 1;
+            if ($left < 1){
+                $left = 1;
+            }
+            $ul = '<ul class="pagination justify-content-center"><li class="page-item"><a class="page-link" href="/'.$url.'/'.$left.'">&laquo;</a></li>';
+
+            for ($i = 1; $i < 5; $i++){
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
+            }
+            $ul .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.($page_count-1).'">'.($page_count-1).'</a></li>';
+            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.($page_count).'">'.($page_count).'</a></li>';
+
+            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$page_count.'">&raquo;</a></li></ul>';
+            return $ul;
+        }
+    }
+
+    //page页定制生成
+    public function generatePageUlsBootstrap($url, $current_page, $page_count = 10){
+        if ($page_count < 12){
+            $left = $current_page - 1;
+            if ($left < 1){
+                $left = 1;
+            }
+            $ul = '<ul class="pagination justify-content-center"><li class="page-item"><a class="page-link" href="/'.$url.'/'.$left.'.html">&laquo;</a></li>';
+            for ($i = 1; $i < $page_count + 1; $i++){
+                //当前页
+                if ($current_page == $i){
+                    $ul .= '<li class="page-item active"><span class="page-link">' . $current_page . '</span></li>';
+                }else{
+                    $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$i.'.html">'.$i.'</a></li>';
+                }
+            }
+            $right = $current_page + 1;
+            if ($current_page == $page_count){
+                $right = $page_count;
+            }
+            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$right.'.html">&raquo;</a></li></ul>';
+            return $ul;
+        }else{
+            //判断上一页和下一页
+            $current_left = $current_page - 1;
+            $current_right = $current_page + 1;
+            if ($current_left < 1){
+                $current_left = 1;
+            }
+            if ($current_page == $page_count){
+                $current_right = $current_page;
+            }
+            $ul_str = '<ul class="pagination justify-content-center"><li class="page-item"><a class="page-link" href="/'.$url.'/'.$current_left.'.html">&laquo;</a></li>';
+            $ul_end = '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$current_right.'.html">&raquo;</a></li></ul>';
+            $ul = '';
+            $last = $page_count-1;
+            if ($current_page < 7){
+                //第一种情况
+                for ($i = 1; $i < 9; $i++){
+                    //当前页
+                    if ($current_page == $i){
+                        $ul .= '<li class="page-item active"><span class="page-link">' . $current_page . '</span></li>';
+                    }else{
+                        $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$i.'.html">'.$i.'</a></li>';
+                    }
+                }
+                $ul .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$last.'.html">'.$last.'</a></li>';
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$page_count.'.html">'.$page_count.'</a></li>';
+                return $ul_str . $ul . $ul_end;
+            }elseif($current_page < ($page_count - 5)){
+                //第三种情况
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/1.html">1</a></li>';
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/2.html">2</a></li>';
+                $ul .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+
+                for ($i = 0; $i < 7; $i++){
+                    //当前页
+                    if ($i == 3){
+                        $ul .= '<li class="page-item active"><span class="page-link bg-primary border-primary">' . $current_page . '</span></li>';
+                    }else{
+                        $page = $current_page - (3 - $i);
+                        $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$page.'.html">'.$page.'</a></li>';
+                    }
+                }
+                $ul .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$last.'.html">'.$last.'</a></li>';
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$page_count.'.html">'.$page_count.'</a></li>';
+                return $ul_str . $ul .$ul_end;
+            }else{
+                //第三种情况
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/1.html">1</a></li>';
+                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/2.html">2</a></li>';
+                $ul .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
+
+                for ($i = 0; $i < 9; $i++){
+                    //当前页
+                    $page = $page_count - (8 - $i);
+                    if ($current_page == $page){
+                        $ul .= '<li class="page-item active"><span class="page-link bg-primary border-primary">' . $current_page . '</span></li>';
+                    }else{
+                        $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$page.'.html">'.$page.'</a></li>';
+                    }
+                }
+                return $ul_str . $ul .$ul_end;
+            }
+
+        }
+    }
     
     //page页定制生成
     public function generatePageUls($url, $current_page, $page_count = 10){

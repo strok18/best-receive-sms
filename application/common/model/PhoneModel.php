@@ -444,7 +444,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/phone-number/[PAGE]"
+                    'path'=>Request::domain()."/receive-sms-phone-number/[PAGE]"
                 ]);
         }elseif($country_id == 'upcoming'){
             $result = self::with('country')
@@ -453,7 +453,7 @@ class PhoneModel extends BaseModel
                 ->order('sort', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/[PAGE]"
+                    'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."-/[PAGE]"
                 ]);
             //trace($result, 'notice');    
             if(count($result) < 1){
@@ -464,7 +464,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(50, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/[PAGE]"
+                    'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."-/[PAGE]"
                 ]);
             }
         }else{
@@ -478,7 +478,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/[PAGE]"
+                    'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."/[PAGE]"
                 ]);
         }
         return $result;
@@ -535,6 +535,38 @@ class PhoneModel extends BaseModel
 
     //重构，根据uid查询号码详情，并缓存
     public function getPhoneDetailByUID($uid){
+        $phone_detail_key = Config::get('cache.prefix') . 'phone_detail_' . $uid;
+        //$result = Cache::get($phone_detail_key);
+        $redis = new RedisController('sync');
+        $result = $redis->redisCheck($phone_detail_key);
+        if ($result){
+            return unserialize($result);
+        }else{
+            $result = self::with(['country', 'warehouse'])
+                ->where('uid', '=', $uid)
+                ->where('show', '=', 1)
+                ->find();
+            if($result){
+                //(new RedisController('master'))->redisSetCache($phone_detail_key, serialize($result->toArray()), 6*3600);
+                $redis->redisSetCache($phone_detail_key, serialize($result->toArray()), 6*3600);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * 重构，根据phone查询号码详情，并缓存
+     *
+     * @param $type uid id phone
+     * @param $value
+     * @return PhoneModel|mixed
+     */
+    public function getPhoneDetail($type, $value){
+        if ($type == 'uid'){
+            $uid = $type;
+        }else{
+            //获取uid
+        }
         $phone_detail_key = Config::get('cache.prefix') . 'phone_detail_' . $uid;
         //$result = Cache::get($phone_detail_key);
         $redis = new RedisController('sync');

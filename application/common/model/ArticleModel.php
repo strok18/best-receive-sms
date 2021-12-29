@@ -45,7 +45,7 @@ class ArticleModel extends BaseModel
             ->order('id', 'desc')
             ->paginate(8, false, [
                 'page'=>Request::param('page')?:1,
-                'path'=>Request::domain()."/receive-sms-online/blog/page[PAGE]"
+                'path'=>Request::domain()."/receive-sms-blog/page[PAGE]"
             ]);
         return $result;
     }

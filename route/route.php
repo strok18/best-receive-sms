@@ -54,21 +54,21 @@ if ($domain == 'best'){
         //country跳转
         Route::get('/', 'best/Phone/index');
         Route::get('index', 'best/Phone/index');
-        Route::get('receive-sms-online/', 'best/Phone/index');
-        Route::get('receive-sms-online/blog/page:page', 'best/Article/index');
-        Route::get('receive-sms-online/blog/:id', 'best/Article/detail');
-        Route::get('receive-sms-online/blog', 'best/Article/index');
+        Route::get('receive-sms-blog/page:page', 'best/Article/index');
+        Route::get('receive-sms-blog/:id', 'best/Article/detail');
+        Route::get('receive-sms-blog', 'best/Article/index');
 
 
         Route::get('temporary-email', 'best/Mail/index');
 
-        Route::get('receive-sms-online/:country-phone-number-:phone_num/:page', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'\d{5,}']);
-        Route::get('receive-sms-online/message/:phone_num', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'[a-z0-9]{7,16}']);
-        Route::get('receive-sms-online/country/:country/:page', 'best/Phone/index')->pattern(['country'=>$countrys, 'page'=>'\d{0,3}']);
-        Route::get('receive-sms-online/country/:country', 'best/Phone/index')->pattern(['country'=>$countrys]);
-        Route::get('receive-sms-online/country', 'best/Country/index');
-        Route::get('receive-sms-online/:country-phone-number/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
-        Route::get('receive-sms-online/phone-number/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
+        Route::get('receive-sms-:country-phone-number/:phone_num/:page', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'\d{5,}']);
+        Route::get('receive-sms-:country-phone-number/:phone_num', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'[a-z0-9]{7,16}']);
+        //首页Page
+        Route::get('receive-sms-phone-number/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
+        Route::get('receive-sms-from-:country/:page', 'best/Phone/index')->pattern(['country'=>$countrys, 'page'=>'\d{0,3}']);
+        Route::get('receive-sms-from-:country', 'best/Phone/index')->pattern(['country'=>$countrys]);
+        Route::get('receive-sms-from-country', 'best/Country/index');
+
         Route::get('receive-sms-from-:project', 'best/Project/index');
         Route::get('sitemap', 'best/Phone/sitemap');
         Route::post('random', 'best/Message/random');

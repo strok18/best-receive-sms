@@ -62,8 +62,22 @@ class CollectionMsgModel extends BaseModel
             ]);
         return $result;
     }
-    
-    //新加
+
+    /**
+     * 12-29重构 获取历史短信记录
+     * @param $phone_id
+     * @param $total 显示的总数，用以确定分页数量
+     */
+    public function getHistorySms($phone_id, $phone_num, $total_num){
+        return self::where('phone_id', '=', $phone_id)
+            ->order('id', 'desc')
+            //->cache(86400)
+            ->paginate(20, (int)$total_num, [
+                'page'=>Request::param('page')?:1,
+                'path'=>Request::domain()."/receive-sms-".Request::param('country')."-phone-number/".$phone_num."/[PAGE]"
+            ]);
+    }
+
     public function getMessagePage($phone_id, $page){
         $result = self::where('phone_id', '=', $phone_id)
             ->order('id', 'desc')

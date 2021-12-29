@@ -37,12 +37,12 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <a href="{$Request.domain}/receive-sms-online/country/{$vo.country.en_title | strtolower}">
+                            <a href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">
                                 <img class="w-50" height="170" src="/static/web/images/flag/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.svg"
                                      alt="{$vo['country_title']}{$Think.lang.common_number}">
                             </a>
                             <h3 class="card-title number-font" style="margin-top: 5px;">
-                                <a href="{$Request.domain}/receive-sms-online/message/{$vo.uid}">
+                                <a href="{$Request.domain}/receive-sms-{$vo.country.en_title | strtolower}-phone-number/{$vo.uid}">
                                     <span class="fs-4">+{$vo.bh_encryption | raw}</span>
                                     <span>{$vo.phone_encryption | raw}</span>
                                 </a>

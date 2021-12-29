@@ -25,7 +25,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text number-font fs-2">
-                                <a href="{$Request.domain}/receive-sms-online/country/{$phone_info['country']['en_title'] | strtolower}">
+                                <a href="{$Request.domain}/receive-sms-from-{$phone_info['country']['en_title'] | strtolower}">
                                     <img src="/static/web/images/flag/{$phone_info['country']['bh']}.svg" width="8%" class="" alt="{$phone_info['country']['en_title']} phone number">
                                 </a>
                                 <span>
@@ -78,10 +78,6 @@
                     </div>
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="card-body">
-                            <div class="d-none">
-                                <img src="/static/web/images/empty-mail.svg">
-                                <p class="fw-bold">No emails yet</p>
-                            </div>
                             <table class="table table-striped table-hover text-start">
                                 <thead>
                                 <tr>
@@ -133,23 +129,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="page">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            {$page|raw}
                         </div>
                     </div>
                 </div>

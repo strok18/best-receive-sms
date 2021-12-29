@@ -50,7 +50,7 @@ class BreadCrumbController extends Controller
         $bread_crumb[0]['title'] = Lang::get('website_name');
         $bread_crumb[0]['url'] = '/';
         $bread_crumb[1]['title'] = $phone_info['country'][$this->lang_title] . ucwords(Lang::get('common_number'));
-        $bread_crumb[1]['url'] = '/receive-sms-online/country/' . strtolower($phone_info['country']['en_title']);
+        $bread_crumb[1]['url'] = '/receive-sms-from-' . strtolower($phone_info['country']['en_title']);
         /*if($phone_info['id'] > 1692){
             $uid = $phone_info['uid'];
         }else{
@@ -62,7 +62,7 @@ class BreadCrumbController extends Controller
             $bread_crumb[2]['url'] = '';
         }else{
             $bread_crumb[2]['title'] = $uid;
-            $bread_crumb[2]['url'] = '/receive-sms-online/' . strtolower($phone_info['country']['en_title']) . '-phone-number-'.$uid . '.html';
+            $bread_crumb[2]['url'] = '/receive-sms-' . strtolower($phone_info['country']['en_title']) . '-phone-number/'.$uid;
             $bread_crumb[3]['title'] = $page;
             $bread_crumb[3]['url'] = '';
         }

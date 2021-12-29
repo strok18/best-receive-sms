@@ -9,6 +9,7 @@ use app\common\controller\RedisController;
 use app\common\model\CollectionMsgModel;
 use app\common\model\PhoneModel;
 use think\facade\Cache;
+use think\facade\Config;
 use think\facade\Lang;
 use think\facade\Request;
 use think\facade\Validate;
@@ -60,7 +61,7 @@ class MessageController extends Controller
             //获取页面数据
             $pageData = $this->pageData($phone_num, $phone_info, $page);
             $this->assign('empty', '<div style="text-align: center;color: red;font-size: 50px;">NO DATA</div>');
-            
+
             $message_data = $pageData['result_sms'];
             foreach($pageData['result_sms'] as $key => $value){
                 if(is_array($pageData['result_sms'][$key])){
@@ -87,16 +88,19 @@ class MessageController extends Controller
         }
 
         $message_heads = $this->generateHeads($phone_info['uid'], $phone_info['country']);
+        $this->assign('empty', '<div><img src="/static/web/images/empty-mail.svg"><p class="fw-bold">NO MESSAGE DATA</p></div>');
         //面包屑
         $bread_crumb = (new BreadCrumbController())->MessagePageMys($phone_info, $page);
         $this->assign('bread_crumb', $bread_crumb);
         $this->assign('message_heads',$message_heads);
         $this->assign('page', $pageData['page_list']);
+
         $this->assign('data', $message_data);
         $this->assign('alt_title', Request::subDomain());
         $phone_info['phone_encryption'] = phoneEncryption((string)$phone_info['phone_num']);
         $phone_info['bh_encryption'] = phoneEncryption((string)$phone_info['country']['bh']);
         $this->assign('phone_info', $phone_info);
+
         return $this->fetch();
     }
 
@@ -112,7 +116,7 @@ class MessageController extends Controller
         $en_title = strtolower($phone_info['country']['en_title']);
         //号码上线天数，以便设置页数
         $phone_hour = $this->phoneOnlineHour($phone_info['create_time'], $phone_num);
-        $page_url = 'receive-sms-online/'.$en_title.'-phone-number-'.$phone_info['uid'];
+        $page_url = 'receive-sms-'.$en_title.'-phone-number/' . $phone_info['uid'];
         if (empty($page)){
             $result_sms = (new ApiController())->getSMS($phone_num);
             $result_sms = json_decode($result_sms->getContent(), true);
@@ -137,24 +141,20 @@ class MessageController extends Controller
                 if ($phone_hour <= 0){
                     $page_list = '';
                 }elseif($phone_hour <= 100){
-                    $page_list = $queue_controller->generatePageUls($page_url, 0, $phone_hour);
+                    $page_list = $queue_controller->generateSMSHistoryPage($page_url, 0, $phone_hour);
                 }else{
-                    $page_list = $queue_controller->generatePageUls($page_url, 0, 100);
+                    $page_list = $queue_controller->generateSMSHistoryPage($page_url, 0, 100);
                 }
             }else{
                 $page_list = '';
             }
 
         }else{
-            $message_data = (new CollectionMsgModel())->getMessagePage($phone_info['id'], $page);
-            if ($phone_hour <= 0){
-                $page_list = '';
-            }elseif($phone_hour <= 100){
-                $page_list = $queue_controller->generatePageUls($page_url, $page, $phone_hour);
-            }else{
-                $page_list = $queue_controller->generatePageUls($page_url, $page, 100);
-            }
-            $result_sms = $message_data->toArray();
+            $phone_receive_total = $this->getPhoneSmsTotal($phone_num);
+            $message_data = (new CollectionMsgModel())->getHistorySms($phone_info['id'], $phone_num, $phone_receive_total);
+            //dump($message_data);
+            $page_list = $message_data->render();
+            $result_sms = $message_data->toArray()['data'];
         }
 
         //广告设置
@@ -166,6 +166,16 @@ class MessageController extends Controller
         }*/
         return ['page_list'=>$page_list, 'result_sms'=>$result_sms];
     }
+
+    //获取号码总数
+    public function getPhoneSmsTotal($phone_num){
+        $redis = new RedisController('sync');
+        $receive_count = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_num);
+        if (!$receive_count){
+            $receive_count = 0;
+        }
+        return $receive_count;
+    }
     
     //号码上线时间
     public function phoneOnlineHour($time, $phone_num){
@@ -175,10 +185,10 @@ class MessageController extends Controller
         $hour = round((time() - $phone_date)/3600);*/
         //按接收条数确定页数
         $redis = new RedisController('sync');
-        $receive_count = $redis->hGet('phone_receive', $phone_num);
+        $receive_count = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_num);
         //以前的号码没有记录count值，如果参数为空，代表为老号码，返回100即可。
         if ($receive_count){
-            $page = round($receive_count / 20) - 4;
+            $page = round($receive_count / 20);
         }else{
             $page = 0;
         }
@@ -190,22 +200,6 @@ class MessageController extends Controller
         return preg_replace_callback('#s:(\d+):"(.*?)";#s',function($match){return 's:'.strlen($match[2]).':"'.$match[2].'";';},$str);
     }
 
-    /**
-     * 获取缓存短信的page列表
-     */
-    public function getPage($phone_num, $id){
-        $redis = new RedisController();
-        $redis_message_page = $redis->redisCheck('mytempsms_message_page_' . $phone_num);
-        if (!$redis_message_page){
-            $list = (new CollectionMsgModel())->messagePageMytempsms($id, $phone_num);
-            $page = $list->render();
-            //写入redis
-            $redis->setStringValue('mytempsms_message_page_' . $phone_num, $page);
-        }else{
-            $page = $redis_message_page;
-        }
-        return $page;
-    }
 
     /**
      * 返回头部title description keywords信息
@@ -223,32 +217,8 @@ class MessageController extends Controller
         $heads['info_top_h4'] = str_replace('[country]',$country[$country_title], Lang::get('message_info_top_h4'));
         return $heads;
     }
-
-        /**
-     * 获取message历史分页数据
-     */
-    public function getPageData($phone_num, $page){
-        $phone_info = (new PhoneModel())->getPhoneNum($phone_num);
-        $result = (new CollectionMsgModel())->getPageDataMytempsms($phone_info['id'], $phone_num);
-        $page = $result->render();
-        $result_data = $result->toArray();
-        $result = array();
-        for ($i = 0; $i < count($result_data['data']); $i++){
-            $msg_data = unserialize($result_data['data'][$i]['content']);
-            $result[$i]['smsDate'] = $msg_data['smsDate'];
-            //$result[$i]['PhoNum'] = $msg_data['PhoNum']; //smsonline部分号码没有存入PhoNum值
-            $result[$i]['smsNumber'] = $msg_data['smsNumber'];
-            $result[$i]['smsContent'] = $msg_data['smsContent'];
-        }
-        $message_heads = $this->generateHeads($phone_num, $phone_info['country'], Request::param('page'));
-        $this->assign('message_heads',$message_heads);
-        $this->assign('page', $page);
-        $this->assign('phone_info', $phone_info);
-        $this->assign('data', $result);
-        return $this->fetch('index');
-    }
     
-        //前台报告无法收到短信
+    //前台报告无法收到短信
     public function report(){
         $phone_num = input('post.phone_num');
         $validate = Validate::checkRule($phone_num, 'must|number|max:15|min:6');
@@ -278,7 +248,7 @@ class MessageController extends Controller
         if (!$phone_num){
             return show('Random Phone fail', '', 4000);
         }
-        return show('Random Phone success', Request::domain() . '/receive-sms-online/message/' . $phone_num);
+        return show('Random Phone success', Request::domain() . '/receive-sms-'.$phone_num_info['country']['en_title'].'-phone-number/' . $phone_num);
     }
 
 }

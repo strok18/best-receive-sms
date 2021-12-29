@@ -6,6 +6,7 @@ namespace app\best\controller;
 
 use app\common\controller\RedisController;
 use app\common\model\CollectionMsgModel;
+use think\facade\Config;
 use think\facade\Lang;
 use think\facade\Request;
 use think\Controller;
@@ -28,7 +29,8 @@ class ProjectController extends Controller
         }*/
         //获取推荐关键字
         $redis = new RedisController('sync');
-        $recommend = $redis->getSetAllValue('mytempsms_message_project_recommend');
+        $redis_key = Config::get('cache.prefix') . 'project_recommend';
+        $recommend = $redis->getSetAllValue($redis_key);
         $this->assign('recommend', $recommend);
         $this->assign('data', $result_sms);
         $this->assign('project_heads', $this->generateHeads($project));
