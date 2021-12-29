@@ -126,11 +126,6 @@
 
     })
 
-    function copy(){
-        let clipboard = new Clipboard('.copy')
-        toast('{$Think.lang.foot_copy} ' + $("#email").text() + ' {$Think.lang.foot_copy_success}')
-    }
-
     function mail_open(id) {
         let email = getCookie('temp_email');
         let email_array = JSON.parse(localStorage.getItem('email_array_' + email))[id];

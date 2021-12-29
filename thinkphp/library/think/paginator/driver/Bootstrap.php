@@ -67,7 +67,7 @@ class Bootstrap extends Paginator
             'last'   => null,
         ];
 
-        $side   = 3;
+        $side   = 1;
         $window = $side * 2;
 
         if ($this->lastPage < $window + 6) {

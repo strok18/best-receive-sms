@@ -87,21 +87,21 @@ class PhoneController extends Controller
         }
         $page = $result->render();
         $result = $result->toArray();
-        $count = count($result['data']);
+
+        //预置广告位
+        /*$count = count($result['data']);
         if ($count > 4){
             array_splice($result['data'], 4, 0, 'Adsense');
-        }
+        }*/
 
-        //面包屑
-        $bread_crumb = (new BreadCrumbController())->PhonePage($country, $country_data);
-        $this->assign('bread_crumb', $bread_crumb);
-        $this->assign('page', $page);
-        $this->assign('data', $result['data']);
-        
         //copy phone_num
         $js_data = [];
         $k = 0;
+        $current_title = (new CountryController())->countryLangTitle();
         for($i = 0; $i < count($result['data']); $i++){
+            $result['data'][$i]['country_title'] = $result['data'][$i]['country'][$current_title];
+            $result['data'][$i]['phone_encryption'] = phoneEncryption((string)$result['data'][$i]['phone_num']);
+            $result['data'][$i]['bh_encryption'] = phoneEncryption((string)$result['data'][$i]['country']['bh']);
             if (isset($result['data'][$i]['uid'])) {
                 $js_data[$k]['phone_num'] = $result['data'][$i]['phone_num'];
                 $js_data[$k]['uid'] = $result['data'][$i]['uid'];
@@ -110,6 +110,12 @@ class PhoneController extends Controller
             }
             $k++;
         }
+        //面包屑
+        $bread_crumb = (new BreadCrumbController())->PhonePage($country, $country_data);
+        $this->assign('bread_crumb', $bread_crumb);
+        $this->assign('page', $page);
+        $this->assign('data', $result['data']);
+        //dump($result['data']);
         $this->assign('js_data', $js_data);
         $this->assign('phone_heads', $this->generateHeads($country_data, $title_page));
         return $this->fetch();

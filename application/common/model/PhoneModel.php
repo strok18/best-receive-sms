@@ -3,7 +3,6 @@
 namespace app\common\model;
 
 use app\common\controller\RedisController;
-use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Request;
 use think\model\concern\SoftDelete;
@@ -445,7 +444,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/phone-number/page/[PAGE].html"
+                    'path'=>Request::domain()."/receive-sms-online/phone-number/[PAGE]"
                 ]);
         }elseif($country_id == 'upcoming'){
             $result = self::with('country')
@@ -454,7 +453,7 @@ class PhoneModel extends BaseModel
                 ->order('sort', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/page/[PAGE].html"
+                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/[PAGE]"
                 ]);
             //trace($result, 'notice');    
             if(count($result) < 1){
@@ -465,7 +464,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(50, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/page/[PAGE].html"
+                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/[PAGE]"
                 ]);
             }
         }else{
@@ -479,7 +478,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/page/[PAGE].html"
+                    'path'=>Request::domain()."/receive-sms-online/".Request::param('country')."-phone-number/[PAGE]"
                 ]);
         }
         return $result;
@@ -552,6 +551,16 @@ class PhoneModel extends BaseModel
                 $redis->redisSetCache($phone_detail_key, serialize($result->toArray()), 6*3600);
             }
         }
+        return $result;
+    }
+
+    //查询每个国家的号码总数/不包括隐藏
+    public function getCountryPhoneCount($country_id){
+        $result = self::where('country_id', $country_id)
+            ->where('show', 1)
+            ->where('display', 1)
+            ->cache(3600)
+            ->count();
         return $result;
     }
 }

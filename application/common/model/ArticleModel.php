@@ -3,6 +3,8 @@
 namespace app\common\model;
 
 
+use think\facade\Request;
+
 class ArticleModel extends BaseModel
 {
     public function createArticle($data){
@@ -28,12 +30,11 @@ class ArticleModel extends BaseModel
     //多语言调用文章
     public function LangListArticle(){
         $sub_domain = get_subdomain();
-        $domain = get_domain();
-        if ($domain == 'yinsiduanxin' && $sub_domain == 'www'){
-            $sub_domain = 'zh';
-        }
-        if ($domain == 'mytempsms' && $sub_domain == 'www'){
+        if ($sub_domain == 'www'){
             $sub_domain = 'en';
+        }
+        if ($sub_domain == 'cn'){
+            $sub_domain = 'zh';
         }
         if ($sub_domain == 'tw'){
             $sub_domain = 'zh-TW';
@@ -42,7 +43,29 @@ class ArticleModel extends BaseModel
             ->where('lang', 'eq', $sub_domain)
             ->order('sort', 'desc')
             ->order('id', 'desc')
-            ->paginate(10);
+            ->paginate(8, false, [
+                'page'=>Request::param('page')?:1,
+                'path'=>Request::domain()."/receive-sms-online/blog/page[PAGE]"
+            ]);
+        return $result;
+    }
+
+    //前台调用单条记录/多语言
+    public function getArticleByIdLang($id){
+        $sub_domain = get_subdomain();
+        if ($sub_domain == 'www'){
+            $sub_domain = 'en';
+        }
+        if ($sub_domain == 'cn'){
+            $sub_domain = 'zh';
+        }
+        if ($sub_domain == 'tw'){
+            $sub_domain = 'zh-TW';
+        }
+        $result = self::where('show', '=', 1)
+            ->where('id', '=', $id)
+            ->where('lang', '=', $sub_domain)
+            ->find();
         return $result;
     }
 
@@ -73,26 +96,6 @@ class ArticleModel extends BaseModel
     public function getArticleById($id){
         $result = self::where('show', '=', 1)
             ->where('id', '=', $id)
-            ->find();
-        return $result;
-    }
-    
-    //前台调用单条记录/多语言
-    public function getArticleByIdLang($id){
-        $sub_domain = get_subdomain();
-        $domain = get_domain();
-        if ($domain == 'yinsiduanxin' && $sub_domain == 'www'){
-            $sub_domain = 'zh';
-        }
-        if ($domain == 'mytempsms' && $sub_domain == 'www'){
-            $sub_domain = 'en';
-        }
-        if ($sub_domain == 'tw'){
-            $sub_domain = 'zh-TW';
-        }
-        $result = self::where('show', '=', 1)
-            ->where('a_id', '=', $id)
-            ->where('lang', '=', $sub_domain)
             ->find();
         return $result;
     }

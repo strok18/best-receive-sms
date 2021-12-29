@@ -64,7 +64,7 @@ return [
     'db_master_write' => [
         'type'            => 'mysql',
         // 服务器地址
-        'hostname'        => env('database.MASTER_HOSTNAME', '23.'),
+        'hostname'        => env('database.MASTER_HOSTNAME', '23.239.2.123'),
         // 数据库名
         'database'        => env('database.MASTER_DATABASE', 'mys'),
         // 用户名

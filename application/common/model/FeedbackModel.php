@@ -6,7 +6,7 @@ namespace app\common\model;
 
 class FeedbackModel extends BaseModel
 {
-    protected $connection = 'db_master_write';
+    //protected $connection = 'db_master_write';
     
 	public function getTypeAttr($value)
     {

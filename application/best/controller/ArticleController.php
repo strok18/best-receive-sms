@@ -31,7 +31,7 @@ class ArticleController extends LangBaseController
         $id = Request::param('id');
         $article_model = new ArticleModel();
         $article = $article_model->getArticleByIdLang($id);
-        Db::connect('db_master_write')->table('article')->where('id', $article['id'])->setInc('total_num');
+        //Db::connect('db_master_write')->table('article')->where('id', $article['id'])->setInc('total_num');
         //$this->assign('rel_url', (new RelUrlController())->relUrl1('Article', $id));
         $this->assign('article_detail_heads', $this->generateHeads($article['title']));
         return $this->fetch('detail', compact('article'));

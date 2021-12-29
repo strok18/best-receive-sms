@@ -55,19 +55,21 @@ if ($domain == 'best'){
         Route::get('/', 'best/Phone/index');
         Route::get('index', 'best/Phone/index');
         Route::get('receive-sms-online/', 'best/Phone/index');
-        Route::get('receive-sms-online/article/:id', 'best/Article/detail');
-        Route::get('receive-sms-online/article', 'best/Article/index');
+        Route::get('receive-sms-online/blog/page:page', 'best/Article/index');
         Route::get('receive-sms-online/blog/:id', 'best/Article/detail');
         Route::get('receive-sms-online/blog', 'best/Article/index');
 
+
         Route::get('temporary-email', 'best/Mail/index');
-        Route::get('receive-sms-online/country', 'best/Country/index');
+
         Route::get('receive-sms-online/:country-phone-number-:phone_num/:page', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'\d{5,}']);
-        Route::get('receive-sms-online/:country-phone-number-:phone_num', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'[a-z0-9]{7,16}']);
-        Route::get('receive-sms-online/:country-Phone-number/page/:page', 'best/Phone/index')->pattern(['country'=>$countrys, 'page'=>'\d{0,3}']);
-        Route::get('receive-sms-online/:country-phone-number', 'best/Phone/index')->pattern(['country'=>$countrys]);
-        Route::get('receive-sms-online/phone-number/page/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
-        Route::get('receive-sms-from/:project', 'best/Project/index');
+        Route::get('receive-sms-online/message/:phone_num', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'[a-z0-9]{7,16}']);
+        Route::get('receive-sms-online/country/:country/:page', 'best/Phone/index')->pattern(['country'=>$countrys, 'page'=>'\d{0,3}']);
+        Route::get('receive-sms-online/country/:country', 'best/Phone/index')->pattern(['country'=>$countrys]);
+        Route::get('receive-sms-online/country', 'best/Country/index');
+        Route::get('receive-sms-online/:country-phone-number/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
+        Route::get('receive-sms-online/phone-number/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
+        Route::get('receive-sms-from-:project', 'best/Project/index');
         Route::get('sitemap', 'best/Phone/sitemap');
         Route::post('random', 'best/Message/random');
         Route::get('wp-password', 'best/Wangpan/password');
@@ -93,7 +95,7 @@ if ($domain == 'best'){
         Route::post('api/wp_password', 'best/Wangpan/getPassword');
         Route::post('recaptcha', 'index/ReCaptcha/index');
         Route::post('hcaptcha', 'index/ReCaptcha/hcaptcha');
-        Route::post('report', 'mys/Message/report');
+        Route::post('report', 'best/Message/report');
         Route::get('check', 'index/Check/index');
         Route::get('spi', 'index/Check/index'); //蜘蛛重命名
         Route::get('verify', 'admin20161108/Login/verify'); //验证码

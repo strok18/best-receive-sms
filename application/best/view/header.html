@@ -14,7 +14,7 @@
 <!-- Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
     <div class="container">
-        <a class="navbar-brand" href="#">Best</a>
+        <a class="navbar-brand" href="/">Best</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -34,16 +34,16 @@
                         Select Country
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">France</a></li>
-                        <li><a class="dropdown-item" href="#">UK</a></li>
-                        <li><a class="dropdown-item" href="#">America</a></li>
+                        <li><a class="dropdown-item" href="/receive-sms-online/country/france">France</a></li>
+                        <li><a class="dropdown-item" href="/receive-sms-online/country/uk">UK</a></li>
+                        <li><a class="dropdown-item" href="/receive-sms-online/country/usa">America</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/receive-sms-online/blog">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="blog-detail.html">Subscription</a>
+                    <a class="nav-link" href="javascript:void(0);" onclick="subscription('{$Think.lang.mailbox_explain}')">Subscription</a>
                 </li>
             </ul>
         </div>

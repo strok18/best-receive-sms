@@ -9,7 +9,7 @@ use Overtrue\Pinyin\Pinyin;
 
 class CollectionMsgModel extends BaseModel
 {
-	//protected $connection = 'db_collection_nonlocal_config';
+	protected $connection = 'db_master_write';
 	
     //批量新增
     public function batchCreate($data){
@@ -104,30 +104,18 @@ class CollectionMsgModel extends BaseModel
      * 获取项目短信，如果redis不存在，就从数据库读取。有效
      */
     public function getProjectMessage($project){
-        $redis = new RedisController();
-        $project_pinyin = (new Pinyin())->permalink($project, '');
-        $project_data = $redis->searchReturnValue('project_msg_' . $project_pinyin);
-        if (!$project_data){
-            /*$result = self::with('phone')
-                ->where('project', '=', $project)
-                ->hidden(['create_time','update_time', 'delete_time'])
-                ->limit(20)
-                ->select();*/
-            //$result = Db::connect('db_collection_nonlocal_config')
-            $result = Db::table('collection_msg')
-                ->where('url', '=', $project)
-                ->field('p.id,p.uid,p.phone_num,m.smsContent,m.url,c.en_title')
-                ->alias('m')
-                ->join(['phone'=>'p'], 'm.phone_id = p.id')
-                ->join(['country'=>'c'], 'p.country_id = c.id')
-                ->group('p.phone_num')
-                ->limit(20)
-                ->select();
-            $redis->setStrReturnValue('project_msg_' . $project_pinyin, serialize($result), 0, 7200);
-            return $result;
-        }else{
-            return unserialize($project_data);
-        }
+        $result = Db::connect('db_master_write')
+            ->table('collection_msg')
+            ->where('url', '=', $project)
+            ->field('p.id,p.uid,p.phone_num,m.smsContent,m.url,c.en_title')
+            ->alias('m')
+            ->join(['phone'=>'p'], 'm.phone_id = p.id')
+            ->join(['country'=>'c'], 'p.country_id = c.id')
+            ->group('p.phone_num')
+            ->limit(20)
+            ->cache(86400)
+            ->select();
+        return $result;
     }
     
     //序列化处理

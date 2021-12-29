@@ -582,3 +582,17 @@ function codePregReplaceCallbackFunction($matches){
     return "<img src='".codeImage($matches[0] . $url)."'>";
 }
 
+//号码前台加密显示
+function phoneEncryption($phone, $type = 'phone'){
+    //&#xa008;
+    $str = '';
+    for ($i = 0; $i < strlen($phone); $i++){
+        $str .= '&#xa00' . substr($phone, $i, 1) . ';';
+    }
+    if ($type == 'phone'){
+        return $str;
+    }else{
+        return '+' . $str;
+    }
+}
+

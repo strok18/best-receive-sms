@@ -1,70 +1,93 @@
-{include file="../application/mys/view/header.html" title="<?php echo $project_heads['title'];?>" description="<?php echo $project_heads['description'];?>" keywords="<?php echo $project_heads['keywords'];?>" rel_url="<?php echo $rel_url?>" /}
-<div class="info-top">
-    <div class="info-top-h1"><h1><?php echo $project_heads['info_top_h1'];?></h1></div>
-    <div class="info-top-h4"><h4><?php echo $project_heads['info_top_h4'];?></h4></div>
-</div>
-{include file="../application/template/adsense/country_banner_top.html" /}
-<div class="main" style="margin-top:10px;">
-    <div class="layui-row">
-        Popular project：
-        {volist name = "recommend" id = "re"}
-        <a href="/receive-sms-from/{$re}" style="margin-right: 2px;">Receive SMS From {$re}</a>
-        {/volist}
-        <table class="layui-table" lay-even="" lay-skin="row" lay-size="lg" style="margin-top: 0;">
-            <colgroup>
-                <col>
-                <col>
-                <col>
-                <col>
-            </colgroup>
-            <thead>
-            <tr>
-                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">Project</th>
-                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">{$Think.lang.message_table_1}</th>
-                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">{$Think.lang.message_table_2}</th>
-                <th style="background-color: #4A5E77;color: #ffffff;text-align:center">{$Think.lang.message_table_3}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {if !empty($data)}
-            {volist name="data" id="vo"}
-            {if $i == 3}
-            <tr>
-                <td colspan="4" style="text-align:center;">
-                    {include file="../application/template/adsense/message_insider_top.html" /}
-                </td>
-            </tr>
-            {elseif $i == 11 /}
-            <tr>
-                <td colspan="4" style="text-align:center;">
-                    {include file="../application/template/adsense/message_matched.html" /}
-                </td>
-            </tr>
-            {else /}
-            <tr>
-               <td style="text-align:center;"><a href="/receive-sms-from/{$vo.url}">{$vo.url}</a></td>
-                <td style="text-align:center;"><a href="/receive-sms-online/{$vo.en_title | strtolower}-phone-number-{$vo.uid}.html">{$vo.uid}</a></td>
-                <td style="word-break:break-word;">{$vo.smsContent}</td>
-                <td style="text-align: center">...</td>
-            </tr>
-            {/if}
-            {/volist}
-            {else /}
-            <tr>
-                <td colspan="4" style="text-align:center;">
-                    <div class="none"><i class="layui-icon layui-icon-face-surprised"></i> {$Think.lang.common_empty_data}</div>
-                </td>
-            </tr>
-            {/if}
-            </tbody>
-        </table>
-        <div style="text-align: center">
-            {include file="../application/template/adsense/message_banner_bottom.html" /}
+{include file="../application/best/view/header.html" title="<?php echo $project_heads['title'];?>" description="<?php echo $project_heads['description'];?>" keywords="<?php echo $project_heads['keywords'];?>" rel_url="<?php echo $rel_url?>" /}
+<!-- Main content -->
+<div class="content">
+    <div class="banner">
+        <div class="container mt-4">
+            <div class="row">
+                <h1 class="text-center">Free Receive SMS From USA</h1>
+                <span> IS A FREE SERVICE FOR RECEIVING SMS MESSAGES AND VOICE MAILS ONLINE. THERE IS NO NEED TO
+							REGISTER. JUST SELECT YOUR PHONE NUMBER FROM THE LIST BELOW. YOU CAN USE IT TO RECEIVE
+							MESSAGES FROM FACEBOOK, TELEGRAM, WECHAT, VK, PAYPAL, ALIPAY AND MORE</span>
+            </div>
+        </div>
+    </div>
+    <div class="container my-3 d-none AD">
+
+    </div>
+    <div class="phone mt-4">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
+                        <div class="card-body pb-0 text-start">
+									<span class="badge bg-primary link-white"><a href="#"
+                                                                                 title="receive sms from tikitok">google</a></span>
+                            <span class="badge bg-danger link-white"><a href="#"
+                                                                        title="receive sms from tikitok">telegram</a></span>
+                            <span class="badge bg-warning link-white"><a href="#"
+                                                                         title="receive sms from tikitok">tikitok</a></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-none">
+                                <img src="images/empty-mail.svg">
+                                <p class="fw-bold">No emails yet</p>
+                            </div>
+
+                            <table class="table table-striped table-hover text-start">
+                                <thead>
+                                <tr>
+                                    <th scope="col">PROJECT</th>
+                                    <th scope="col">NUMBER</th>
+                                    <th scope="col">MESSAGE</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="data" id="vo" empty="NO DATA"}
+                                <tr>
+                                    <td class="p-3 align-middle"><a href="/receive-sms-from-{$vo.url}">{$vo.url}</a></td>
+                                    <td class="p-3 align-middle"><a href="#"><a href="/receive-sms-online/message/{$vo.uid}">{$vo.uid}</a></a></td>
+                                    <td class="p-3 align-middle">{$vo.smsContent}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="bg-white text-muted border-0 text-end text-success">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Phone list end -->
+                <!-- Page start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="page">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- Page end-->
+            </div>
         </div>
     </div>
 </div>
-</div>
-<div style="text-align: center;margin-top:10px;">
-    {include file="../application/template/adsense/country_banner_bottom.html" /}
-</div>
-{include file="../application/mys/view/foot.html" /}
+<!-- main content end-->
+{include file="../application/best/view/foot.html" /}

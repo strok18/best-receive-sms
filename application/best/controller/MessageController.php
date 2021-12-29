@@ -94,6 +94,8 @@ class MessageController extends Controller
         $this->assign('page', $pageData['page_list']);
         $this->assign('data', $message_data);
         $this->assign('alt_title', Request::subDomain());
+        $phone_info['phone_encryption'] = phoneEncryption((string)$phone_info['phone_num']);
+        $phone_info['bh_encryption'] = phoneEncryption((string)$phone_info['country']['bh']);
         $this->assign('phone_info', $phone_info);
         return $this->fetch();
     }
@@ -155,13 +157,13 @@ class MessageController extends Controller
             $result_sms = $message_data->toArray();
         }
 
-        //dump($result_sms);
-        if (count($result_sms) > 2){
+        //广告设置
+        /*if (count($result_sms) > 2){
             array_splice($result_sms, 2, 0, 'Adsense');
         }
         if (count($result_sms) > 14){
             array_splice($result_sms, 10, 0, 'Adsense');
-        }
+        }*/
         return ['page_list'=>$page_list, 'result_sms'=>$result_sms];
     }
     
@@ -253,9 +255,15 @@ class MessageController extends Controller
         if(!$validate){
             return show('传递参数异常', '', 4000);
         }
+        $phone_info = (new PhoneModel())->getPhoneDetailByUID($phone_num);
+        if(!$phone_info){
+            return $this->error('号码不存在');
+        }
+        $phone_num = $phone_info['phone_num'];
         //把提交的号码保存进入redis. respore_1814266666
         $redis = new RedisController();
-        $return = $redis->redisNumber('report_' . $phone_num, 172800);
+        $redis_key = config('cache.prefix') . 'report:' . $phone_num;
+        $return = $redis->redisNumber($redis_key, 172800);
         if (!$return){
             return show('提交反馈失败', '', 4000);
         }
@@ -267,11 +275,10 @@ class MessageController extends Controller
         $phone_model = new PhoneModel();
         $phone_num_info = $phone_model->getRandom();
         $phone_num = $phone_num_info['uid'];
-        $phone_country = strtolower($phone_num_info['country']['en_title']);
         if (!$phone_num){
-            return show('Random Phone success', '', 4000);
+            return show('Random Phone fail', '', 4000);
         }
-        return show('Random Phone fail', Request::domain() . '/receive-sms-online/'.$phone_country.'-phone-number-'.$phone_num.'.html');
+        return show('Random Phone success', Request::domain() . '/receive-sms-online/message/' . $phone_num);
     }
 
 }

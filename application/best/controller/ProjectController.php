@@ -19,12 +19,13 @@ class ProjectController extends Controller
     public function index(){
         $project = Request::param('project');
         $result_sms = (new CollectionMsgModel())->getProjectMessage($project);
-        if (count($result_sms) > 2){
+        //插入广告
+        /*if (count($result_sms) > 2){
             array_splice($result_sms, 2, 0, 'Adsense');
         }
         if (count($result_sms) > 14){
             array_splice($result_sms, 10, 0, 'Adsense');
-        }
+        }*/
         //获取推荐关键字
         $redis = new RedisController('sync');
         $recommend = $redis->getSetAllValue('mytempsms_message_project_recommend');
