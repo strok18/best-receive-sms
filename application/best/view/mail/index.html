@@ -99,9 +99,9 @@
 </div>
 
 <!-- main content end-->
-<script src="/static/web/js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
-<script src="/static/web/js/clipboard.js"></script>
+<script src="/static/web/js/jquery-3.6.0.min.js"></script>
+<script src="/static/web/js/push.min.js"></script>
+<script src="/static/web/js/clipboard.min.js"></script>
 <script>
     $(function () {
         let mails = {:json_encode($mails)};
@@ -371,24 +371,20 @@
                 loading()
             },
             success: function (e) {
-                if (e.error_code == 0) {
-                    if (typeof (auto) !== 'undefined') {
-                        clearTimeout(auto)
-                    }
-                    auto = undefined
-                    document.cookie = "temp_email=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-                    document.cookie = email + "_number=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-                    $("#email").text('')
-                    localStorage.removeItem('email_list_' + email)
-                    localStorage.removeItem('email_array_' + email)
-                    localStorage.removeItem('transpond_email')
-                    $("#mail_list").html('')
-                    $("#empty").removeClass('d-none')
-                    $('#receive_email').removeAttr('disabled')
-                    toast(email + '{$Think.lang.mail_alert_delete_success}')
-                } else {
-                    toast(email + '{$Think.lang.mail_alert_delete_failed}', {type: 'danger'})
+                if (typeof (auto) !== 'undefined') {
+                    clearTimeout(auto)
                 }
+                auto = undefined
+                document.cookie = "temp_email=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                document.cookie = email + "_number=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                $("#email").text('')
+                localStorage.removeItem('email_list_' + email)
+                localStorage.removeItem('email_array_' + email)
+                localStorage.removeItem('transpond_email')
+                $("#mail_list").html('')
+                $("#empty").removeClass('d-none')
+                $('#receive_email').removeAttr('disabled')
+                toast(email + '{$Think.lang.mail_alert_delete_success}')
             },
             complete: function () {
                 loading(false)

@@ -596,3 +596,13 @@ function phoneEncryption($phone, $type = 'phone'){
     }
 }
 
+//一个数字，显示成整数舍入模式 51520 显示成50000+
+function numberDim($number){
+    if (!$number || $number < 100){
+        return '...';
+    }
+    $number = (string)$number;
+    $new_number = substr($number, 0, 1);
+    $new_number .= str_repeat('0', strlen($number) - 1);
+    return $new_number . '+';
+}

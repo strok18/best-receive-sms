@@ -71,7 +71,7 @@ class CollectionMsgModel extends BaseModel
     public function getHistorySms($phone_id, $phone_num, $total_num){
         return self::where('phone_id', '=', $phone_id)
             ->order('id', 'desc')
-            //->cache(86400)
+            ->cache(86400)
             ->paginate(20, (int)$total_num, [
                 'page'=>Request::param('page')?:1,
                 'path'=>Request::domain()."/receive-sms-".Request::param('country')."-phone-number/".$phone_num."/[PAGE]"

@@ -60,7 +60,6 @@ class MessageController extends Controller
         }else{
             //获取页面数据
             $pageData = $this->pageData($phone_num, $phone_info, $page);
-            $this->assign('empty', '<div style="text-align: center;color: red;font-size: 50px;">NO DATA</div>');
 
             $message_data = $pageData['result_sms'];
             foreach($pageData['result_sms'] as $key => $value){
@@ -150,8 +149,7 @@ class MessageController extends Controller
             }
 
         }else{
-            $phone_receive_total = $this->getPhoneSmsTotal($phone_num);
-            $message_data = (new CollectionMsgModel())->getHistorySms($phone_info['id'], $phone_num, $phone_receive_total);
+            $message_data = (new CollectionMsgModel())->getHistorySms($phone_info['id'], $phone_num, $this->getPhoneSmsTotal($phone_num));
             //dump($message_data);
             $page_list = $message_data->render();
             $result_sms = $message_data->toArray()['data'];
@@ -173,6 +171,9 @@ class MessageController extends Controller
         $receive_count = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_num);
         if (!$receive_count){
             $receive_count = 0;
+        }
+        if ($receive_count > 2000){
+            $receive_count = 2000;
         }
         return $receive_count;
     }

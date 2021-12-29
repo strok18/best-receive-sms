@@ -34,6 +34,7 @@ class ProjectController extends Controller
         $this->assign('recommend', $recommend);
         $this->assign('data', $result_sms);
         $this->assign('project_heads', $this->generateHeads($project));
+        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg"><p class="fw-bold">NO PHONE NUMBER</p></div>');
         return $this->fetch();
     }
 

@@ -28,6 +28,7 @@ class CountryController extends Controller
         $this->assign('page', $page);
         $this->assign('data', $country_data);
         $this->assign('country_heads', $this->generateHeads());
+        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" class="w-25"><p class="fw-bold">NO PHONE NUMBER</p></div>');
         return $this->fetch();
     }
 

@@ -83,7 +83,9 @@ class PhoneController extends Controller
             $result = unserialize($redis_value);
         }else{
             $result = (new PhoneModel())->getCountryPhoneMys($country_id);
-            Cache::tag('phonePage')->set($cacheKeyCountryPage, serialize($result), 1800);
+            if (!$result->isEmpty()){
+                Cache::tag('phonePage')->set($cacheKeyCountryPage, serialize($result), 1800);
+            }
         }
         $page = $result->render();
         $result = $result->toArray();
@@ -102,6 +104,8 @@ class PhoneController extends Controller
             $result['data'][$i]['country_title'] = $result['data'][$i]['country'][$current_title];
             $result['data'][$i]['phone_encryption'] = phoneEncryption((string)$result['data'][$i]['phone_num']);
             $result['data'][$i]['bh_encryption'] = phoneEncryption((string)$result['data'][$i]['country']['bh']);
+            //添加每个号码的获取数量
+            $result['data'][$i]['receive_total'] = $this->getPhoneReceiveNumber($result['data'][$i]['uid']);
             if (isset($result['data'][$i]['uid'])) {
                 $js_data[$k]['phone_num'] = $result['data'][$i]['phone_num'];
                 $js_data[$k]['uid'] = $result['data'][$i]['uid'];
@@ -118,7 +122,15 @@ class PhoneController extends Controller
         //dump($result['data']);
         $this->assign('js_data', $js_data);
         $this->assign('phone_heads', $this->generateHeads($country_data, $title_page));
+        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" class="w-25"><p class="fw-bold">NO PHONE NUMBER</p></div>');
         return $this->fetch();
+    }
+
+    //获取每个号码短信接收总数，用于前台显示
+    public function getPhoneReceiveNumber($phone_uid){
+        $redis = new RedisController();
+        $number = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_uid);
+        return numberDim($number);
     }
 
     /**
@@ -168,7 +180,7 @@ class PhoneController extends Controller
             }*/
             $result = $phone_model->getUidDetail($phone_num);
             
-            if ($result){
+            if (!$result->isEmpty()){
                 $redis->redisSetCache('phone_detail_' . $phone_num, serialize($result));
             }
         }

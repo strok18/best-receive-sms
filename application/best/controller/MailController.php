@@ -17,10 +17,10 @@ class MailController extends Controller
     ];
     
     public function index(){
-        $email = Session::get('email');
+        /*$email = Session::get('email');
         if ($email){
             $this->assign('email', $email);
-        }
+        }*/
         
         $redis = new RedisController('sync');
         $mails_data = $redis->zRevRange(Config::get('cache.prefix') . 'mails', 0 , 10);

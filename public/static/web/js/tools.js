@@ -1,4 +1,5 @@
 window.onload = function () {
+    init();
     scrollTop();
     if (typeof copyPhone === 'function'){
         copyPhone();
@@ -7,7 +8,13 @@ window.onload = function () {
         messageInit();
     }
 
+}
 
+function init() {
+    //privacy alert show
+    if (!localStorage.getItem('brsPrivacy')){
+        document.getElementById('privacy_alert').classList.remove('d-none');
+    }
 }
 
 //top button
@@ -116,7 +123,7 @@ function modal(body, params = {}, confirmCallback, closeCallback) {
     let confirm = document.getElementById('confirm');
     let close = document.getElementById('close');
     let iconClose = document.getElementById('icon_close');
-    //按确定按钮触发
+    ////press the Confirm button to trigger
     confirm.addEventListener('click', function (e) {
         if (params.autoClose) {
             myModal.hide();
@@ -127,7 +134,7 @@ function modal(body, params = {}, confirmCallback, closeCallback) {
         }
 
     })
-    //按关闭按钮触发
+    //press the off button to trigger
     close.addEventListener('click', function (e) {
         console.log(e)
         myModal.hide()
@@ -137,14 +144,14 @@ function modal(body, params = {}, confirmCallback, closeCallback) {
         modalEl.parentNode.removeChild(modalEl)
     })
 
-    //关闭窗口触发
+    //press the Close button to trigger
     iconClose.addEventListener('click', function (e) {
         myModal.hide()
         modalEl.parentNode.removeChild(modalEl)
     })
 }
 
-//关闭mosal
+//close mosal
 function modalClose(modal, callback) {
     modal.hide();
     let modalEl = document.getElementById('modal');
@@ -200,7 +207,6 @@ function subscription(info) {
 		</div>
 	`;
     modal(subscriptionHtml, {title: 'Subscription', size: '', autoClose: false}, function (e) {
-        //发送ajax请求提交数据
         var modal = e;
         loadScript(function () {
             let email = $('#email_address').val()
@@ -251,7 +257,6 @@ function feedback() {
 		</div>
 	`;
     modal(feedbackHtml, {title: 'Feedback', size: '', autoClose: false}, function (e) {
-        //发送ajax请求提交数据
         var modal = e;
         loadScript(function () {
             let email = $('#email_address').val()
@@ -292,7 +297,7 @@ function buttonLoading(buttonID, type = true){
     }
 }
 
-//动态加载jquery
+//dynamic loading JS
 function loadScript(callback, url) {
     let urls = {jquery: '//'+ window.location.host + '/static/web/js/jquery-3.6.0.min.js', copy: '//' + window.location.host + '/static/web/js/clipboard.min.js'};
     if (url === undefined){

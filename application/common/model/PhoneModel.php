@@ -546,7 +546,7 @@ class PhoneModel extends BaseModel
                 ->where('uid', '=', $uid)
                 ->where('show', '=', 1)
                 ->find();
-            if($result){
+            if(!$result->isEmpty()){
                 //(new RedisController('master'))->redisSetCache($phone_detail_key, serialize($result->toArray()), 6*3600);
                 $redis->redisSetCache($phone_detail_key, serialize($result->toArray()), 6*3600);
             }

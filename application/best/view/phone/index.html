@@ -20,7 +20,7 @@
     <div class="phone mt-4">
         <div class="container">
             <div class="row">
-                {volist name="data" id="vo" empty="NO DATA"}
+                {volist name="data" id="vo" empty="$empty"}
                 <div class="col-sm-6">
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="bg-white d-flex flex-row justify-content-between">
@@ -60,7 +60,7 @@
 
                             </h3>
 
-                            <p class="card-text little-font text-uppercase">({$vo['country']['en_title']} - RECEIVED <mark>5000+</mark>
+                            <p class="card-text little-font text-uppercase">({$vo['country']['en_title']} - RECEIVED <mark>{$vo['receive_total']}</mark>
                                 MESSAGES IN TOTAL.)</p>
                         </div>
                         <div class="bg-white text-muted border-0 text-end text-success">

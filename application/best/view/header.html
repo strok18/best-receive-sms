@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="/static/web/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="/static/web/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/web/css/style.css" rel="stylesheet" type="text/css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Poppins:wght@200;300;400;500;600&display=swap');
@@ -53,9 +53,10 @@
 <!-- Notify -->
 <div class="notify">
     <div class="container">
-        <div class="alert alert-danger mt-1 alert-dismissible fade show notify" role="alert">
-            A simple primary alert—check it out!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div id="privacy_alert" class="alert alert-warning alert-dismissible fade show mt-2 d-none" role="alert">
+            We uses cookies to provide necessary website functionality, improve your experience and analyze our traffic.
+            By using our website, you agree to our <a href="/privacy.html" target="_blank"> Privacy Policy </a>and our cookies usage. <span class="little-font"> (Don't show after closing.)</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" title="Don't show after closing." onclick="localStorage.setItem('brsPrivacy', '1')"></button>
         </div>
     </div>
 </div>
