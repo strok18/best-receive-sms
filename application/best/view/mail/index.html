@@ -14,7 +14,7 @@
     <div class="container my-3 d-none">
         <img alt="..." class="img-thumbnail" src="ad.png">
     </div>
-    <div class="phone" style="margin-top: 40px;">
+    <div class="phone mt-4">
         <div class="container">
             <div class="row">
 
@@ -29,7 +29,7 @@
                                 <div class="row g-2 justify-content-center">
                                     <div class="col-sm-4">
                                         <div class="form-floating mb-3 text-end">
-                                            <input class="form-control" id="floatingInput" type="email" name="email_name">
+                                            <input type="email" class="form-control" id="floatingInput" name="email_name" placeholder="Email User name">
                                             <label for="floatingInput">Email User name</label>
                                         </div>
                                     </div>
@@ -99,9 +99,9 @@
 </div>
 
 <!-- main content end-->
-<script src="/static/web/js/jquery-3.6.0.min.js"></script>
-<script src="/static/web/js/push.min.js"></script>
-<script src="/static/web/js/clipboard.min.js"></script>
+<script src="/static/web/js/jquery-3.6.0.min.js" async="async" defer="defer"></script>
+<script src="/static/web/js/push.min.js" async="async" defer="defer"></script>
+<script src="/static/web/js/clipboard.min.js" async="async" defer="defer"></script>
 <script>
     $(function () {
         let mails = {:json_encode($mails)};

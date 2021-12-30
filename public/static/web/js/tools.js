@@ -1,6 +1,8 @@
 window.onload = function () {
     init();
     scrollTop();
+    clickLoading();
+    unload();
     if (typeof copyPhone === 'function'){
         copyPhone();
     }
@@ -14,6 +16,23 @@ function init() {
     //privacy alert show
     if (!localStorage.getItem('brsPrivacy')){
         document.getElementById('privacy_alert').classList.remove('d-none');
+    }
+}
+
+function unload(){
+    window.addEventListener("unload", function(e) {
+        //虽然无用，但是这里不能删，删除后，loading()后再返回页面，loading不会关闭
+        console.log(1)
+    });
+}
+
+function clickLoading(){
+    let list = document.getElementsByClassName('click_loading'); // 获取class为ant-btn的元素
+    for(let i in list)
+    {
+        list[i].onclick=function() {
+            loading(true);
+        };
     }
 }
 
@@ -136,7 +155,6 @@ function modal(body, params = {}, confirmCallback, closeCallback) {
     })
     //press the off button to trigger
     close.addEventListener('click', function (e) {
-        console.log(e)
         myModal.hide()
         if (closeCallback) {
             closeCallback(myModal);
@@ -164,7 +182,7 @@ function modalClose(modal, callback) {
 }
 
 //loading
-function loading(type = true, shadeType = true) {
+function loading(type = true,autoClose = 0, shadeType = true) {
     let loading = document.getElementById('loading');
     let shade = document.getElementById('shade');
     if (type) {
@@ -172,16 +190,29 @@ function loading(type = true, shadeType = true) {
         if (shadeType) {
             shade.classList.remove("d-none");
         }
+        if (autoClose > 0){
+            setTimeout(function () {
+                loading.classList.add("d-none");
+                shade.classList.add("d-none");
+            },autoClose*1000)
+        }
     } else {
         loading.classList.add("d-none");
         shade.classList.add("d-none");
     }
 }
 
+function loadingFont(){
+    let loading_font = document.getElementById('loading_font');
+    for (let i = 0; i < 3; i++){
+
+    }
+    loading_font.innerText = 'aaaaa';
+}
+
 //copy
 function copy() {
     let clipboard = new ClipboardJS('.copy')
-    console.log(clipboard);
     toast('Copy success!!!')
     clipboard.on('error', function (e) {
         toast('Copy fail!!!', {type: 'danger'})
@@ -233,7 +264,7 @@ function subscription(info) {
             })
         });
     }, function (e) {
-        console.log(e)
+
     });
 }
 
@@ -283,7 +314,7 @@ function feedback() {
             })
         });
     }, function (e) {
-        console.log(e)
+
     });
 }
 

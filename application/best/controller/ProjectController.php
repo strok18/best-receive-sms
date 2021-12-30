@@ -27,15 +27,25 @@ class ProjectController extends Controller
         if (count($result_sms) > 14){
             array_splice($result_sms, 10, 0, 'Adsense');
         }*/
-        //获取推荐关键字
-        $redis = new RedisController('sync');
-        $redis_key = Config::get('cache.prefix') . 'project_recommend';
-        $recommend = $redis->getSetAllValue($redis_key);
-        $this->assign('recommend', $recommend);
+
+        $this->assign('recommend', $this->getRecommend());
         $this->assign('data', $result_sms);
         $this->assign('project_heads', $this->generateHeads($project));
         $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg"><p class="fw-bold">NO PHONE NUMBER</p></div>');
         return $this->fetch();
+    }
+
+
+    public function show(){
+        $this->assign('recommend', $this->getRecommend());
+        return $this->fetch();
+    }
+
+    public function getRecommend(){
+        //获取推荐关键字
+        $redis = new RedisController('sync');
+        $redis_key = Config::get('cache.prefix') . 'project_recommend';
+        return $redis->getSetAllValue($redis_key);
     }
 
     /**

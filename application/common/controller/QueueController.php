@@ -210,20 +210,20 @@ class QueueController extends Controller
             if ($left < 1){
                 $left = 1;
             }
-            $ul = '<ul class="pagination justify-content-center"><li class="page-item"><a class="page-link" href="/'.$url.'/'.$left.'">&laquo;</a></li>';
+            $ul = '<ul class="pagination justify-content-center"><li class="page-item"><a class="page-link click_loading" href="/'.$url.'/'.$left.'">&laquo;</a></li>';
             for ($i = 1; $i < $page_count + 1; $i++){
                 //当前页
                 if ($current_page == $i){
                     $ul .= '<li class="page-item active"><span class="page-link">' . $current_page . '</span></li>';
                 }else{
-                    $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
+                    $ul .= '<li class="page-item"><a class="page-link click_loading" href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
                 }
             }
             $right = $current_page + 1;
             if ($current_page == $page_count){
                 $right = $page_count;
             }
-            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$right.'">&raquo;</a></li></ul>';
+            $ul .= '<li class="page-item"><a class="page-link click_loading" href="/'.$url.'/'.$right.'">&raquo;</a></li></ul>';
             return $ul;
         }else{
             $left = $current_page - 1;
@@ -233,13 +233,13 @@ class QueueController extends Controller
             $ul = '<ul class="pagination justify-content-center"><li class="page-item"><a class="page-link" href="/'.$url.'/'.$left.'">&laquo;</a></li>';
 
             for ($i = 1; $i < 5; $i++){
-                $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
+                $ul .= '<li class="page-item"><a class="page-link click_loading" href="/'.$url.'/'.$i.'">'.$i.'</a></li>';
             }
             $ul .= '<li class="page-item disabled"><span class="page-link">...</span></li>';
-            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.($page_count-1).'">'.($page_count-1).'</a></li>';
-            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.($page_count).'">'.($page_count).'</a></li>';
+            $ul .= '<li class="page-item"><a class="page-link click_loading" href="/'.$url.'/'.($page_count-1).'">'.($page_count-1).'</a></li>';
+            $ul .= '<li class="page-item"><a class="page-link click_loading" href="/'.$url.'/'.($page_count).'">'.($page_count).'</a></li>';
 
-            $ul .= '<li class="page-item"><a class="page-link" href="/'.$url.'/'.$page_count.'">&raquo;</a></li></ul>';
+            $ul .= '<li class="page-item"><a class="page-link click_loading" href="/'.$url.'/'.$page_count.'">&raquo;</a></li></ul>';
             return $ul;
         }
     }

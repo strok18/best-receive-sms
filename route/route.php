@@ -70,6 +70,7 @@ if ($domain == 'best'){
         Route::get('receive-sms-from-country', 'best/Country/index');
 
         Route::get('receive-sms-from-:project', 'best/Project/index');
+        Route::get('receive-sms-from', 'best/Project/show');
         Route::get('sitemap', 'best/Phone/sitemap');
         Route::post('random', 'best/Message/random');
         Route::get('wp-password', 'best/Wangpan/password');
