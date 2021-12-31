@@ -234,13 +234,6 @@ function referrer() {
     return ref;
 }
 
-function captcha(){
-    let captchaHtml = `
-        <div id="h-captcha" data-callback="captchaCallback" class="mt-4"></div>
-    `;
-    modal(captchaHtml)
-}
-
 function captchaCallback (e) {
     if (e){
         $.ajax({
