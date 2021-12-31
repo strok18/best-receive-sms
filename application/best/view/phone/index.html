@@ -38,11 +38,11 @@
 
                             </div>
                             <div class="">
-                                <p class="card-text little-font text-uppercase">{$vo['country_title']}</p>
+                                <p class="card-text little-font text-uppercase" title="{$vo['country_title']} phone number"><a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">{$vo['country_title']}</a></p>
                             </div>
                         </div>
                         <div class="card-body">
-                            <a href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">
+                            <a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">
                                 <img class="w-50" height="170" src="/static/web/images/flag/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.svg"
                                      alt="{$vo['country_title']}{$Think.lang.common_number}">
                             </a>
@@ -91,6 +91,37 @@
 </div>
 <!-- main content end-->
 <!-- About start -->
+{if $Think.server.REQUEST_URI == '/'}
+    <div class="container py-3 py-lg-4 mt-2" style="background-color: #fff;">
+        <h2 class="text-center mb-4">Cartzilla Feature <span class="fw-light">Highlights</span></h2>
+        <div class="row text-center pt-4">
+            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/07.png" width="90" alt="Google Fonts icon">
+                <h6>Google Fonts</h6>
+                <p class="fs-ms text-muted mb-0">Cartzilla uses Google fonts which are free, fast to load and of very high quality. Currently Google fonts library includes 870+ font families to choose from.</p>
+            </div>
+            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/08.png" width="90" alt="Touch icon">
+                <h6>Touch-enabled Sliders</h6>
+                <p class="fs-ms text-muted mb-0">In the era of touch screens it's important to ensure great user experience on handheld devices, especially when it comes to such frequently used interface component as slider.</p>
+            </div>
+            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/09.png" width="90" alt="Vector icon">
+                <h6>Vector Based HD Ready Icons</h6>
+                <p class="fs-ms text-muted mb-0">Cartzilla is equiped with font-based icon pack to ensure that infographics and interface icons look sharp on any device with any screen resolution and pixel density.</p>
+            </div>
+            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/10.png" width="90" alt="HTML5 icon">
+                <h6>W3C Valid HTML Code</h6>
+                <p class="fs-ms text-muted mb-0">All HTML files are checked via W3C validator to ensure 100% valid code. As you probably know invalid HTML limits innovation, but Cartzilla is innovative at its core.</p>
+            </div>
+            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/11.png" width="90" alt="JavaScript icon">
+                <h6>Future-proof JavaScript</h6>
+                <p class="fs-ms text-muted mb-0">Cartzilla core scripts as well as all dependencies are written in vanilla JS. And now with Bootstrap 5 we finally drops jQuery and uses ES6 modules.</p>
+            </div>
+            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/12.png" width="90" alt="Documentation icon">
+                <h6>Detailed Documentation</h6>
+                <p class="fs-ms text-muted mb-0">Download package includes links to online documentation. It covers all crucial information about how to get started, customize template and components usage.</p>
+            </div>
+        </div>
+    </div>
+{/if}
 <!-- About end -->
 <script src="/static/web/js/clipboard.min.js" crossorigin="anonymous"></script>
 <script>

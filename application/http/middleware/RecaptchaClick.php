@@ -63,8 +63,9 @@ class RecaptchaClick extends Controller
                 //判断score是否存在
                 if (!$click_ip['score']){
                     if (Request::method() == 'POST'){
-                        return show('Jump to the /spi page and try again！', '/spi', 4003);
+                        return show('<span>Jump to the /spi page and try again！<a href="/spi">Click Me</a></span>', '/spi', 4003);
                     }
+                    $this->redirect('/spi');
                 }elseif($click_ip['score'] < 0.2){
                     $this->redirect('/spi');
                 }

@@ -159,9 +159,11 @@
                         $("#confirm_loading").removeClass('d-none')
                     },
                     success: function (e) {
-                        if (e.error_code == 0) {
+                        if (e.error_code === 0) {
                             toast(e.msg);
                             modalClose(modal)
+                        } else if (e.error_code === 4003){
+                            toast(e.msg, {isClose: false, type: 'danger'});
                         } else {
                             toast(e.msg, {type: 'danger'});
                         }

@@ -34,8 +34,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <select name="site" aria-label="Default select example" class="form-select"
-                                                style="height: 58px;">
+                                        <select name="site" aria-label="Default select example" class="form-select" style="height: 58px;">
                                         </select>
                                     </div>
                                 </div>
@@ -99,10 +98,11 @@
 </div>
 
 <!-- main content end-->
-<script src="/static/web/js/jquery-3.6.0.min.js" async="async" defer="defer"></script>
+<script src="/static/web/js/jquery-3.6.0.min.js"></script>
 <script src="/static/web/js/push.min.js" async="async" defer="defer"></script>
 <script src="/static/web/js/clipboard.min.js" async="async" defer="defer"></script>
 <script>
+
     $(function () {
         let mails = {:json_encode($mails)};
         let option = ''

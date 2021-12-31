@@ -25,7 +25,7 @@
                         </div>
                         <div class="card-body text-start">
                             {volist name="article" id="vo" empty="$empty"}
-                            <h6><a href="/receive-sms-blog/{$vo.id}">{$vo.title}</a></h6>
+                            <h6><a class="click_loading" href="/receive-sms-blog/{$vo.id}">{$vo.title}</a></h6>
                             <hr />
                             {/volist}
                         </div>

@@ -79,7 +79,7 @@ class Bootstrap extends Paginator
             $block['first'] = $this->getUrlRange(1, 2);
             $block['last']  = $this->getUrlRange($this->lastPage - ($window + 2), $this->lastPage);
         } else {
-            $block['first']  = $this->getUrlRange(1, 2);
+            $block['first']  = $this->getUrlRange(1, 1);
             $block['slider'] = $this->getUrlRange($this->currentPage - $side, $this->currentPage + $side);
             $block['last']   = $this->getUrlRange($this->lastPage - 1, $this->lastPage);
         }

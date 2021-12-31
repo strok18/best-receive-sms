@@ -9,7 +9,6 @@ window.onload = function () {
     if (typeof messageInit === 'function'){
         messageInit();
     }
-
 }
 
 function init() {
@@ -115,7 +114,7 @@ function modal(body, params = {}, confirmCallback, closeCallback) {
     }
 
     let modalHtml = `<div class="modal fade" id="modal" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-scrollable ` + params.size + `">
+						<div class="modal-dialog modal-dialog-scrollable ` + params.size + ` modal-dialog-centered">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="modal-title">` + params.title + `</h5>
@@ -202,14 +201,6 @@ function loading(type = true,autoClose = 0, shadeType = true) {
     }
 }
 
-function loadingFont(){
-    let loading_font = document.getElementById('loading_font');
-    for (let i = 0; i < 3; i++){
-
-    }
-    loading_font.innerText = 'aaaaa';
-}
-
 //copy
 function copy() {
     let clipboard = new ClipboardJS('.copy')
@@ -224,10 +215,10 @@ function subscription(info) {
 		<div class="container">
 			<div class="row">
 				<div class="modal-body">
-				<form class="was-validated" novalidate>
+				<form id="subscription_form">
 					<div class="form-floating mb-3">
-					  <input class="form-control" id="email_address" required>
-					  <label for="email_address">Email address</label>
+					  <input class="form-control" placeholder="Email address" id="email_address" required onfocus="inputFocus('subscription_form')">
+					  <label for="email_address" class="text-secondary">Email address</label>
 				  	</div>
 				  <div class="alert alert-secondary" role="alert">
 					  ` + info + `
@@ -273,14 +264,16 @@ function feedback() {
 		<div class="container">
 			<div class="row">
 				<div class="modal-body">
-				<form class="was-validated" novalidate>
+				<form id="form_feedback">
 					<div class="form-floating mb-3">
-					  <textarea class="form-control" id="feedback_content" style="height: 100px" required></textarea>
-                      <label for="floatingTextarea2">Content of the feedback</label>
+					  <textarea class="form-control" id="feedback_content" placeholder="Content of the feedback" style="height: 100px" required onfocus="inputFocus('form_feedback')"></textarea>
+                      <label for="floatingTextarea2" class="text-secondary">Content of the feedback</label>
+                      <div class="invalid-feedback">Please enter a valid feedback.</div>
 				  	</div>
 				  	<div class="form-floating mb-3">           
-					  <input class="form-control" id="feedback_email" required>
-					  <label for="email_address">Email address</label>
+					  <input class="form-control" id="feedback_email" placeholder="Email address">
+					  <label for="email_address" class="text-secondary">Email address</label>
+					  <div class="invalid-feedback">Please enter a valid email.</div>
 				  	</div>
 				</form>
 			  </div>
@@ -318,7 +311,6 @@ function feedback() {
     });
 }
 
-
 function buttonLoading(buttonID, type = true){
     let button = document.getElementById(buttonID);
     if (type === true){
@@ -352,4 +344,10 @@ function loadScript(callback, url) {
     }
     script.src = url;
     document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+//input 激活事件
+function inputFocus(id = 'form_data'){
+    let form = document.getElementById(id);
+    form.classList.add('was-validated');
 }
