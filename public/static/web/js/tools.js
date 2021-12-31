@@ -3,6 +3,7 @@ window.onload = function () {
     scrollTop();
     clickLoading();
     unload();
+    stretchBottom();
     if (typeof copyPhone === 'function'){
         copyPhone();
     }
@@ -15,6 +16,17 @@ function init() {
     //privacy alert show
     if (!localStorage.getItem('brsPrivacy')){
         document.getElementById('privacy_alert').classList.remove('d-none');
+    }
+}
+
+//底部拉伸
+function stretchBottom(){
+    let windows_height = screen.availHeight;
+    let foot_null = document.getElementById('foot-null');
+    let full_height = foot_null.offsetTop;
+    let height = windows_height - full_height - 232;
+    if (height > 0){
+        foot_null.style.height = height + 'px';
     }
 }
 
@@ -210,6 +222,50 @@ function copy() {
     })
 }
 
+function referrer() {
+    var ref = '';
+    if (document.referrer.length > 0) {
+        ref = document.referrer;
+    }
+    try {  if (ref.length == 0 && opener.location.href.length > 0) {
+        ref = opener.location.href;
+    }
+    } catch (e) {}
+    return ref;
+}
+
+function captcha(){
+    let captchaHtml = `
+        <div id="h-captcha" data-callback="captchaCallback" class="mt-4"></div>
+    `;
+    modal(captchaHtml)
+}
+
+function captchaCallback (e) {
+    if (e){
+        $.ajax({
+            url: '/hcaptcha',
+            type: 'post',
+            data: {response: e},
+            beforeSend: function(){
+                loading();
+            },
+            success: function (e) {
+                console.log(e)
+                if (e.error_code == 0) {
+                    toast(e.msg);
+                    window.location.href = referrer();
+                } else {
+                    toast(e.msg, {type: 'danger'})
+                }
+            },
+            complete: function () {
+                loading(false);
+            }
+        })
+    }
+}
+
 function subscription(info) {
     let subscriptionHtml = `
 		<div class="container">
@@ -229,6 +285,7 @@ function subscription(info) {
 		</div>
 	`;
     modal(subscriptionHtml, {title: 'Subscription', size: '', autoClose: false}, function (e) {
+        inputFocus('subscription_form');
         var modal = e;
         loadScript(function () {
             let email = $('#email_address').val()
@@ -271,7 +328,7 @@ function feedback() {
                       <div class="invalid-feedback">Please enter a valid feedback.</div>
 				  	</div>
 				  	<div class="form-floating mb-3">           
-					  <input class="form-control" id="feedback_email" placeholder="Email address">
+					  <input class="form-control" id="feedback_email" placeholder="Email address" required>
 					  <label for="email_address" class="text-secondary">Email address</label>
 					  <div class="invalid-feedback">Please enter a valid email.</div>
 				  	</div>
@@ -281,7 +338,8 @@ function feedback() {
 		</div>
 	`;
     modal(feedbackHtml, {title: 'Feedback', size: '', autoClose: false}, function (e) {
-        var modal = e;
+        inputFocus('form_feedback');
+        let modal = e;
         loadScript(function () {
             let email = $('#email_address').val()
             $.ajax({

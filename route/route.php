@@ -94,11 +94,10 @@ if ($domain == 'best'){
 
         Route::post('api/feedback', 'best/Feedback/create');
         Route::post('api/wp_password', 'best/Wangpan/getPassword');
-        Route::post('recaptcha', 'index/ReCaptcha/index');
-        Route::post('hcaptcha', 'index/ReCaptcha/hcaptcha');
+        Route::post('recaptcha', 'best/ReCaptcha/index');
+        Route::post('hcaptcha', 'best/ReCaptcha/hcaptcha');
         Route::post('report', 'best/Message/report');
-        Route::get('check', 'index/Check/index');
-        Route::get('spi', 'index/Check/index'); //蜘蛛重命名
+        Route::get('spi', 'best/Check/index'); //蜘蛛重命名
         Route::get('verify', 'admin20161108/Login/verify'); //验证码
 
         Route::post('heartbeat', 'index/Index/heartBeat');
@@ -109,6 +108,7 @@ if ($domain == 'best'){
 
 $countrys = '(?i)Upcoming|China|GAT|GW|Foreign|UK|USA|Myanmar|Estonia|Philippines|HongKong|Macao|Indonesia|Australia|Canada|Malaysia|Japan|Korea|Russia|Thailand|India|Mexico|Vietnam|Nigeria|Taiwan|Colombia|Bangladesh|Pakistan|Iran|Egypt|Argentina|Ukraine|Venezuela|Turkey|SouthAfrica|Spain|Serbia|Portugal|Poland|Netherlands|Italy|Germany|France|CzechRepublic|Croatia|Brazil|Sweden|Netherlands';
     Route::group('', function () use ($countrys){
+        //return;
         // 动态注册域名的路由规则
         //country跳转
         Route::get('/', 'mys/Phone/index');

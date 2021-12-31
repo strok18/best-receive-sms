@@ -8,23 +8,14 @@
                     <div class="invalid-feedback">Please enter a valid email address.</div>
                 </div>
             </form>
-
             <div>
                 <button class="btn btn-primary-light text-light col-sm-2" type="button" onclick="unsubscribe()">Unsubscribe</button>
             </div>
         </form>
     </div>
 </div>
-<div id="foot-null" class="foot-null"></div>
+<div id="foot-null"></div>
 <script>
-    let windows_height = screen.availHeight;
-    let foot_null = document.getElementById('foot-null');
-    let full_height = foot_null.offsetTop;
-    let height = windows_height - full_height - 230;
-    if (height > 0){
-        foot_null.style.height = height + 'px';
-    }
-
     function unsubscribe() {
         inputFocus();
         loadScript(function () {
