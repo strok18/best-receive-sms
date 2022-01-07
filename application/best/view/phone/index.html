@@ -4,10 +4,11 @@
     <div class="banner">
         <div class="container mt-4">
             <div class="row">
-                <h1 class="text-center">(Permanent Free) Receive SMS Online</h1>
-                <span> IS A FREE SERVICE FOR RECEIVING SMS MESSAGES AND VOICE MAILS ONLINE. THERE IS NO NEED TO
-							REGISTER. JUST SELECT YOUR PHONE NUMBER FROM THE LIST BELOW. YOU CAN USE IT TO RECEIVE
-							MESSAGES FROM FACEBOOK, TELEGRAM, WECHAT, VK, PAYPAL, ALIPAY AND MORE</span>
+                <h1 class="text-center">
+                    <?php echo $phone_heads['info_top_h1'];?></h1>
+                <span>
+                    <?php echo $phone_heads['info_top_h4'];?>
+                </span>
             </div>
         </div>
     </div>
@@ -33,7 +34,7 @@
                                             d="M0 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-5zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-8zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-11z" />
                                 </svg>
                                 {else /}
-                                <span style="color: #8D8D8D"><img height="13px" src="/static/sms/images/offline.png"></span>
+                                <span style="color: #8D8D8D"><img height="13px" src="/static/sms/images/offline.png" title="Offline Number"></span>
                                 {/if}
 
                             </div>
@@ -42,12 +43,12 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">
-                                <img class="w-50" height="170" src="/static/web/images/flag/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.svg"
+                            <a class="click_loading" href="{$Request.domain}/{$vo.country.en_title | strtolower}-phone-number" title="Receive sms from {$vo['country_title']}">
+                                <img class="w-50 country-flag" src="/static/web/images/flag/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.svg"
                                      alt="{$vo['country_title']}{$Think.lang.common_number}">
                             </a>
                             <h3 class="card-title number-font" style="margin-top: 5px;">
-                                <a class="click_loading" href="{$Request.domain}/receive-sms-{$vo.country.en_title | strtolower}-phone-number/{$vo.uid}">
+                                <a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}/{$vo.uid}" title="Receive sms {$vo['country_title']}">
                                     <span class="fs-4">+{$vo.bh_encryption | raw}</span>
                                     <span>{$vo.phone_encryption | raw}</span>
                                 </a>
@@ -92,32 +93,44 @@
 <!-- main content end-->
 <!-- About start -->
 {if $Think.server.REQUEST_URI == '/'}
-    <div class="container py-3 py-lg-4 mt-2" style="background-color: #fff;">
-        <h2 class="text-center mb-4">Cartzilla Feature <span class="fw-light">Highlights</span></h2>
+    <div class="container py-3 py-lg-4 mt-2 about" style="background-color: #fff;font-size: 14px;">
+        <h2 class="text-center mb-4">About Best Receive SMS</h2>
         <div class="row text-center pt-4">
-            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/07.png" width="90" alt="Google Fonts icon">
-                <h6>Google Fonts</h6>
-                <p class="fs-ms text-muted mb-0">Cartzilla uses Google fonts which are free, fast to load and of very high quality. Currently Google fonts library includes 870+ font families to choose from.</p>
+            <div class="col-md-6 mb-grid-gutter pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" fill="currentColor" class="bi bi-currency-exchange text-danger mt-4 mb-2" viewBox="0 0 16 16">
+                    <path d="M0 5a5.002 5.002 0 0 0 4.027 4.905 6.46 6.46 0 0 1 .544-2.073C3.695 7.536 3.132 6.864 3 5.91h-.5v-.426h.466V5.05c0-.046 0-.093.004-.135H2.5v-.427h.511C3.236 3.24 4.213 2.5 5.681 2.5c.316 0 .59.031.819.085v.733a3.46 3.46 0 0 0-.815-.082c-.919 0-1.538.466-1.734 1.252h1.917v.427h-1.98c-.003.046-.003.097-.003.147v.422h1.983v.427H3.93c.118.602.468 1.03 1.005 1.229a6.5 6.5 0 0 1 4.97-3.113A5.002 5.002 0 0 0 0 5zm16 5.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0zm-7.75 1.322c.069.835.746 1.485 1.964 1.562V14h.54v-.62c1.259-.086 1.996-.74 1.996-1.69 0-.865-.563-1.31-1.57-1.54l-.426-.1V8.374c.54.06.884.347.966.745h.948c-.07-.804-.779-1.433-1.914-1.502V7h-.54v.629c-1.076.103-1.808.732-1.808 1.622 0 .787.544 1.288 1.45 1.493l.358.085v1.78c-.554-.08-.92-.376-1.003-.787H8.25zm1.96-1.895c-.532-.12-.82-.364-.82-.732 0-.41.311-.719.824-.809v1.54h-.005zm.622 1.044c.645.145.943.38.943.796 0 .474-.37.8-1.02.86v-1.674l.077.018z"/>
+                </svg>
+                <h6>FREE SERVICE FOR RECEIVING SMS ONLINE</h6>
+                <p class="fs-ms text-muted mb-0">
+                    BestReceiveSMS Is Free And Will Always Continue To Be. There Is No Charge For Receiving Sms Online And We Do Not Limit Anything! You Can Receive As Many Messages As You Want, And It Is Still Free. We Know You Are Going To Find Our Free Sms Service Useful, That’s Why You Should Endeavor To Share It With Your Friends, Colleagues And Relatives Who May Need To Receive Sms Online. Remember To Tell Them That It’s Free.
+                </p>
             </div>
-            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/08.png" width="90" alt="Touch icon">
-                <h6>Touch-enabled Sliders</h6>
-                <p class="fs-ms text-muted mb-0">In the era of touch screens it's important to ensure great user experience on handheld devices, especially when it comes to such frequently used interface component as slider.</p>
+            <div class="col-md-6 mb-grid-gutter pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" fill="currentColor" class="bi bi-shield-fill-check text-success mt-4 mb-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm2.146 5.146a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647z"/>
+                </svg>
+                <h6>MADE FOR YOUR PHONE NUMBER PRIVACY</h6>
+                <p class="fs-ms text-muted mb-0">
+                    This Tool Can Be Useful If You Want To Protect Your Privacy By Keeping Your Real Phone Number To Yourself.our Service Is Designed To Ensure Everyone's Access To Phone Number Privacy. Using Bestreceivesms There Is No Need To Expose Your Personal Phone Number Online. Utilize One Of Our Phone Numbers To Keep Yourself Risk And Breach Free. We Do Not Require Registration Nor Request Any Personal Data. We Remove All Old Messages After Set Period Of Time.
+                </p>
             </div>
-            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/09.png" width="90" alt="Vector icon">
-                <h6>Vector Based HD Ready Icons</h6>
-                <p class="fs-ms text-muted mb-0">Cartzilla is equiped with font-based icon pack to ensure that infographics and interface icons look sharp on any device with any screen resolution and pixel density.</p>
+            <div class="col-md-6 mb-grid-gutter pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" fill="currentColor" class="bi bi-phone-vibrate-fill text-primary mt-4 mb-2" viewBox="0 0 16 16">
+                    <path d="M4 4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4zm5 7a1 1 0 1 0-2 0 1 1 0 0 0 2 0zM1.807 4.734a.5.5 0 1 0-.884-.468A7.967 7.967 0 0 0 0 8c0 1.347.334 2.618.923 3.734a.5.5 0 1 0 .884-.468A6.967 6.967 0 0 1 1 8c0-1.18.292-2.292.807-3.266zm13.27-.468a.5.5 0 0 0-.884.468C14.708 5.708 15 6.819 15 8c0 1.18-.292 2.292-.807 3.266a.5.5 0 0 0 .884.468A7.967 7.967 0 0 0 16 8a7.967 7.967 0 0 0-.923-3.734zM3.34 6.182a.5.5 0 1 0-.93-.364A5.986 5.986 0 0 0 2 8c0 .769.145 1.505.41 2.182a.5.5 0 1 0 .93-.364A4.986 4.986 0 0 1 3 8c0-.642.12-1.255.34-1.818zm10.25-.364a.5.5 0 0 0-.93.364c.22.563.34 1.176.34 1.818 0 .642-.12 1.255-.34 1.818a.5.5 0 0 0 .93.364C13.856 9.505 14 8.769 14 8c0-.769-.145-1.505-.41-2.182z"/>
+                </svg>
+                <h6>GLOBAL MOBILE PHONE NUMBER</h6>
+                <p class="fs-ms text-muted mb-0">
+                    We Can Receive Sms Online From Everywhere To Our Free Phone Numbers In <a href="/usa-phone-number" title="receive sms usa phone number">USA</a> <a href="/france-phone-number" title="receive sms france number">France</a> <a href="/uk-phone-number" title="receive sms uk phone number">UK</a> <a href="/sweden-phone-number" title="receive sms sweden phone number">Sweden</a> <a href="/netherlands-phone-number" title="receive sms netherlands phone number">Netherlands</a> <a href="/china-phone-number" title="receive sms china phone number">China</a> <a href="/hongkong-phone-number" title="receive sms honghong phone number">Hong Kong</a> <a href="/taiwan-phone-number" title="receive sms taiwan phone number">TaiWan</a> <a href="/germany-phone-number" title="receive sms germany phone number">Germany</a> <a href="/myanmar-phone-number" title="receive sms myanmar phone number">Myanmar</a> <a href="/vietnam-phone-number" title="receive sms vietnam phone number">Vietnam</a> <a href="/thailand-phnoe-number" title="receive sms thailand phone number">Thailand</a> <a href="/philippines-phone-number" title="receive sms philippines phone number">Philippines</a> <a href="/india-phone-number" title="receive sms india phone number">India</a> <a href="/australia-phone-number" title="receive sms australia phone number">Australia</a> <a href="/malaysia-phone-number" title="receive sms malaysia phone number">Malaysia</a> <a href="/japan-phone-number" title="receive sms japan phone number">Japan</a> <a href="/korea-phone-number" title="receive sms south korea phone number">South Korea</a> <a href="/brazil-phone-nubmer" title="receive sms brazil phone number">Brazil</a> <a href="/canada-phone-number" title="receive sms canada phone number">Canada</a> <a href="/poland-phone-number" title="receive sms poland phone number">Poland</a> And <a href="/country">Many More Country</a>. With Our Free Virtual Phone Numbers You Can Verify Your Accounts On Almost All Websites. Verify Your <a href="/receive-sms-from-facebook" title="receive sms from Facebook">Facebook</a> <a href="/receive-sms-from-twitter" title="receive sms from twitter">Twitter</a> <a href="/receive-sms-from-google" title="receive sms from google">Google</a> <a href="/receive-sms-from-telegram" title="receive sms from telegram">Telegram</a> <a href="/receive-sms-from-wechat" title="receive sms from wechat">Wechat</a> <a href="/receive-sms-from-alipay" title="receive sms from Alipay">Alipay</a> <a href="/receive-sms-from-ebay" title="receive sms from eBay">eBay</a> <a href="/receive-sms-from-baidu" title="receive sms from baidu">Bdidu</a> <a href="/receive-sms-from-instagram" title="receive sms from instagram">instagram</a> <a href="/receive-sms-from-paypal" title="receive sms from Paypal">Paypal</a> <a href="/receive-sms-from-vk" title="receive sms from vk">VK</a> <a href="/receive-sms-from-iqiyi" title="receive sms from iqiyi">iQiyi</a> And <a href="/receive-sms-from">And More Account</a>.
+                </p>
             </div>
-            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/10.png" width="90" alt="HTML5 icon">
-                <h6>W3C Valid HTML Code</h6>
-                <p class="fs-ms text-muted mb-0">All HTML files are checked via W3C validator to ensure 100% valid code. As you probably know invalid HTML limits innovation, but Cartzilla is innovative at its core.</p>
-            </div>
-            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/11.png" width="90" alt="JavaScript icon">
-                <h6>Future-proof JavaScript</h6>
-                <p class="fs-ms text-muted mb-0">Cartzilla core scripts as well as all dependencies are written in vanilla JS. And now with Bootstrap 5 we finally drops jQuery and uses ES6 modules.</p>
-            </div>
-            <div class="col-md-6 mb-grid-gutter pb-2"><img class="inline-block mb-3" src="https://cartzilla.createx.studio/img/intro/features/12.png" width="90" alt="Documentation icon">
-                <h6>Detailed Documentation</h6>
-                <p class="fs-ms text-muted mb-0">Download package includes links to online documentation. It covers all crucial information about how to get started, customize template and components usage.</p>
+            <div class="col-md-6 mb-grid-gutter pb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" fill="currentColor" class="bi bi-bell-fill text-warning mt-4 mb-2" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                </svg>
+                <h6>INSTRUCTIONS FOR USE</h6>
+                <p class="fs-ms text-muted mb-0">
+                    It's Our Duty To Remind You That Everyone Sees The Messages So That A Sensitive Message Should Be Avoided, The Receive Sms Phone Numbers Are Temporary Disposable, Everyone Can See The Text Sms Verification Code Content, Please Do Not Use It To Register My Important Information. It Can Be Noted That Due To The Massive Amount Of Messages There Is A Likelihood That If Sensitive Message Is Sent, It Will Not Be Possible To Connect It To Any Topic.
+                </p>
             </div>
         </div>
     </div>

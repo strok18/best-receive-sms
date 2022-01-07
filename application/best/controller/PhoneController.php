@@ -139,6 +139,11 @@ class PhoneController extends Controller
     public function generateHeads($country, $title_page){
         
         //如果是首页
+        $heads['title'] = Lang::get('index_title');
+        $heads['description'] = Lang::get('index_description');
+        $heads['keywords'] = Lang::get('index_keywords');
+        $heads['info_top_h1'] = Lang::get('index_info_top_h1');
+        $heads['info_top_h4'] = Lang::get('index_info_top_h4');
         if ($_SERVER['REQUEST_URI'] == '/'){
             $heads['title'] = Lang::get('index_title');
             $heads['description'] = Lang::get('index_description');
@@ -155,7 +160,6 @@ class PhoneController extends Controller
             $heads['info_top_h1'] = str_replace('[country]',$country[$country_title], Lang::get('country_page_info_top_h1'));
             $heads['info_top_h4'] = str_replace('[country]',$country[$country_title], Lang::get('country_page_info_top_h4'));
         }
-        //$heads['guoqi'] = str_replace('[country]',$country[$country_title . '_title'], Lang::get('common_guoqi'));
         return $heads;
     }
     

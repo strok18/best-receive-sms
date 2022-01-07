@@ -115,7 +115,7 @@ class MessageController extends Controller
         $en_title = strtolower($phone_info['country']['en_title']);
         //号码上线天数，以便设置页数
         $phone_hour = $this->phoneOnlineHour($phone_info['create_time'], $phone_num);
-        $page_url = 'receive-sms-'.$en_title.'-phone-number/' . $phone_info['uid'];
+        $page_url = 'receive-sms-from-'.$en_title.'/' . $phone_info['uid'];
         if (empty($page)){
             $result_sms = (new ApiController())->getSMS($phone_num);
             $result_sms = json_decode($result_sms->getContent(), true);

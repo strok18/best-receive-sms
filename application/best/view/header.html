@@ -2,20 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <title>[title]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="[description]">
+    <meta name="keywords" content="[keywords]">
+    <meta property="og:title" content="[title]" />
+    <meta property="og:url" content= "{$Request.domain}" />
+    <meta property="og:description" content="[description]" />
+    <meta property="og:image" content="{$Request.domain}/favicon.ico">
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="{$Think.lang.header_locale}" />
     <link href="/static/web/css/bootstrap.min.css" rel="stylesheet" async="async" defer="defer">
     <link href="/static/web/css/style.css" rel="stylesheet" type="text/css" async="async" defer="defer"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Poppins:wght@200;300;400;500;600&display=swap');
     </style>
-    <title>号码中心</title>
 </head>
 <body>
 <!-- Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-3">
     <div class="container">
-        <a class="navbar-brand" href="/">Best</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        <a class="navbar-brand fs-3 fw-bold fst-italic" href="/">Best<span style="color: #FF0000;">Receive</span>SMS.com</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -26,7 +34,7 @@
                     <a class="nav-link" href="/temporary-email">Email Code</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/receive-sms-from-country">All Country</a>
+                    <a class="nav-link" href="/country">All Country</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -34,9 +42,9 @@
                         Select Country
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="/receive-sms-from-france">France</a></li>
-                        <li><a class="dropdown-item" href="/receive-sms-from-uk">UK</a></li>
-                        <li><a class="dropdown-item" href="/receive-sms-from-usa">America</a></li>
+                        <li><a class="dropdown-item" href="/france-phone-number">France</a></li>
+                        <li><a class="dropdown-item" href="/uk-phone-number">UK</a></li>
+                        <li><a class="dropdown-item" href="/usa-phone-number">America</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">

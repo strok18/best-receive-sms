@@ -62,7 +62,7 @@ class BreadCrumbController extends Controller
             $bread_crumb[2]['url'] = '';
         }else{
             $bread_crumb[2]['title'] = $uid;
-            $bread_crumb[2]['url'] = '/receive-sms-' . strtolower($phone_info['country']['en_title']) . '-phone-number/'.$uid;
+            $bread_crumb[2]['url'] = '/receive-sms-from-' . strtolower($phone_info['country']['en_title']) . '/'.$uid;
             $bread_crumb[3]['title'] = $page;
             $bread_crumb[3]['url'] = '';
         }

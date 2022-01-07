@@ -444,7 +444,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-phone-number/[PAGE]"
+                    'path'=>Request::domain()."/phone-number/[PAGE]"
                 ]);
         }elseif($country_id == 'upcoming'){
             $result = self::with('country')
@@ -453,7 +453,7 @@ class PhoneModel extends BaseModel
                 ->order('sort', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."-/[PAGE]"
+                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/[PAGE]"
                 ]);
             //trace($result, 'notice');    
             if(count($result) < 1){
@@ -464,7 +464,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(50, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."-/[PAGE]"
+                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/[PAGE]"
                 ]);
             }
         }else{
@@ -478,7 +478,7 @@ class PhoneModel extends BaseModel
                 ->order('id', 'desc')
                 ->paginate(8, false, [
                     'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."/[PAGE]"
+                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/[PAGE]"
                 ]);
         }
         return $result;

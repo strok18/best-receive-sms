@@ -3,6 +3,8 @@
 namespace app\common\model;
 
 
+use think\facade\Request;
+
 class CountryModel extends BaseModel
 {
     protected $hidden = ['create_time', 'update_time', 'delete_time'];
@@ -29,7 +31,10 @@ class CountryModel extends BaseModel
         $result = self::where('show', '=', 1)
             ->order('sort', 'desc')
             ->cache(3600)
-            ->paginate(8);
+            ->paginate(8, false, [
+                'page'=>Request::param('page')?:1,
+                'path'=>Request::domain()."/country/[PAGE]"
+            ]);
         return $result;
     }
     

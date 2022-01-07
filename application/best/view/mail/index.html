@@ -30,7 +30,7 @@
                                     <div class="col-sm-4">
                                         <div class="form-floating mb-3 text-end">
                                             <input type="email" class="form-control" id="floatingInput" name="email_name" placeholder="Email User name">
-                                            <label for="floatingInput">Email User name</label>
+                                            <label for="floatingInput" class="text-secondary">Email User name</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -194,7 +194,7 @@
             email_number = 0
         }
         if (number > email_number) {
-            toast('Receive new mail')
+            toast('Receive new mail', {isClose: false})
             clearTimeout(auto)
             auto = undefined
             $('#receive_email').removeAttr('disabled')

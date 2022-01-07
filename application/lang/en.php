@@ -4,12 +4,14 @@
  */
 return [
 	'website_name' => 'Receive SMS',
-	//这里的title/hearder_description,header_keywords,似乎没用。
-    'header_title' => 'Receive SMS Online for FREE -  virtual number | Disposable|Temporary Phone Number',
-    'hearder_description' => 'Receive SMS online for free with temporary SMS and disposable virtual phone number for China,UK,USA,France,Germany.Receive verification code from around the world (facebook, google, tinder twitter telegram...)',
-    'header_keywords' => 'receive SMS online,SMS online,receive SMS,free SMS receive,free disposable phone numbers,free phone number,receive sms online free,SMS receive free,temporary phone number,fake phone number,bypass sms verification',
     'header_locale' => 'en',
     //index首页
+    'index_title' => '2022 Best Receive SMS Online, Disposable/Fake/virtual/Temporary Phone Number',
+    'index_description' => 'Best Receive SMS online for FREE,allow anyone to receive sms online disposable/fake/virtual/temporary phone number for USA,UK,France Brazil England Germany,Receive anonymous sms activation online for phone verification code.',
+    'index_keywords' => 'best receive sms,receive sms online,temporary phone number,temp phone number,temp sms,disposable phone number,fake phone number,free phone number,virtual phone number,receive sms real number,receive sms verification code',
+    'index_info_top_h1' => 'Receive SMS Online Instantly',
+    'index_info_top_h4' => 'BestReceiveSMS.com Is A Free Service For Receiving Sms Messages And Voice Mails Online. There Is No Need To Register. Just Select Your Phone Number From The List Below.We Receive Sms From All Over The World To Our Phone Numbers. Our Virtual Phone Numbers Allow You To Verify And Register For Various Websites . For <a href="/receive-sms-from-instagram" title="receive sms from instagram">instagram</a>,<a href="/receive-sms-from-facebook" title="receive sms from facebook">Facebook</a>,<a href="/receive-sms-from-wechat" title="receive sms from wechat">Wechat</a>,<a href="/receive-sms-from-alipay" title="receive sms from alipay">Alipay</a>,<a href="/receive-sms-from-telegram" title="receive sms from telegram">Telegram</a> And <a href="/receive-sms-from">More</a>. Absolutely Free.',
+
 
     'header_nav_mail' => 'EMAIL CODE',
     'header_nav_mail_title' => 'Disposable Temporary Email verification',
@@ -54,12 +56,6 @@ return [
     'foot_copy_success' => 'success',
     'foot_copy_failed' => 'failure',
     'foot_alert_title' => 'More data, trying to load...',
-    
-    'index_title' => '(2021 Best) Receive SMS Online | Temporary Phone Number',
-    'index_description' => 'Receive SMS online for free with temporary SMS and disposable virtual phone number for China,UK,USA,France,Germany.Receive verification code from around the world (facebook, google, tinder twitter telegram...)',
-    'index_keywords' => 'receive SMS online,SMS online,receive SMS,free SMS receive,free disposable phone numbers,free phone number,receive sms online free,SMS receive free,temporary phone number,fake phone number,bypass sms verification',
-    'index_info_top_h1' => '(Permanent Free) Receive SMS Online',
-    'index_info_top_h4' => 'myTempSMS.com IS A FREE SERVICE FOR RECEIVING SMS MESSAGES AND VOICE MAILS ONLINE. THERE IS NO NEED TO REGISTER. JUST SELECT YOUR PHONE NUMBER FROM THE LIST BELOW. YOU CAN USE IT TO RECEIVE MESSAGES FROM FACEBOOK, TELEGRAM, WECHAT, VK, PAYPAL, ALIPAY AND MORE',
 
     'phone_main_view' => 'Received',
     'phone_main_view_1' => 'Times',
@@ -133,17 +129,18 @@ return [
     'message_js_loading' => 'More data, trying to load...',
 
     //country page页
-    'country_title' => 'Free Temporary Phone Number,Disposable Phone Number,Virtual Phone Number The World',
-    'country_description' => 'China,Hong Kong/Macao/Taiwan,USA,UK,France,Philippines, Indonesia, a number of countries in the world with a total of 200+ fake disposable temporary temporary phone number receive sms online verification code.',
-    'country_keywords' => 'receive sms online,receive sms online,free receive sms,free temporary phone number,verification code,disposable phone number,virtual phone number,sms receiver',
-    'country_info_top_h1' => 'Free Temporary Phone Number',
-    'country_info_top_h4' => 'China,Hong Kong/Macao/Taiwan,USA,UK,Canada,Australia,Philippines, Indonesia, a number of countries in the world with a total of 200+ temporary phone number receive sms online verification code.',
-    'country_main_image_title' => 'receive sms online for [country]',
-    'country_page_title' => 'Free Receive SMS From [country] | Temporary Phone Number Form [country] For Verification Code.',
-    'country_page_description' => 'Free Receive SMS online from [country].without registration disposable virtual temporary phone number [country] for verification code,You can use it to register the website or app google voice,apple id,gmail,facebook,telegram,whatsapp,twitter,instagram and more.',
-    'country_page_keywords' => 'receive [country],receive sms from [country],receive sms online [country],free receive sms [country],free temporary phone number [country],verification code [country],disposable phone number [country],virtual phone number [country],sms receiver [country]',
-    'country_page_info_top_h1' => 'Free Receive SMS From [country]',
+    'country_title' => 'Free receive sms online disposable/fake/virtual/temporary mobile phone number from all country',
+    'country_description' => 'Free Fake Virtual Temporary Phone Number for Receive Sms Online,including China, Korea, Us, India, Russia, Uk,France, Germany, Japan, Philippines, Brazil And More Outside Country, Receive Sms Free with No Register.',
+    'country_keywords' => 'temp number,temporary phone number,disposable phone number,virtual phone number,receive sms online all country,receive sms outside country,sms receive all country,have to receive sms out of country,how to receive sms outside country,how to receive sms in another country',
+    'country_info_top_h1' => 'RECEIVE SMS ONLINE ALL COUNTRY',
+    'country_info_top_h4' => 'Free Virtual Temporary Phone Numbers for Receive Sms Online, Including Following All Country , There is No Need to Register. You Can Use It to Receive Messages from <a href="/receive-sms-from-uber" title="receive sms from Uber">Uber</a>,<a href="/receive-sms-from-amazon" title="receive sms from Amazon">Amazon</a>, <a href="/receive-sms-from-ebay" title="receive sms from ebay">eBay</a>, <a href="/receive-sms-from-tiktok" title="receive sms from tiktok">TikTok</a>, <a href="/receive-sms-from-kakaotalk" title="receive sms from kakaotalk">KakaoTalk</a>, <a href="/receive-sms-from-whatsapp" title="receive sms from whatsapp">WhatsApp</a>, <a href="/receive-sms-from-discord" title="receive sms from Discord">Discord</a> And <a href="/receive-sms-from">More</a>.',
+    'country_main_image_title' => 'receive sms from [country]',
+    'country_page_title' => 'receive sms from [country],disposable/fake/virtual/temporary mobile phone number',
+    'country_page_description' => 'receive sms from [country],disposable/fake/virtual/temporary mobile phone number',
+    'country_page_keywords' => 'receive sms from [country],temp phone number,disposable number,virtual number,fake number,receive sms online [country],free receive sms [country],free temporary phone number [country],verification code [country],disposable phone number [country],virtual phone number [country],sms receiver [country],receive sms for [country]',
+    'country_page_info_top_h1' => 'FREE RECEIVE SMS FROM <span class="text-danger text-uppercase">[country]</span>',
     'country_page_info_top_h4' => 'Free Receive SMS From [country].without registration disposable virtual temporary phone number [country] for verification code,You can use it to register the website or app google voice,apple id,gmail,facebook,telegram,whatsapp,twitter,instagram and more.',
+
     'mailbox_title' => 'Subscribe to a new number',
     'mailbox_explain' => 'After the subscription is successful, you will receive an email notification of the new number. Please add 【notify@mytempsms.com】 to the whitelist or friends.',
     'mailbox_params_error' => 'Email address delivery exception',

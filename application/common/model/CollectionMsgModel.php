@@ -74,7 +74,7 @@ class CollectionMsgModel extends BaseModel
             ->cache(86400)
             ->paginate(20, (int)$total_num, [
                 'page'=>Request::param('page')?:1,
-                'path'=>Request::domain()."/receive-sms-".Request::param('country')."-phone-number/".$phone_num."/[PAGE]"
+                'path'=>Request::domain()."/receive-sms-".Request::param('country')."/".$phone_num."/[PAGE]"
             ]);
     }
 

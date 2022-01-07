@@ -128,6 +128,7 @@ a:active {
 	.email-font {
 		font-size: 2rem;
 	}
+
 }
 
 
@@ -135,8 +136,14 @@ a:active {
 	.email-font {
 		font-size: 1.5rem;
 	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.country-flag{
+		height: 150px;
+	}
 	.top{
-		width: 5rem;
+		background-color: #FFFFFF;
 	}
 }
 
@@ -172,3 +179,13 @@ a:active {
 }
 
 .grecaptcha-badge{display:none}
+
+.top{
+	position:fixed;
+	right:30px;
+	bottom:30px;
+	padding: 10px;
+}
+.about a:link{
+	color: #6c757d;
+}
