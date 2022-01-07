@@ -3,6 +3,7 @@
 namespace app\common\model;
 
 use app\common\controller\RedisController;
+use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Request;
 use think\model\concern\SoftDelete;
@@ -391,100 +392,101 @@ class PhoneModel extends BaseModel
                 return $online + $offine;
         }
     }
-    
-    /*根据国家获取号码列表  yi*/ 
+
+    /*根据国家获取号码列表*/
     public function getCountryPhone($country_id = ''){
-        if (empty($country_id)){
-            $result = self::with('country')
-                ->where('show', '=', 1)
-                ->where('type', '=', 1)
-                ->where('display', '=', 1)
-                ->order('online', 'desc')
-                ->order('sort', 'desc')
-                ->order('id', 'desc')
-                ->paginate(8, false, [
-                    'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/phone-number/page/[PAGE].html"
-                ]);
-        }elseif($country_id == 'upcoming'){
-            $result = self::with('country')
-                ->where('show', '=', 1)
-                ->where('type', '=', 2)
-                ->order('sort', 'desc')
-                ->paginate(8, false, [
-                    'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/page/[PAGE].html"
-                ]);
+        $page = Request::param('page');
+        if (empty($page)){
+            $page = 1;
+        }
+        $country = Request::param('country');
+        if (empty($country)){
+            $country = 'all';
+        }
+        if ($country_id == 'hot'){
+            $country = $country_id;
+        }
+
+        $sub_domain = get_subdomain();
+        $domain = get_domain();
+        $cacheKeyCountryPage = 'phonePage:' . $sub_domain . '.' . $domain ."_web_{$country}_" . $page;
+        $redis_value = (new RedisController())->redisCheck(Config::get('cache.prefix') . $cacheKeyCountryPage);
+        if($redis_value){
+            $result = unserialize($redis_value);
         }else{
-            $result = self::with('country')
-                ->where('country_id', 'in', $country_id)
-                ->where('show', '=', 1)
-                ->where('type', '=', 1)
-                ->where('display', '=', 1)
-                ->order('online', 'desc')
-                ->order('sort', 'desc')
-                ->order('id', 'desc')
-                ->paginate(8, false, [
-                    'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/page/[PAGE].html"
-                ]);
+            $result = $this->_getCountryPhone($country_id, $page, $country);
+            if (!$result->isEmpty()){
+                Cache::tag('phonePage')->set($cacheKeyCountryPage, serialize($result), 1800);
+            }
         }
         return $result;
     }
 
-    /*根据国家获取号码列表 mys*/
-    public function getCountryPhoneMys($country_id = ''){
-        if (empty($country_id)){
-            $result = self::with('country')
-                ->where('show', '=', 1)
-                ->where('type', '=', 1)
-                ->where('display', '=', 1)
-                ->order('online', 'desc')
-                ->order('en_sort', 'desc')
-                ->order('id', 'desc')
-                ->paginate(8, false, [
-                    'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/phone-number/[PAGE]"
-                ]);
-        }elseif($country_id == 'upcoming'){
-            $result = self::with('country')
-                ->where('show', '=', 1)
-                ->where('type', '=', 2)
-                ->order('sort', 'desc')
-                ->paginate(8, false, [
-                    'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/[PAGE]"
-                ]);
-            //trace($result, 'notice');    
-            if(count($result) < 1){
+    private function _getCountryPhone($country_id, $page, $country){
+        switch ($country_id){
+            case []:
                 $result = self::with('country')
-                ->where('show', '=', 1)
-                ->where('type', '=', 1)
-                ->whereTime('create_time', 'month')
-                ->order('id', 'desc')
-                ->paginate(50, false, [
-                    'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/[PAGE]"
-                ]);
-            }
-        }else{
-            $result = self::with('country')
-                ->where('country_id', 'in', $country_id)
-                ->where('display', '=', 1)
-                ->where('type', '=', 1)
-                ->where('show', '=', 1)
-                ->order('online', 'desc')
-                ->order('en_sort', 'desc')
-                ->order('id', 'desc')
-                ->paginate(8, false, [
-                    'page'=>Request::param('page')?:1,
-                    'path'=>Request::domain()."/".Request::param('country')."-phone-number/[PAGE]"
-                ]);
+                    ->where('show', '=', 1)
+                    ->where('type', '=', 1)
+                    ->where('display', '=', 1)
+                    ->order('online', 'desc')
+                    ->order('en_sort', 'desc')
+                    ->order('id', 'desc')
+                    ->paginate(8, false, [
+                        'page'=>$page?:1,
+                        'path'=>Request::domain()."/phone-number/[PAGE]"
+                    ]);
+                break;
+            case 'upcoming':
+                $result = self::with('country')
+                    ->where('show', '=', 1)
+                    ->where('type', '=', 2)
+                    ->order('sort', 'desc')
+                    ->paginate(8, false, [
+                        'page'=>$page?:1,
+                        'path'=>Request::domain()."/".$country."-phone-number/[PAGE]"
+                    ]);
+                if(count($result) < 1){
+                    $result = self::with('country')
+                        ->where('show', '=', 1)
+                        ->where('type', '=', 1)
+                        ->whereTime('create_time', 'month')
+                        ->order('id', 'desc')
+                        ->paginate(50, false, [
+                            'page'=>$page?:1,
+                            'path'=>Request::domain()."/".$country."-phone-number/[PAGE]"
+                        ]);
+                }
+                break;
+            case 'hot':
+                $result = self::with('country')
+                    ->where('online', '=', 1)
+                    ->where('show', '=', 1)
+                    ->where('type', '=', 1)
+                    ->where('display', '=', 1)
+                    ->order('id', 'desc')
+                    ->limit(8)
+                    ->select();
+                break;
+            default:
+                $result = self::with('country')
+                    ->where('country_id', 'in', $country_id)
+                    ->where('display', '=', 1)
+                    ->where('type', '=', 1)
+                    ->where('show', '=', 1)
+                    ->order('online', 'desc')
+                    ->order('en_sort', 'desc')
+                    ->order('id', 'desc')
+                    ->paginate(8, false, [
+                        'page'=>$page?:1,
+                        'path'=>Request::domain()."/".$country."-phone-number/[PAGE]"
+                    ]);
+                break;
         }
         return $result;
     }
     
-        //sitemap查询所有号码
+    //sitemap查询所有号码
     public function getAllPhone(){
         $result = self::with(['country', 'warehouse'])
             ->where('show', '=', 1)

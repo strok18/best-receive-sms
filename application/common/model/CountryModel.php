@@ -53,4 +53,12 @@ class CountryModel extends BaseModel
             ->column('id, title, bh');
         return $result;
     }
+
+    //前台获取所有国家名称，2022-1增
+    public function getAllCountryName($lang = 'en_title', $number = 0){
+        return self::order('sort', 'desc')
+            ->cache(3600*6)
+            ->limit($number)
+            ->column($lang);
+    }
 }

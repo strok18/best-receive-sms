@@ -69,24 +69,10 @@ class PhoneController extends Controller
                 $country_id = [$country_data->id, $country_data->id];
         }
         //获取page
-        //写入redis缓存
-        $redis = new RedisController();
         if (empty($page)){
-            $page = 1;
             $title_page = 1;
         }
-        $sub_domain = get_subdomain();
-        $domain = get_domain();
-        $cacheKeyCountryPage = 'phonePage:' . $sub_domain . '.' . $domain ."_web_{$country}_" . $page;
-        $redis_value = $redis->redisCheck(Config::get('cache.prefix') . $cacheKeyCountryPage);
-        if($redis_value){
-            $result = unserialize($redis_value);
-        }else{
-            $result = (new PhoneModel())->getCountryPhoneMys($country_id);
-            if (!$result->isEmpty()){
-                Cache::tag('phonePage')->set($cacheKeyCountryPage, serialize($result), 1800);
-            }
-        }
+        $result = (new PhoneModel())->getCountryPhone($country_id);
         $page = $result->render();
         $result = $result->toArray();
 

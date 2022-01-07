@@ -6,6 +6,7 @@ namespace app\best\controller;
 
 use app\common\controller\RedisController;
 use app\common\model\CollectionMsgModel;
+use app\common\model\CountryModel;
 use think\facade\Config;
 use think\facade\Lang;
 use think\facade\Request;
@@ -27,7 +28,8 @@ class ProjectController extends Controller
         if (count($result_sms) > 14){
             array_splice($result_sms, 10, 0, 'Adsense');
         }*/
-
+        $current_lang = (new CountryController())->countryLangTitle();
+        $this->assign('country_list',(new CountryModel())->getAllCountryName($current_lang));
         $this->assign('recommend', $this->getRecommend());
         $this->assign('data', $result_sms);
         $this->assign('project_heads', $this->generateHeads($project));

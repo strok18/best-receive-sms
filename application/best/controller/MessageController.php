@@ -7,6 +7,7 @@ use app\api\controller\ApiController;
 use app\common\controller\ReCaptchaController;
 use app\common\controller\RedisController;
 use app\common\model\CollectionMsgModel;
+use app\common\model\CountryModel;
 use app\common\model\PhoneModel;
 use think\facade\Cache;
 use think\facade\Config;
@@ -93,13 +94,15 @@ class MessageController extends Controller
         $this->assign('bread_crumb', $bread_crumb);
         $this->assign('message_heads',$message_heads);
         $this->assign('page', $pageData['page_list']);
-
+        $current_lang = (new CountryController())->countryLangTitle();
+        $this->assign('country_list',(new CountryModel())->getAllCountryName($current_lang, 10));
+        $this->assign('recommend', (new ProjectController())->getRecommend());
         $this->assign('data', $message_data);
         $this->assign('alt_title', Request::subDomain());
         $phone_info['phone_encryption'] = phoneEncryption((string)$phone_info['phone_num']);
         $phone_info['bh_encryption'] = phoneEncryption((string)$phone_info['country']['bh']);
         $this->assign('phone_info', $phone_info);
-
+        $this->assign('phone_data', (new PhoneModel())->getCountryPhone('hot'));
         return $this->fetch();
     }
 
@@ -209,10 +212,11 @@ class MessageController extends Controller
         //生成title头部动态信息
         $country_title = (new CountryController())->countryLangTitle();
         $title = str_replace('[country]',$country[$country_title], Lang::get('message_title'));
-        $title = str_replace('[number]','+' . $country['bh'] . ' ' . $phone_num, $title);
+        $title = str_replace('[number]','+' . $country['bh'], $title);
         //$title = str_replace('[page]', $title_page, $title);
         $heads['title'] = $title;
-        $heads['description'] = str_replace('[country]',$country[$country_title], Lang::get('message_description'));
+        $description = str_replace('[country]',$country[$country_title], Lang::get('message_description'));
+        $heads['description'] = str_replace('[number]','+' . $country['bh'], $description);
         $heads['keywords'] = str_replace('[country]',$country[$country_title], Lang::get('message_keywords'));
         $heads['info_top_h1'] = str_replace('[country]',$country[$country_title], Lang::get('message_info_top_h1'));
         $heads['info_top_h4'] = str_replace('[country]',$country[$country_title], Lang::get('message_info_top_h4'));
@@ -249,7 +253,7 @@ class MessageController extends Controller
         if (!$phone_num){
             return show('Random Phone fail', '', 4000);
         }
-        return show('Random Phone success', Request::domain() . '/receive-sms-'.$phone_num_info['country']['en_title'].'-phone-number/' . $phone_num);
+        return show('Random Phone success', Request::domain() . '/receive-sms-from-'.$phone_num_info['country']['en_title'].'/' . $phone_num);
     }
 
 }

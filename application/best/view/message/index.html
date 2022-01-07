@@ -4,17 +4,19 @@
     <div class="banner">
         <div class="container" style="margin: 30px auto;">
             <div class="row">
-                <h1 class="text-center">Free Receive SMS From USA</h1>
-                <span> IS A FREE SERVICE FOR RECEIVING SMS MESSAGES AND VOICE MAILS ONLINE. THERE IS NO NEED TO
-							REGISTER. JUST SELECT YOUR PHONE NUMBER FROM THE LIST BELOW. YOU CAN USE IT TO RECEIVE
-							MESSAGES FROM FACEBOOK, TELEGRAM, WECHAT, VK, PAYPAL, ALIPAY AND MORE</span>
+                <h1 class="text-center text-uppercase">
+                    <?php echo $message_heads['info_top_h1'];?>
+                </h1>
+                <span>
+                    <?php echo $message_heads['info_top_h4'];?>
+                </span>
             </div>
         </div>
     </div>
     <div class="container my-3 d-none">
         <img src="" class="img-thumbnail" alt="...">
     </div>
-    <div class="phone" style="margin-top: 40px;">
+    <div class="phone mt-4">
         <div class="container">
             <div class="row">
 
@@ -25,7 +27,7 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text number-font fs-2">
-                                <a href="{$Request.domain}/receive-sms-from-{$phone_info['country']['en_title'] | strtolower}">
+                                <a href="{$Request.domain}/{$phone_info['country']['en_title'] | strtolower}-phone-number">
                                     <img src="/static/web/images/flag/{$phone_info['country']['bh']}.svg" width="8%" class="" alt="{$phone_info['country']['en_title']} phone number">
                                 </a>
                                 <span>
@@ -33,20 +35,23 @@
                                     <span>{$phone_info.phone_encryption | raw}</span>
 								</span>
                                 <span>
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                 fill="currentColor" class="bi bi-clipboard-check copy cursor" viewBox="0 0 16 16" id="copy" onclick="copy()">
-												<path fill-rule="evenodd"
-                                                      d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-												<path
-                                                        d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-												<path
-                                                        d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
-											</svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor" class="bi bi-clipboard-check copy cursor" viewBox="0 0 16 16" id="copy" onclick="copy()">
+                                        <path fill-rule="evenodd"
+                                              d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                        <path
+                                                d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                        <path
+                                                d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                    </svg>
 								</span>
                             </p>
                             <div class="">
                                 <button type="button" class="btn btn-primary-light text-light mt-1"
                                         onclick="load()">{$Think.lang.message_main_new}
+                                </button>
+                                <button type="button" class="btn btn-primary-light text-light mt-1"
+                                        onclick="hot()">{$Think.lang.message_main_hot}
                                 </button>
                                 <button type="button" class="btn btn-primary-light text-light mt-1"
                                         onclick="random()">{$Think.lang.message_main_random}
@@ -58,6 +63,50 @@
                         </div>
                         <div class="bg-white text-muted border-0 text-end text-success">
 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 d-none" id="hot_number">
+                    <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
+                        <div class="row">
+                            {volist name="phone_data" id="vo" empty="$empty"}
+                            <div class="col-sm-3">
+                                <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
+                                    <div class="bg-white d-flex flex-row justify-content-between">
+                                        <div class="">
+                                            {if $vo.online == 1}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-reception-4 text-success"
+                                                 viewBox="0 0 16 16">
+                                                <path
+                                                        d="M0 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-5zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-8zm4-3a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-11z" />
+                                            </svg>
+                                            {else /}
+                                            <span style="color: #8D8D8D"><img height="13px" src="/static/sms/images/offline.png" title="Offline Number"></span>
+                                            {/if}
+
+                                        </div>
+                                        <div class="">
+                                            <p class="card-text little-font text-uppercase" title="{$vo['country']['en_title']} phone number"><a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">{$vo['country']['en_title']}</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <a class="click_loading" href="{$Request.domain}/{$vo.country.en_title | strtolower}-phone-number" title="Receive sms from {$vo['country']['en_title']}">
+                                            <img class="country-flag" style="height: 40px;" src="/static/web/images/flag/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.svg"
+                                                 alt="{$vo['country']['en_title']}{$Think.lang.common_number}">
+                                        </a>
+                                        <h3 class="card-title number-font" style="margin-top: 5px;">
+                                            <a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}/{$vo.uid}" title="Receive sms {$vo['country']['en_title']}">
+                                                <span>{$vo.uid}</span>
+                                            </a>
+                                        </h3>
+                                    </div>
+                                    <div class="bg-white text-muted border-0 text-end text-success">
+
+                                    </div>
+                                </div>
+                            </div>
+                            {/volist}
                         </div>
                     </div>
                 </div>
@@ -79,6 +128,7 @@
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="card-body">
                             <table class="table table-striped table-hover text-start">
+
                                 <thead>
                                 <tr>
                                     <th scope="col">FROM</th>
@@ -112,7 +162,17 @@
                                 {/volist}
                                 </tbody>
                             </table>
-
+                            <div class="text-start">
+                                {volist name="country_list" id="country" empty=""}
+                                <span class="badge bg-primary link-white"><a href="/{$country | strtolower}-phone-number" title="receive sms from {$country} phone number">{$country}</a></span>
+                                {/volist}
+                                <span class="badge bg-secondary link-white"><a href="/country" title="more country">More Country</a></span>
+                                <br>
+                                {volist name = "recommend" id = "re"}
+                                <span class="badge bg-success link-white"><a href="/receive-sms-from-{$re}" title="receive sms from tikitok">{$re}</a></span>
+                                {/volist}
+                                <span class="badge bg-secondary link-white"><a href="/receive-sms-from" title="more country">More Project</a></span>
+                            </div>
                         </div>
                         <div class="bg-white text-muted border-0 text-end text-success">
 
@@ -210,6 +270,14 @@
             location.reload(true)
         }else {
             window.location.href = '/'+urls[1]+'/' + urls[2] + '/' + {$phone_info['uid']}
+        }
+    }
+    function hot() {
+        let hot = document.getElementById('hot_number');
+        if (hot.classList.contains('d-none')){
+            hot.classList.remove('d-none');
+        }else {
+            hot.classList.add('d-none');
         }
     }
 </script>
