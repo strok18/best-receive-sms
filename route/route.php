@@ -47,67 +47,65 @@ if ($sub_domain == 'appapi'){
     return;
 }
 
-if ($domain == 'best'){
-    $countrys = '(?i)Upcoming|China|GAT|GW|Foreign|UK|USA|Myanmar|Estonia|Philippines|HongKong|Macao|Indonesia|Australia|Canada|Malaysia|Japan|Korea|Russia|Thailand|India|Mexico|Vietnam|Nigeria|Taiwan|Colombia|Bangladesh|Pakistan|Iran|Egypt|Argentina|Ukraine|Venezuela|Turkey|SouthAfrica|Spain|Serbia|Portugal|Poland|Netherlands|Italy|Germany|France|CzechRepublic|Croatia|Brazil|Sweden|Netherlands';
-    Route::group('', function () use ($countrys){
-        // 动态注册域名的路由规则
-        //country跳转
-        Route::get('/', 'best/Phone/index');
-        Route::get('receive-sms-blog/page:page', 'best/Article/index');
-        Route::get('receive-sms-blog/:id', 'best/Article/detail');
-        Route::get('receive-sms-blog', 'best/Article/index');
-
-
-        Route::get('temporary-email', 'best/Mail/index');
-
-        Route::get('receive-sms-from-:country/:phone_num/:page', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'\d{5,}']);
-        Route::get('receive-sms-from-:country/:phone_num', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'[a-z0-9]{7,16}']);
-        //首页Page
-        Route::get('phone-number/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
-        Route::get(':country-phone-number/:page', 'best/Phone/index')->pattern(['country'=>$countrys, 'page'=>'\d{0,3}']);
-        Route::get(':country-phone-number', 'best/Phone/index')->pattern(['country'=>$countrys]);
-        Route::get('country/:page', 'best/Country/index');
-        Route::get('country', 'best/Country/index');
-
-
-        Route::get('receive-sms-from-:project', 'best/Project/index');
-        Route::get('receive-sms-from', 'best/Project/show');
-        Route::get('sitemap', 'best/Phone/sitemap');
-        Route::post('random', 'best/Message/random');
-        Route::get('wp-password', 'best/Wangpan/password');
-        Route::get('generate-image', 'best/simple20161108/ServiceQueue/grentimage');
-
-        //Route::post('api/getsms', 'api/Api/getSMS');
-        //Route::post('api/getsmsnumber', 'api/Api/postSmsNumber');
-        //Route::post('api/search_number', 'api/Api/postOneNumber');
-        Route::post('api/get_region_num', 'api/Api/getRegionNum');
-        Route::post('api/email_get', 'api/Mail/emailGet');
-        Route::post('api/email_apply', 'api/Mail/emailApply');
-        Route::post('api/email_user_delete', 'api/Mail/emailUserDelete');
-        Route::post('api/email_delete', 'api/Mail/emailDelete');
-        Route::post('api/email_transpond', 'api/Mail/setTranspondEmail');
-        Route::post('insert_local_sms85445665', 'admin20161108/MsgQueue/insertLocalSMS');
-
-        Route::post('api/mailbox', 'best/Subscription/mailbox');
-        Route::post('api/sendTestmail', 'best/Subscription/sendTestmail'); //取消订阅页面
-        Route::post('api/unsubscribe', 'best/Subscription/unsubscribe'); //取消订阅api
-        Route::get('unsubscribe', 'best/Subscription/unsubscribePage'); //取消订阅页面
-
-        Route::post('api/feedback', 'best/Feedback/create');
-        Route::post('api/wp_password', 'best/Wangpan/getPassword');
-        Route::post('recaptcha', 'best/ReCaptcha/index');
-        Route::post('hcaptcha', 'best/ReCaptcha/hcaptcha');
-        Route::post('report', 'best/Message/report');
-        Route::get('spi', 'best/Check/index'); //蜘蛛重命名
-        Route::get('verify', 'admin20161108/Login/verify'); //验证码
-
-        Route::post('heartbeat', 'index/Index/heartBeat');
-
-    })->crossDomainRule();
-}
-
-
 $countrys = '(?i)Upcoming|China|GAT|GW|Foreign|UK|USA|Myanmar|Estonia|Philippines|HongKong|Macao|Indonesia|Australia|Canada|Malaysia|Japan|Korea|Russia|Thailand|India|Mexico|Vietnam|Nigeria|Taiwan|Colombia|Bangladesh|Pakistan|Iran|Egypt|Argentina|Ukraine|Venezuela|Turkey|SouthAfrica|Spain|Serbia|Portugal|Poland|Netherlands|Italy|Germany|France|CzechRepublic|Croatia|Brazil|Sweden|Netherlands';
+Route::group('', function () use ($countrys){
+    // 动态注册域名的路由规则
+    //country跳转
+    Route::get('/', 'best/Phone/index');
+    Route::get('receive-sms-blog/page:page', 'best/Article/index');
+    Route::get('receive-sms-blog/:id', 'best/Article/detail');
+    Route::get('receive-sms-blog', 'best/Article/index');
+
+
+    Route::get('temporary-email', 'best/Mail/index');
+
+    Route::get('receive-sms-from-:country/:phone_num/:page', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'\d{5,}']);
+    Route::get('receive-sms-from-:country/:phone_num', 'best/Message/index')->pattern(['country'=>$countrys, 'phone_num'=>'[a-z0-9]{7,16}']);
+    //首页Page
+    Route::get('phone-number/:page', 'best/Phone/index')->pattern(['page'=>'\d{0,3}']);
+    Route::get(':country-phone-number/:page', 'best/Phone/index')->pattern(['country'=>$countrys, 'page'=>'\d{0,3}']);
+    Route::get(':country-phone-number', 'best/Phone/index')->pattern(['country'=>$countrys]);
+    Route::get('country/:page', 'best/Country/index');
+    Route::get('country', 'best/Country/index');
+
+
+    Route::get('receive-sms-from-:project', 'best/Project/index');
+    Route::get('receive-sms-from', 'best/Project/show');
+    Route::get('sitemap', 'best/Phone/sitemap');
+    Route::post('random', 'best/Message/random');
+    Route::get('wp-password', 'best/Wangpan/password');
+    Route::get('generate-image', 'best/simple20161108/ServiceQueue/grentimage');
+
+    //Route::post('api/getsms', 'api/Api/getSMS');
+    //Route::post('api/getsmsnumber', 'api/Api/postSmsNumber');
+    //Route::post('api/search_number', 'api/Api/postOneNumber');
+    Route::post('api/get_region_num', 'api/Api/getRegionNum');
+    Route::post('api/email_get', 'api/Mail/emailGet');
+    Route::post('api/email_apply', 'api/Mail/emailApply');
+    Route::post('api/email_user_delete', 'api/Mail/emailUserDelete');
+    Route::post('api/email_delete', 'api/Mail/emailDelete');
+    Route::post('api/email_transpond', 'api/Mail/setTranspondEmail');
+    Route::post('insert_local_sms85445665', 'admin20161108/MsgQueue/insertLocalSMS');
+
+    Route::post('api/mailbox', 'best/Subscription/mailbox');
+    Route::post('api/sendTestmail', 'best/Subscription/sendTestmail'); //取消订阅页面
+    Route::post('api/unsubscribe', 'best/Subscription/unsubscribe'); //取消订阅api
+    Route::get('unsubscribe', 'best/Subscription/unsubscribePage'); //取消订阅页面
+
+    Route::post('api/feedback', 'best/Feedback/create');
+    Route::post('api/wp_password', 'best/Wangpan/getPassword');
+    Route::post('recaptcha', 'best/ReCaptcha/index');
+    Route::post('hcaptcha', 'best/ReCaptcha/hcaptcha');
+    Route::post('report', 'best/Message/report');
+    Route::get('spi', 'best/Check/index'); //蜘蛛重命名
+    Route::get('verify', 'admin20161108/Login/verify'); //验证码
+
+    Route::post('heartbeat', 'index/Index/heartBeat');
+
+})->crossDomainRule();
+
+
+/*$countrys = '(?i)Upcoming|China|GAT|GW|Foreign|UK|USA|Myanmar|Estonia|Philippines|HongKong|Macao|Indonesia|Australia|Canada|Malaysia|Japan|Korea|Russia|Thailand|India|Mexico|Vietnam|Nigeria|Taiwan|Colombia|Bangladesh|Pakistan|Iran|Egypt|Argentina|Ukraine|Venezuela|Turkey|SouthAfrica|Spain|Serbia|Portugal|Poland|Netherlands|Italy|Germany|France|CzechRepublic|Croatia|Brazil|Sweden|Netherlands';
     Route::group('', function () use ($countrys){
         //return;
         // 动态注册域名的路由规则
@@ -160,6 +158,6 @@ $countrys = '(?i)Upcoming|China|GAT|GW|Foreign|UK|USA|Myanmar|Estonia|Philippine
         
         Route::post('heartbeat', 'index/Index/heartBeat');
         
-    })->crossDomainRule();
+    })->crossDomainRule();*/
 
 
