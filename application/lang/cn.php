@@ -65,7 +65,9 @@ return [
     'phone_main_copy_title' => '复制手机电话号码',
     'phone_main_click' => '点击接收短信验证码',
     /*公共*/
-    'common_number' => '手机号码',
+    'common_phone_number' => '手机号码',
+    'common_receive_sms_online' => '接收短信验证码',
+    'common_temporary_phone_number' => '临时手机号码',
     'common_phone_online' => '在线',
     'common_phone_online_title' => '在线接码中',
     'common_phone_offline' => '离线',

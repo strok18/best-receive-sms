@@ -40,6 +40,9 @@ class ProjectController extends Controller
 
     public function show(){
         $this->assign('recommend', $this->getRecommend());
+        $current_lang = (new CountryController())->countryLangTitle();
+        $this->assign('country_list',(new CountryModel())->getAllCountryName($current_lang));
+        $this->assign('project_heads', $this->generateHeads());
         return $this->fetch();
     }
 
@@ -57,12 +60,20 @@ class ProjectController extends Controller
     /**
      * 返回头部title description keywords信息
      */
-    public function generateHeads($project){
-        $heads['title'] = str_replace('[project]',$project , Lang::get('project_title'));
-        $heads['description'] = str_replace('[project]',$project , Lang::get('project_description'));
-        $heads['keywords'] = str_replace('[project]',$project , Lang::get('project_keywords'));
-        $heads['info_top_h1'] = str_replace('[project]',$project , Lang::get('project_info_top_h1'));
-        $heads['info_top_h4'] = str_replace('[project]',$project , Lang::get('project_info_top_h4'));
+    public function generateHeads($project = ''){
+        if ($_SERVER['REQUEST_URI'] == '/receive-sms-from'){
+            $heads['title'] = Lang::get('project_index_title');
+            $heads['description'] = Lang::get('project_index_description');
+            $heads['keywords'] = Lang::get('project_index_keywords');
+            $heads['info_top_h1'] = Lang::get('project_index_info_top_h1');
+            $heads['info_top_h4'] = Lang::get('project_index_info_top_h4');
+        }else{
+            $heads['title'] = str_replace('[project]',$project , Lang::get('project_title'));
+            $heads['description'] = str_replace('[project]',$project , Lang::get('project_description'));
+            $heads['keywords'] = str_replace('[project]',$project , Lang::get('project_keywords'));
+            $heads['info_top_h1'] = str_replace('[project]',$project , Lang::get('project_info_top_h1'));
+            $heads['info_top_h4'] = str_replace('[project]',$project , Lang::get('project_info_top_h4'));
+        }
         return $heads;
     }
 }

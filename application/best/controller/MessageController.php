@@ -88,7 +88,7 @@ class MessageController extends Controller
         }
 
         $message_heads = $this->generateHeads($phone_info['uid'], $phone_info['country']);
-        $this->assign('empty', '<div><img src="/static/web/images/empty-mail.svg"><p class="fw-bold">NO MESSAGE DATA</p></div>');
+        $this->assign('empty', '<div><img src="/static/web/images/empty-mail.svg"><p class="fw-bold">'.Lang::get('common_no_message_data').'</p></div>');
         //面包屑
         $bread_crumb = (new BreadCrumbController())->MessagePageMys($phone_info, $page);
         $this->assign('bread_crumb', $bread_crumb);
@@ -240,9 +240,9 @@ class MessageController extends Controller
         $redis_key = config('cache.prefix') . 'report:' . $phone_num;
         $return = $redis->redisNumber($redis_key, 172800);
         if (!$return){
-            return show('提交反馈失败', '', 4000);
+            return show(Lang::get('feedback_failed'), '', 4000);
         }
-        return show('反馈成功');
+        return show(Lang::get('feedback_success'));
     }
 
     //前台随机获取一个号码显示
@@ -251,9 +251,9 @@ class MessageController extends Controller
         $phone_num_info = $phone_model->getRandom();
         $phone_num = $phone_num_info['uid'];
         if (!$phone_num){
-            return show('Random Phone fail', '', 4000);
+            return show(Lang::get('message_api_random_fail'), '', 4000);
         }
-        return show('Random Phone success', Request::domain() . '/receive-sms-from-'.$phone_num_info['country']['en_title'].'/' . $phone_num);
+        return show(Lang::get('common_success'), Request::domain() . '/receive-sms-from-'.$phone_num_info['country']['en_title'].'/' . $phone_num);
     }
 
 }

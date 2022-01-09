@@ -20,7 +20,7 @@ class CountryController extends Controller
         for ($i = 0; $i < count($country_data); $i++){
             //获取不同语言
             $country_data[$i]['country_image_title'] = str_replace('[country]',$country_data[$i][$country_title], Lang::get('country_main_image_title'));
-            $country_data[$i]['country_title'] = $country_data[$i][$country_title] . ' ' . Lang::get('common_number');
+            $country_data[$i]['country_title'] = $country_data[$i][$country_title] . ' ' . Lang::get('common_phone_number');
             //获取每个国家号码数量
             $country_data[$i]['phone_number'] = (new PhoneModel())->getCountryPhoneCount($country_data[$i]['id']);
             $country_data[$i]['current_title'] = $country_data[$i][$country_title];

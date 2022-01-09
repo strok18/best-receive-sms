@@ -27,7 +27,7 @@ class SubscriptionController extends Controller
         $mailbox = trim(input('post.mailbox'));
         $validate = Validate::checkRule($mailbox, 'must|email|max:30|min:5');
         if (!$validate){
-            return show(Lang::get('mailbox_params_error'), $mailbox, 4000);
+            return show(Lang::get('subscribe_params_error'), $mailbox, 4000);
         }
         //查询是否已经订阅
         $mailbox_model = new MailboxModel();
@@ -50,7 +50,7 @@ class SubscriptionController extends Controller
         $mailbox = trim(input('post.mailbox'));
         $validate = Validate::checkRule($mailbox, 'must|email|max:30|min:5');
         if (!$validate){
-            return show(Lang::get('mailbox_params_error'), $mailbox, 4000);
+            return show(Lang::get('subscribe_params_error'), $mailbox, 4000);
         }
         $dns = explode('@', $mailbox);
             $mail_afters = [
@@ -77,16 +77,16 @@ class SubscriptionController extends Controller
         }
         $mailbox_model = new MailboxModel();
         if ($mailbox_model->search($mailbox) > 0){
-            return show($mailbox . Lang::get('mailbox_already'), $mailbox, 4000);
+            return show($mailbox . Lang::get('subscribe_has_been'), $mailbox, 4000);
         }
         $data['mailbox'] = $mailbox;
         $data['ip'] = real_ip();
         $data['befrom'] = get_subdomain();
         $result = $mailbox_model->insertMailbox($data);
         if ($result > 0){
-            return show(Lang::get('mailbox_success'));
+            return show(Lang::get('subscribe_success'));
         }else{
-            return show(Lang::get('mailbox_failed'), $mailbox, 4000);
+            return show(Lang::get('subscribe_failed'), $mailbox, 4000);
         }
     }
     
@@ -95,7 +95,7 @@ class SubscriptionController extends Controller
         $mailbox = trim(input('post.mailbox'));
         $validate = Validate::checkRule($mailbox, 'must|email|max:30|min:5');
         if (!$validate){
-            return show(Lang::get('mailbox_params_error'), $mailbox, 4000);
+            return show(Lang::get('subscribe_params_error'), $mailbox, 4000);
         }
         
         //查询数据库是否存在，如果存在，send标记为0

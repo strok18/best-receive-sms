@@ -48,17 +48,17 @@
                             </p>
                             <div class="">
                                 <button type="button" class="btn btn-primary-light text-light mt-1"
-                                        onclick="load()">{$Think.lang.message_main_new}
+                                        onclick="load()" title="{$Think.lang.message_main_button_new_title}">{$Think.lang.message_main_button_new}
                                 </button>
                                 <button type="button" class="btn btn-primary-light text-light mt-1"
-                                        onclick="hot()">{$Think.lang.message_main_hot}
+                                        onclick="hot()" title="{$Think.lang.message_main_button_hot_title}">{$Think.lang.message_main_button_hot}
                                 </button>
                                 <button type="button" class="btn btn-primary-light text-light mt-1"
-                                        onclick="random()">{$Think.lang.message_main_random}
+                                        onclick="random()" title="{$Think.lang.message_main_button_random_title}">{$Think.lang.message_main_button_random}
                                 </button>
                             </div>
                             <button type="button" class="btn mt-1 btn-sm text-light"
-                                    style="background-color: #C6C7C8;" onclick="report({$phone_info['uid']})">{$Think.lang.message_main_failed}
+                                    style="background-color: #C6C7C8;" onclick="report({$phone_info['uid']})" title="{$Think.lang.message_main_button_report_title}">{$Think.lang.message_main_button_report}
                             </button>
                         </div>
                         <div class="bg-white text-muted border-0 text-end text-success">
@@ -131,9 +131,9 @@
 
                                 <thead>
                                 <tr>
-                                    <th scope="col">FROM</th>
-                                    <th scope="col">MESSAGE</th>
-                                    <th scope="col">TIME</th>
+                                    <th scope="col">{$Think.lang.message_main_table_from}</th>
+                                    <th scope="col">{$Think.lang.message_main_table_message}</th>
+                                    <th scope="col">{$Think.lang.message_main_table_time}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -207,9 +207,9 @@
     function report(phone_num) {
         loadScript(function () {
             let reportHtml = `
-                <p>{$Think.lang.message_js_report}</p>
+                <p>{$Think.lang.message_main_report_content}</p>
             `;
-            modal(reportHtml, {title: 'Report', autoClose: false, size: ''}, function (modal) {
+            modal(reportHtml, {title: '{$Think.lang.message_main_report_title}', autoClose: false, size: ''}, function (modal) {
                 $.ajax({
                     url: '{:url('/report')}',
                     type: 'post',
@@ -229,7 +229,6 @@
                         }
                     },
                     complete: function () {
-                        console.log('完成')
                         $('#confirm').removeAttr('disabled')
                         $("#confirm_loading").addClass('d-none')
                     }

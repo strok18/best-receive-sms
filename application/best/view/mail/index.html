@@ -4,10 +4,12 @@
     <div class="banner">
         <div class="container" style="margin: 30px auto;">
             <div class="row">
-                <h1 class="text-center">(Permanent Free) Receive SMS Online</h1>
-                <span> IS A FREE SERVICE FOR RECEIVING SMS MESSAGES AND VOICE MAILS ONLINE. THERE IS NO NEED TO
-							REGISTER. JUST SELECT YOUR PHONE NUMBER FROM THE LIST BELOW. YOU CAN USE IT TO RECEIVE
-							MESSAGES FROM FACEBOOK, TELEGRAM, WECHAT, VK, PAYPAL, ALIPAY AND MORE</span>
+                <h1 class="text-center">
+                    {$Think.lang.mail_info_top_h1}
+                </h1>
+                <span>
+                    {$Think.lang.mail_info_top_h4}
+                </span>
             </div>
         </div>
     </div>
@@ -29,8 +31,8 @@
                                 <div class="row g-2 justify-content-center">
                                     <div class="col-sm-4">
                                         <div class="form-floating mb-3 text-end">
-                                            <input type="email" class="form-control" id="floatingInput" name="email_name" placeholder="Email User name">
-                                            <label for="floatingInput" class="text-secondary">Email User name</label>
+                                            <input type="email" class="form-control" id="floatingInput" name="email_name" placeholder="{$Think.lang.mail_main_input_email_placeholder}">
+                                            <label for="floatingInput" class="text-secondary">{$Think.lang.mail_main_input_email_placeholder}</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -42,20 +44,24 @@
                             </div>
                             <div class="email-buttom mt-1">
                                 <button class="btn btn-primary-light text-light mt-1" id="apply_email" onclick="mail_apply('apply')"
-                                        type="button">APPLY
+                                        type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="{$Think.lang.mail_main_button_apply_title}">
+                                    {$Think.lang.mail_main_button_apply}
                                 </button>
                                 <button class="btn btn-primary-light text-light mt-1" id="random_email" onclick="mail_apply()"
-                                        type="button">RANDOM
+                                        type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="{$Think.lang.mail_main_button_random_title}">
+                                    {$Think.lang.mail_main_button_random}
                                 </button>
                                 <button class="btn btn-primary-light text-light mt-1" id="delete_email" onclick="mail_delete()"
-                                        type="button">DELETE
+                                        type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="{$Think.lang.mail_main_button_delete_title}">
+                                    {$Think.lang.mail_main_button_delete}
                                 </button>
                                 <button class="btn btn-primary-light text-light mt-1" id="forwarding_email" onclick="mail_transpond()"
-                                        type="button">FORWARDING
+                                        type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="{$Think.lang.mail_main_button_forward_title}">
+                                    {$Think.lang.mail_main_button_forward}
                                 </button>
                                 <button class="btn btn-primary-light text-light mt-1" id="receive_email" onclick="mail_list()" type="button">
                                     <span id="receive_email_loading" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                    <span>RECEIVE</span>
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$Think.lang.mail_main_button_receive_title}">{$Think.lang.mail_main_button_receive}</span>
                                 </button>
                             </div>
                         </div>
@@ -73,16 +79,16 @@
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="card-body pb-0">
                             <div class="row">
-                                <div class="fw-bold col-sm-3 text-start d-block d-sm-none">INBOX</div>
-                                <div class="fw-bold col-sm-3 text-start d-none d-sm-block">SENDER</div>
-                                <div class="fw-bold col-sm-6 text-start d-none d-sm-block">SUBJECT</div>
-                                <div class="fw-bold col-sm-3 text-start d-none d-sm-block">TIME</div>
+                                <div class="fw-bold col-sm-3 text-start d-block d-sm-none">{$Think.lang.mail_main_table_inbox}</div>
+                                <div class="fw-bold col-sm-3 text-start d-none d-sm-block">{$Think.lang.mail_main_table_sender}</div>
+                                <div class="fw-bold col-sm-6 text-start d-none d-sm-block">{$Think.lang.mail_main_table_subject}</div>
+                                <div class="fw-bold col-sm-3 text-start d-none d-sm-block">{$Think.lang.mail_main_table_time}</div>
                             </div>
                         </div>
                         <div class="card-body">
                             <div id="empty">
                                 <img src="/static/web/images/empty-mail.svg">
-                                <p class="fw-bold">No emails yet</p>
+                                <p class="fw-bold">{$Think.lang.mail_main_empty_email}</p>
                             </div>
                             <div id="mail_list"></div>
                         </div>
@@ -102,7 +108,6 @@
 <script src="/static/web/js/push.min.js" async="async" defer="defer"></script>
 <script src="/static/web/js/clipboard.min.js" async="async" defer="defer"></script>
 <script>
-
     $(function () {
         let mails = {:json_encode($mails)};
         let option = ''
@@ -123,7 +128,6 @@
             $("#mail_list").html(email_list)
             $("#empty").addClass('d-none')
         }
-
     })
 
     function mail_open(id) {
@@ -290,7 +294,7 @@
         }
         if (e) {
             if (!name) {
-                toast('{$Think.lang.mail_alert_nlll}',{type: 'danger'})
+                toast('{$Think.lang.mail_alert_email_empty}',{type: 'danger'})
                 return
             }
             $.ajax({
@@ -346,10 +350,10 @@
 
     function request_notify() {
         if (!localStorage.getItem('temp_email_notify')) {
-            modal('After Allow, you will be automatically reminded when you receive new mail.',
-                {title: 'Turn on desktop notifications？', closeButton: 'Not now', confirmButton: 'Allow'}
+            modal('{$Think.lang.mail_alert_notify_content}',
+                {title: '{$Think.lang.mail_alert_notify_title}', closeButton: 'Not now', confirmButton: 'Allow'}
                 ,function () {
-                mail_notify('New email notification', 'New email notification set successfully')
+                mail_notify('{$Think.lang.mail_alert_notify_new_title}', '{$Think.lang.mail_alert_notify_new_content}')
                 localStorage.setItem('temp_email_notify', 'allow')
             }, function (){
                 localStorage.setItem('temp_email_notify', 'deny')
@@ -384,6 +388,7 @@
                 $("#mail_list").html('')
                 $("#empty").removeClass('d-none')
                 $('#receive_email').removeAttr('disabled')
+                $("#receive_email_loading").addClass('d-none')
                 toast(email + '{$Think.lang.mail_alert_delete_success}')
             },
             complete: function () {

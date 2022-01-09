@@ -108,7 +108,7 @@ class PhoneController extends Controller
         //dump($result['data']);
         $this->assign('js_data', $js_data);
         $this->assign('phone_heads', $this->generateHeads($country_data, $title_page));
-        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" class="w-25"><p class="fw-bold">NO PHONE NUMBER</p></div>');
+        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" class="w-25"><p class="fw-bold">'.Lang::get('common_no_phone_number').'</p></div>');
         return $this->fetch();
     }
 

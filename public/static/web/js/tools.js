@@ -17,6 +17,11 @@ function init() {
     if (!localStorage.getItem('brsPrivacy')){
         document.getElementById('privacy_alert').classList.remove('d-none');
     }
+    //tooltip
+    let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 }
 
 //底部拉伸
@@ -259,25 +264,25 @@ function captchaCallback (e) {
     }
 }
 
-function subscription(info) {
+function subscription(lang) {
     let subscriptionHtml = `
 		<div class="container">
 			<div class="row">
 				<div class="modal-body">
 				<form id="subscription_form">
 					<div class="form-floating mb-3">
-					  <input class="form-control" placeholder="Email address" id="email_address" required onfocus="inputFocus('subscription_form')">
-					  <label for="email_address" class="text-secondary">Email address</label>
+					  <input class="form-control" placeholder="`+lang.emailAddress+`" id="email_address" required onfocus="inputFocus('subscription_form')">
+					  <label for="email_address" class="text-secondary">`+lang.emailAddress+`</label>
 				  	</div>
 				  <div class="alert alert-secondary" role="alert">
-					  ` + info + `
+					  ` + lang.explain + `
 				  </div>
 				</form>
 			  </div>
 			</div>
 		</div>
 	`;
-    modal(subscriptionHtml, {title: 'Subscription', size: '', autoClose: false}, function (e) {
+    modal(subscriptionHtml, {title: lang.title, size: '', autoClose: false}, function (e) {
         inputFocus('subscription_form');
         var modal = e;
         loadScript(function () {
@@ -309,28 +314,28 @@ function subscription(info) {
     });
 }
 
-function feedback() {
+function feedback(lang) {
     let feedbackHtml = `
 		<div class="container">
 			<div class="row">
 				<div class="modal-body">
 				<form id="form_feedback">
 					<div class="form-floating mb-3">
-					  <textarea class="form-control" id="feedback_content" placeholder="Content of the feedback" style="height: 100px" required onfocus="inputFocus('form_feedback')"></textarea>
-                      <label for="floatingTextarea2" class="text-secondary">Content of the feedback</label>
-                      <div class="invalid-feedback">Please enter a valid feedback.</div>
+					  <textarea class="form-control" id="feedback_content" placeholder="`+lang.contentPla+`" style="height: 100px" required onfocus="inputFocus('form_feedback')"></textarea>
+                      <label for="floatingTextarea2" class="text-secondary">`+lang.contentPla+`</label>
+                      <div class="invalid-feedback">`+lang.contentLabel+`</div>
 				  	</div>
 				  	<div class="form-floating mb-3">           
-					  <input class="form-control" id="feedback_email" placeholder="Email address" required>
-					  <label for="email_address" class="text-secondary">Email address</label>
-					  <div class="invalid-feedback">Please enter a valid email.</div>
+					  <input class="form-control" id="feedback_email" placeholder="`+lang.emailAddress+`" required onfocus="inputFocus('form_feedback')">
+					  <label for="email_address" class="text-secondary">`+lang.emailAddress+`</label>
+					  <div class="invalid-feedback">`+lang.emailLabel+`</div>
 				  	</div>
 				</form>
 			  </div>
 			</div>
 		</div>
 	`;
-    modal(feedbackHtml, {title: 'Feedback', size: '', autoClose: false}, function (e) {
+    modal(feedbackHtml, {title: lang.title, size: '', autoClose: false}, function (e) {
         inputFocus('form_feedback');
         let modal = e;
         loadScript(function () {
