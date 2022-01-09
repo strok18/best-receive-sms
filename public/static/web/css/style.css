@@ -27,8 +27,7 @@ a:active {
 }
 
 /* 鼠标点击时 */
-
-.link-white a:link {
+.link-white a {
 	color: #FFFFFF;
 }
 

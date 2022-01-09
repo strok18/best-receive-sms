@@ -53,7 +53,6 @@ if ($domain == 'best'){
         // 动态注册域名的路由规则
         //country跳转
         Route::get('/', 'best/Phone/index');
-        Route::get('index', 'best/Phone/index');
         Route::get('receive-sms-blog/page:page', 'best/Article/index');
         Route::get('receive-sms-blog/:id', 'best/Article/detail');
         Route::get('receive-sms-blog', 'best/Article/index');

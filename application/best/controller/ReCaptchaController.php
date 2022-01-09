@@ -22,9 +22,6 @@ class ReCaptchaController extends Controller
         $redis = new RedisController();
 
         if ($page == 'check'){
-            /*if ($ip == '154.17.23.155'){
-                return show('fail', '', 4000);
-            }*/
             //系统第二次检查check页面
             $result = (new Recaptcha())->resolveReCaptcha($token);
             $result = json_decode($result, true);

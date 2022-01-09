@@ -29,7 +29,7 @@
                         </div>
                         <a class="click_loading" href="{$Request.domain}/{$vo['en_title'] | strtolower}-phone-number">
                         <div class="card-body">
-                            <img class="w-50" height="170" src="/static/web/images/flag/<?php if($vo['id'] == 11){echo 'Canada';}else{echo $vo['bh'];};?>.svg" alt="{$vo.country_image_title}">
+                            <img class="w-50 country-flag" src="/static/web/images/flag/<?php if($vo['id'] == 11){echo 'Canada';}else{echo $vo['bh'];};?>.svg" alt="{$vo.country_image_title}">
                             <p class="card-text little-font mt-2 text-uppercase">({$vo['en_title']} - <mark>{$vo['phone_number']}</mark> Phone Number IN TOTAL.)</p>
                         </div>
                         </a>

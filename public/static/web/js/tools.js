@@ -228,7 +228,7 @@ function copy() {
 }
 
 function referrer() {
-    var ref = '';
+    let ref = '';
     if (document.referrer.length > 0) {
         ref = document.referrer;
     }

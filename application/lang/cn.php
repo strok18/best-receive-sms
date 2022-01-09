@@ -51,6 +51,7 @@ return [
     'foot_copy_success' => '成功',
     'foot_copy_failed' => '失败',
     'foot_alert_title' => '数据较多，努力加载中...',
+    'api_recaptcha_request_speed_fast' => '数据请求太快',
 
 
     'index_title' => '（永久免费）短信验证码在线接收码平台',

@@ -5,6 +5,7 @@ namespace app\http\middleware;
 use app\common\controller\RedisController;
 use think\Controller;
 use bt\Bt;
+use think\facade\Lang;
 use think\facade\Log;
 use think\facade\Request;
 use Ip2Region;
@@ -22,6 +23,7 @@ class RecaptchaClick extends Controller
         $impose_number = $redis->redisCheck('impose_' . $ip);
         $robot_number = $redis->redisCheck('robot_' . $ip);
         //$blicklist = $redis->redisCheck('blacklist_' . $ip);
+
         if ($impose_number || $robot_number){
             $redis->redisNumber('impose_' . $ip);
             if ($impose_number > 50){
@@ -38,7 +40,7 @@ class RecaptchaClick extends Controller
                 }
             }
             //Log::record($ip . ":impose_number:" . $impose_number . ":robot_number:" . $robot_number, 'notice');
-            return $this->error('访问频率过高，稍候再试.');
+            return $this->error(Lang::get('api_recaptcha_request_speed_fast'), '', '', 5);
         }
 
         //过滤蜘蛛
@@ -84,7 +86,7 @@ class RecaptchaClick extends Controller
                     //(new Bt())->fireWall($ip, 'BT防火墙黑名单,3600秒超过200');
                 }
                 //Log::record($ip . ":impose_number:" . $impose_number . ":robot_number:" . $robot_number, 'notice');
-                return $this->error('访问频率过高，稍候再试');
+                return $this->error(Lang::get('api_recaptcha_request_speed_fast'),'','', 5);
             }
 
         }

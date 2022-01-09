@@ -22,8 +22,7 @@ use think\facade\Log;
 class MessageController extends Controller
 {
     protected $middleware = [
-        'RecaptchaClick' => ['only' => ['index', 'random', 'report']],
-        'InitM' => ['only' => ['index']]
+        'RecaptchaClick' => ['only' => ['index', 'random', 'report']]
     ];
     
     public function index(){
