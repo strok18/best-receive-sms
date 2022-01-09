@@ -5,11 +5,11 @@
         <div class="mt-5">
             <img src="/static/web/images/error/spider.png">
         </div>
-        <div id="h-captcha" data-callback="captchaCallback" data-sitekey="d8230bc7-7834-49ac-bdce-acfa0f8fe8c1" class="mt-4 h-captcha"></div>
+        <div id="h-captcha" data-callback="captchaCallback" class="mt-4 h-captcha"></div>
     </div>
 </div>
-<script src='https://www.hCaptcha.com/1/api.js' async></script>
-<!--<script src="https://js.hcaptcha.com/1/api.js?onload=hcaptchas&render=explicit" async defer></script>-->
+<!--<script src='https://www.hCaptcha.com/1/api.js' async></script>-->
+<script src="https://js.hcaptcha.com/1/api.js?onload=hcaptchas&render=explicit" async defer></script>
 <script src="https://recaptcha.net/recaptcha/api.js?render=6Lf71VQcAAAAAG1lsIdsb3aeTivSf_rkKUKaCu7V"></script>
 <script src="/static/web/js/jquery-3.6.0.min.js" async></script>
 <script src="/static/web/js/tools.js" async></script>
@@ -33,64 +33,9 @@
             })
         })
     })
-    /*var hcaptchas = function () {
+    var hcaptchas = function () {
         var widgetID = hcaptcha.render('h-captcha', { sitekey: 'd8230bc7-7834-49ac-bdce-acfa0f8fe8c1' })
-        hcaptcha.execute(widgetID, { async: true })
-            .then(({ response, key }) => {
-                //success
-                $.ajax({
-                    url: '/hcaptcha',
-                    type: 'post',
-                    data: {response: response},
-                    beforeSend: function(){
-                        loading();
-                    },
-                    success: function (e) {
-                        console.log(e)
-                        if (e.error_code == 0) {
-                            toast(e.msg);
-                            //window.location.href="/";
-                        } else {
-                            toast(e.msg, {type: 'danger'})
-                        }
-                    },
-                    complete: function () {
-                        loading(false);
-                    }
-                })
-            })
-            .catch(err => {
-                toast('fail', {type: 'danger'});
-            });
-    };*/
+    };
 
-/*    function captchaCallback (e) {
-        if (e){
-            $.ajax({
-                url: '/hcaptcha',
-                type: 'post',
-                data: {response: e},
-                beforeSend: function(){
-                    loading();
-                },
-                success: function (e) {
-                    console.log(e)
-                    if (e.error_code === 0) {
-                        toast(e.msg);
-                        console.log('src')
-                        let src = referrer();
-
-                        console.log(src)
-                        window.location.href = src;
-                    } else {
-                        toast(e.msg, {type: 'danger'})
-                    }
-                },
-                complete: function () {
-                    loading(false);
-                }
-            })
-        }
-    }*/
 </script>
 {include file="../application/best/view/foot.html" /}

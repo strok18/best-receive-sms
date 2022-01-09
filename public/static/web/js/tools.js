@@ -378,7 +378,10 @@ function buttonLoading(buttonID, type = true){
 
 //dynamic loading JS
 function loadScript(callback, url) {
-    let urls = {jquery: '//'+ window.location.host + '/static/web/js/jquery-3.6.0.min.js', copy: '//' + window.location.host + '/static/web/js/clipboard.min.js'};
+    let urls = {
+        jquery: '//'+ window.location.host + '/static/web/js/jquery-3.6.0.min.js',
+        copy: '//' + window.location.host + '/static/web/js/clipboard.min.js'
+    };
     if (url === undefined){
         url = urls.jquery;
     }else {
