@@ -20,7 +20,7 @@ class CountryModel extends BaseModel
     //查询国家
     public function findCountry($country){
         $result = self::where('en_title', '=', $country)
-            ->where('show', '=', 1)
+            //->where('show', '=', 1)
             ->cache('country_detail_' . $country, 3600, 'countryDetail')
             ->find();
         return $result;
