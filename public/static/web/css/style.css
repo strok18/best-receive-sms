@@ -127,7 +127,6 @@ a:active {
 	.email-font {
 		font-size: 2rem;
 	}
-
 }
 
 
@@ -143,6 +142,13 @@ a:active {
 	}
 	.top{
 		background-color: #FFFFFF;
+	}
+}
+
+@media only screen and (max-width: 1000px) {
+	.dot{
+		top: 50%!important;
+		left: 50%!important;
 	}
 }
 

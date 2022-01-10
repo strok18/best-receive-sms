@@ -22,6 +22,24 @@ function init() {
     let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+
+    //nav active
+    let pathname = window.location.pathname.substring(1);
+    console.log(pathname)
+    if (pathname.length > 1){
+        try {
+            document.getElementById(pathname).classList.add('active');
+            let countries = document.getElementById('countries');
+            if (pathname.indexOf('-phone-number') != -1 && pathname !== 'upcoming-phone-number' || pathname === 'country'){
+                countries.classList.add('active');
+            }
+        }catch (e) {
+            let regExp = /receive-sms-from-([a-zA-Z]+)/;
+            let link_title = regExp.exec(pathname);
+            document.getElementById(link_title[1] + '-phone-number').classList.add('active');
+            document.getElementById('countries').classList.add('active');
+        }
+    }
 }
 
 //底部拉伸

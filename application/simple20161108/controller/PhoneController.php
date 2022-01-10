@@ -101,7 +101,6 @@ class PhoneController extends BaseController
         $data['en_sort'] = $data['sort'];
         try {
             $data['uid'] = getRandNum(10);
-            phoneImage($data_bh[1], $data['phone_num'], $data['uid']);
             $result = $phone_model->createPhone($data);
         } catch (\Exception $e) {
             return show('添加出现异常', '', 4000);

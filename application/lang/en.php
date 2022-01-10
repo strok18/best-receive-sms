@@ -23,6 +23,7 @@ return [
     'header_nav_sweden' => 'Sweden',
     'header_nav_netherlands' => 'Netherlands',
     'header_nav_subscription' => 'Subscription',
+    'header_nav_upcoming' => 'Upcoming',
 
     'foot_link1' => 'Receive SMS online',
     'foot_link2' =>'Temporary number',
@@ -33,6 +34,7 @@ return [
     'common_temporary_phone_number' => 'temporary phone number',
     'common_no_phone_number' => 'NO PHONE NUMBER',
     'common_no_message_data' => 'NO MESSAGE DATA',
+    'common_no_blog_data' => 'NO BLOG DATA',
     'common_success' => 'success',
     'common_fail' => 'fail',
 
@@ -114,7 +116,7 @@ return [
     'country_page_info_top_h4' => 'Free Receive SMS From [country] Phone Number.without registration disposable virtual temporary phone number [country] for verification code,You Can Use It to Receive Messages from <a href="/receive-sms-from-uber" title="receive sms from Uber">Uber</a>,<a href="/receive-sms-from-amazon" title="receive sms from Amazon">Amazon</a>, <a href="/receive-sms-from-ebay" title="receive sms from ebay">eBay</a>, <a href="/receive-sms-from-tiktok" title="receive sms from tiktok">TikTok</a>, <a href="/receive-sms-from-kakaotalk" title="receive sms from kakaotalk">KakaoTalk</a>, <a href="/receive-sms-from-whatsapp" title="receive sms from whatsapp">WhatsApp</a>, <a href="/receive-sms-from-discord" title="receive sms from Discord">Discord</a> And <a href="/receive-sms-from">More</a>.',
 
     'subscribe_title' => 'Subscribe',
-    'subscribe_explain' => 'After the subscription is successful, you will receive an email notification of the new number. Please add 【notify@mytempsms.com】 to the whitelist or friends.',
+    'subscribe_explain' => 'After the subscription is successful, you will receive an email notification of the new number. ',
     'common_email_address' => 'Email address',
     'subscribe_params_error' => 'Email address error',
     'subscribe_has_been' => 'This email address has been subscribed',

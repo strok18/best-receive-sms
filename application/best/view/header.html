@@ -30,23 +30,29 @@
         </button>
         <div class="collapse navbar-collapse flex-row-reverse" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/temporary-email">{$Think.lang.header_nav_email}</a>
-                </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="countries" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         {$Think.lang.header_nav_country}
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="/country">{$Think.lang.header_nav_all_country}</a></li>
-                        <li><a class="dropdown-item" href="/france-phone-number">{$Think.lang.header_nav_france}</a></li>
-                        <li><a class="dropdown-item" href="/uk-phone-number">{$Think.lang.header_nav_uk}</a></li>
-                        <li><a class="dropdown-item" href="/usa-phone-number">{$Think.lang.header_nav_usa}</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="countries">
+                        <li><a class="dropdown-item" href="/country" title="temporary phone number" id="country">{$Think.lang.header_nav_all_country}</a></li>
+                        <li><a class="dropdown-item" href="/france-phone-number" title="temporary number france" id="france-phone-number">{$Think.lang.header_nav_france}</a></li>
+                        <li><a class="dropdown-item" href="/uk-phone-number" title="temporary number United Kingdom" id="uk-phone-number">{$Think.lang.header_nav_uk}</a></li>
+                        <li><a class="dropdown-item" href="/usa-phone-number" title="temporary number United States" id="usa-phone-number">{$Think.lang.header_nav_usa}</a></li>
+                        <li><a class="dropdown-item" href="/sweden-phone-number" title="temporary number Sweden" id="sweden-phone-number">{$Think.lang.header_nav_sweden}</a></li>
+                        <li><a class="dropdown-item" href="/netherlands-phone-number" title="temporary number Netherlands" id="netherlands-phone-number">{$Think.lang.header_nav_netherlands}</a></li>
+                        <li><a class="dropdown-item" href="/china-phone-number" title="temporary number china" id="china-phone-number">{$Think.lang.header_nav_china}</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/receive-sms-blog">{$Think.lang.header_nav_blog}</a>
+                    <a class="nav-link" href="/temporary-email" title="temporary email" id="temporary-email">{$Think.lang.header_nav_email}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link position-relative" href="/upcoming-phone-number" id="upcoming-phone-number">{$Think.lang.header_nav_upcoming} {notempty name="upcomingNumber"}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger dot">+{$upcomingNumber} <span class="visually-hidden">upcoming temporary phone number</span></span>{/notempty}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/receive-sms-blog" id="receive-sms-blog">{$Think.lang.header_nav_blog}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0);" onclick="subscription({title: '{$Think.lang.subscribe_title}',explain: '{$Think.lang.subscribe_explain}',emailAddress: '{$Think.lang.common_email_address}'})">Subscription</a>

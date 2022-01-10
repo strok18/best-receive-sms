@@ -597,4 +597,13 @@ class PhoneModel extends BaseModel
             ->count();
         return $result;
     }
+
+    //获取upcoming号码数据
+    public function getUpcomingNumber(){
+        return self::where('display', 1)
+            ->where('online', 1)
+            ->where('show', 1)
+            ->where('type', 2)
+            ->count();
+    }
 }

@@ -30,6 +30,7 @@ class MailController extends Controller
         }
         $this->assign('mails', $mails);
         $this->assign('mail_heads', $this->generateHeads());
+        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
         return $this->fetch();
     }
 

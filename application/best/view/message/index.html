@@ -130,11 +130,13 @@
                             <table class="table table-striped table-hover text-start">
 
                                 <thead>
+                                {notempty name="data"}
                                 <tr>
                                     <th scope="col">{$Think.lang.message_main_table_from}</th>
                                     <th scope="col">{$Think.lang.message_main_table_message}</th>
                                     <th scope="col">{$Think.lang.message_main_table_time}</th>
                                 </tr>
+                                {/notempty}
                                 </thead>
                                 <tbody>
                                 {volist name="data" id="vo" empty="$empty"}

@@ -54,7 +54,7 @@ class MessageController extends Controller
             $phone_online_time = $redis->redisCheck('phone_online_time');
             //上新，仅上架，不展示信息，预售号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
-            $this->assign('empty', '<div style="text-align: center;color: red;font-size: 50px;">Number online countdown：'.gap_times($phone_online_time, 'en').'</div>');
+            $this->assign('empty', '<div><img src="/static/web/images/time-down.svg"><div class="text-center text-danger fs-1 fw-bold">Number online countdown：'.gap_times($phone_online_time, 'en').'</div></div>');
             (new RedisController())->hIncrby('phone_click', $phone_num);
             $message_data = '';
         }else{
@@ -83,11 +83,10 @@ class MessageController extends Controller
                     }
                 }
             }
-
+            $this->assign('empty', '<div><img src="/static/web/images/empty-mail.svg"><p class="fw-bold">'.Lang::get('common_no_message_data').'</p></div>');
         }
 
         $message_heads = $this->generateHeads($phone_info['uid'], $phone_info['country']);
-        $this->assign('empty', '<div><img src="/static/web/images/empty-mail.svg"><p class="fw-bold">'.Lang::get('common_no_message_data').'</p></div>');
         //面包屑
         $bread_crumb = (new BreadCrumbController())->MessagePageMys($phone_info, $page);
         $this->assign('bread_crumb', $bread_crumb);
@@ -102,6 +101,7 @@ class MessageController extends Controller
         $phone_info['bh_encryption'] = phoneEncryption((string)$phone_info['country']['bh']);
         $this->assign('phone_info', $phone_info);
         $this->assign('phone_data', (new PhoneModel())->getCountryPhone('hot'));
+        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
         return $this->fetch();
     }
 

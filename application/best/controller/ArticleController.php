@@ -10,8 +10,6 @@ namespace app\best\controller;
 use app\common\model\ArticleModel;
 use think\facade\Lang;
 use think\facade\Request;
-use app\common\controller\RelUrlController;
-use think\Db;
 
 class ArticleController extends LangBaseController
 {
@@ -24,7 +22,8 @@ class ArticleController extends LangBaseController
         //$this->assign('rel_url', (new RelUrlController())->relUrl1('Article'));
         $this->assign('title', Lang::get('article_title'));
         $this->assign('article_heads', $this->generateHeads());
-        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg"><p class="fw-bold">NO PHONE NUMBER</p></div>');
+        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg"><p class="fw-bold">'.Lang::get('common_no_blog_data').'</p></div>');
+        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
         return $this->fetch('index', compact('article'));
     }
 
@@ -35,6 +34,7 @@ class ArticleController extends LangBaseController
         //Db::connect('db_master_write')->table('article')->where('id', $article['id'])->setInc('total_num');
         //$this->assign('rel_url', (new RelUrlController())->relUrl1('Article', $id));
         $this->assign('article_detail_heads', $this->generateHeads($article['title']));
+        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
         return $this->fetch('detail', compact('article'));
     }
 
