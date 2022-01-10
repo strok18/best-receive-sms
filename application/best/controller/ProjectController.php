@@ -7,6 +7,7 @@ namespace app\best\controller;
 use app\common\controller\RedisController;
 use app\common\model\CollectionMsgModel;
 use app\common\model\CountryModel;
+use app\common\model\PhoneModel;
 use think\facade\Config;
 use think\facade\Lang;
 use think\facade\Request;
@@ -34,7 +35,7 @@ class ProjectController extends Controller
         $this->assign('data', $result_sms);
         $this->assign('project_heads', $this->generateHeads($project));
         $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg"><p class="fw-bold">NO PHONE NUMBER</p></div>');
-        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
+        $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch();
     }
 

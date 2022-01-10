@@ -3,6 +3,7 @@
 namespace app\best\controller;
 
 
+use app\common\model\PhoneModel;
 use think\facade\Config;
 use think\facade\Lang;
 use think\facade\Session;
@@ -30,7 +31,7 @@ class MailController extends Controller
         }
         $this->assign('mails', $mails);
         $this->assign('mail_heads', $this->generateHeads());
-        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
+        $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch();
     }
 

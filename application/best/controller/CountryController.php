@@ -29,7 +29,7 @@ class CountryController extends Controller
         $this->assign('data', $country_data);
         $this->assign('country_heads', $this->generateHeads());
         $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" class="w-25"><p class="fw-bold">NO PHONE NUMBER</p></div>');
-        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
+        $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch();
     }
 

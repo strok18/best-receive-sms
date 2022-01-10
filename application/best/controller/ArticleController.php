@@ -8,6 +8,7 @@ namespace app\best\controller;
 
 
 use app\common\model\ArticleModel;
+use app\common\model\PhoneModel;
 use think\facade\Lang;
 use think\facade\Request;
 
@@ -23,7 +24,7 @@ class ArticleController extends LangBaseController
         $this->assign('title', Lang::get('article_title'));
         $this->assign('article_heads', $this->generateHeads());
         $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg"><p class="fw-bold">'.Lang::get('common_no_blog_data').'</p></div>');
-        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
+        $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch('index', compact('article'));
     }
 

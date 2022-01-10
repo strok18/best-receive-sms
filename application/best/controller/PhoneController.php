@@ -109,7 +109,7 @@ class PhoneController extends Controller
         $this->assign('js_data', $js_data);
         $this->assign('phone_heads', $this->generateHeads($country_data, $title_page));
         $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" class="w-25"><p class="fw-bold">'.Lang::get('common_no_phone_number').'</p></div>');
-        $this->assign('upcomingNumber', $this->getUpcomingNumber());
+        $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch();
     }
 
@@ -176,19 +176,5 @@ class PhoneController extends Controller
             }
         }
         return $result;
-    }
-
-    //获取上新号码
-    public function getUpcomingNumber(){
-        return (new PhoneModel())->getUpcomingNumber();
-        /*$key = 'upcoming_number';
-        $upcoming_number = Cache::get($key);
-        if (!$upcoming_number){
-            $upcoming_number = (new PhoneModel())->getUpcomingNumber();
-            if ($upcoming_number > 0){
-                Cache::set($key, $upcoming_number, 6*3600);
-            }
-        }
-        return $upcoming_number;*/
     }
 }

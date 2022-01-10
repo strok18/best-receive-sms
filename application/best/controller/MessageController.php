@@ -101,7 +101,7 @@ class MessageController extends Controller
         $phone_info['bh_encryption'] = phoneEncryption((string)$phone_info['country']['bh']);
         $this->assign('phone_info', $phone_info);
         $this->assign('phone_data', (new PhoneModel())->getCountryPhone('hot'));
-        $this->assign('upcomingNumber', (new PhoneController())->getUpcomingNumber());
+        $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch();
     }
 
