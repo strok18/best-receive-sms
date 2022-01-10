@@ -304,8 +304,11 @@
 		document.getElementById(numName).innerHTML=num;
 		if(num < 0){
 			document.getElementById(numName).innerHTML=0;
-			location.href = referrer();
-			//window.history.go(-1);
+			let jump = referrer();
+			if (!jump){
+				jump = window.location.protocol+'//' + window.location.host;
+			}
+			window.location.href = jump;
 			}
 		}
 	setInterval("redirect()", 1000);

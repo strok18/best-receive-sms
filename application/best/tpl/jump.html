@@ -75,10 +75,13 @@
         interval = setInterval(function () {
             let time = --wait.innerHTML;
             if (time <= 0) {
-                location.href = referrer();
                 clearInterval(interval);
+                let jump = referrer();
+                if (!jump){
+                    jump = window.location.protocol+'//' + window.location.host;
+                }
+                window.location.href = jump;
             }
-            ;
         }, 1000);
     })();
     function referrer() {
