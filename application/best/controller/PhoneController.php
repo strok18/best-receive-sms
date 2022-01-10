@@ -180,7 +180,8 @@ class PhoneController extends Controller
 
     //获取上新号码
     public function getUpcomingNumber(){
-        $key = 'upcoming_number';
+        return (new PhoneModel())->getUpcomingNumber();
+        /*$key = 'upcoming_number';
         $upcoming_number = Cache::get($key);
         if (!$upcoming_number){
             $upcoming_number = (new PhoneModel())->getUpcomingNumber();
@@ -188,6 +189,6 @@ class PhoneController extends Controller
                 Cache::set($key, $upcoming_number, 6*3600);
             }
         }
-        return $upcoming_number;
+        return $upcoming_number;*/
     }
 }

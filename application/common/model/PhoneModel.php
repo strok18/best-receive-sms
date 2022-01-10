@@ -604,6 +604,7 @@ class PhoneModel extends BaseModel
             ->where('online', 1)
             ->where('show', 1)
             ->where('type', 2)
+            ->cache(3*3600)
             ->count();
     }
 }
