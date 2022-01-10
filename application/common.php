@@ -393,7 +393,11 @@ function gap_times($time, $lang = 'zh', $type = 'later')
     );
     foreach ($f as $k=>$v){
         if (0 != $c = floor($t / (int)$k)){
-            return $c . ' ' . $v . $langs[7][$lang];
+            if ($c > 0){
+                return $c . ' ' . $v . $langs[7][$lang];
+            }else{
+                return 0;
+            }
         }
     }
 }
