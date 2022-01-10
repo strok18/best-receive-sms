@@ -39,6 +39,7 @@ return [
     'common_fail' => 'fail',
 
     'api_recaptcha_request_speed_fast' => 'Data requests are too frequent, please try again later.',
+    'api_no_number' => 'This number does not exist',
 
     'mail_title' => 'Temp Mail - Disposable Temporary and Free email service',
     'mail_description' => 'Provides free,temporary, anonymous,secure,disposable email address. You can use on facebook, twitter or instagram and more for anonymously sign up.  Protect your personal mail inbox from spam with temporary mail.',

@@ -33,11 +33,11 @@ class MessageController extends Controller
         }
         $validate = Validate::checkRule($phone_num, 'must|alphaNum|max:16');
         if(!$validate){
-            return $this->error('传递参数异常');
+            return $this->error(Lang::get('common_fail'));
         }
         $phone_info = (new PhoneModel())->getPhoneDetailByUID($phone_num);
         if(!$phone_info){
-            return $this->error('号码不存在');
+            return $this->error(Lang::get('api_no_number'));
         }
         //临时301跳转
 /*        if($phone_num == $phone_info['phone_num']){

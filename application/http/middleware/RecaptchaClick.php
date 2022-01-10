@@ -40,7 +40,7 @@ class RecaptchaClick extends Controller
                 }
             }
             //Log::record($ip . ":impose_number:" . $impose_number . ":robot_number:" . $robot_number, 'notice');
-            return $this->error(Lang::get('api_recaptcha_request_speed_fast'), '', '', 5);
+            return $this->error(Lang::get('api_recaptcha_request_speed_fast'));
         }
 
         //过滤蜘蛛
