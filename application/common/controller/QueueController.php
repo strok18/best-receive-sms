@@ -4,6 +4,7 @@ namespace app\common\controller;
 use app\common\model\CollectionMsgModel;
 use app\common\model\PhoneModel;
 use think\Controller;
+use think\Db;
 use think\facade\Config;
 use think\facade\Log;
 use app\common\model\WarehouseModel;
@@ -30,15 +31,16 @@ class QueueController extends Controller
                     $batch_data = $this->msgBatchData($value[$i], $data);
                     //dump($batch_data);
                     try {
-                        $create_data = (new CollectionMsgModel())->batchCreate($batch_data);
+                        //$create_data = (new CollectionMsgModel())->batchCreate($batch_data);
+                        $create_data = Db::table('collection_msg')->insertAll($batch_data);
                     }catch (Exception $e){
                         $redis->deleteZset($key . $value[$i]);
                         continue;
                     };
-                    $create_number = count($create_data);
-                    if ($create_number > 0) {
+                    //$create_number = count($create_data);
+                    if ($create_data > 0) {
                         //echo '----写入数据库成功' . $create_number . '条';
-                        $number = $number + $create_number;
+                        $number = $number + $create_data;
                         //数据写入本地备用数据库
                         /*$local_result = (new CollectionMsgModel())->batchCreate($batch_data, 'local');
                         if (count($local_result) <= 0){
