@@ -542,7 +542,7 @@ class PhoneModel extends BaseModel
     public function getPhoneDetailByUID($uid){
         $phone_detail_key = Config::get('cache.prefix') . 'phone_detail_' . $uid;
         //$result = Cache::get($phone_detail_key);
-        $redis = new RedisController();
+        $redis = new RedisController('sync');
         $result = $redis->redisCheck($phone_detail_key);
         if ($result){
             return unserialize($result);

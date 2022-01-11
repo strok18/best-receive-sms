@@ -40,6 +40,12 @@ class MsgQueueController extends Controller
         }
     }
 
+    //接收上游转发过来的号码进行sync入库
+    public function receiveNumber(){
+        $data = input('post.');
+        trace($data, 'notice');
+    }
+
     //易语言本地写入redis数据
     public function insertLocalSms($PhoNum = null, $smsNumber = null, $smsContent = null){
         //post提交或者控制器内提交
@@ -48,7 +54,6 @@ class MsgQueueController extends Controller
             $smsNumber = Request::param('smsNumber');
             $smsContent = trim(Request::param('smsContent'));
         }
-
         $smsDate = time();
 
         if (!$smsDate && !$PhoNum && !$smsNumber && !$smsContent){
