@@ -78,7 +78,7 @@ class RecaptchaClick extends Controller
             $ip_600s = $redis->redisNumber('ip_600s_' . $ip, 600);
             $ip_3600s = $redis->redisNumber('ip_3600s_' . $ip, 3600);
 
-            if ($ip_1s > 3 || $ip_600s > 100){
+            if ($ip_1s > 2 || $ip_600s > 100){
 
                 if ($ip_3600s > 150){
                     $redis->redisNumber('impose_' . $ip, 1800);
