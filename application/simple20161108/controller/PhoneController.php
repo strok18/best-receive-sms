@@ -131,7 +131,7 @@ class PhoneController extends BaseController
             }
         }
         $phone_model = new PhoneModel();
-        $redis = new RedisController();
+        $redis = new RedisController('sync');
         switch ($data['field']) {
             case 'online':
                 $result = $phone_model->check01($phone_num, 'online', $value);

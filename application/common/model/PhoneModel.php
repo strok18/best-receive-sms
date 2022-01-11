@@ -610,7 +610,7 @@ class PhoneModel extends BaseModel
             ->where('online', 1)
             ->where('show', 1)
             ->where('type', 2)
-            ->cache('upcoming_number',3*3600)
+            ->cache('upcoming_number',3600)
             ->count();
     }
 }
