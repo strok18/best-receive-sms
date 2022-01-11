@@ -8,6 +8,7 @@ use app\common\model\CountryModel;
 use app\common\model\PhoneModel;
 use app\common\model\WarehouseModel;
 use app\api\controller\ApiController;
+use think\facade\Config;
 use think\facade\Request;
 use think\Db;
 
@@ -156,7 +157,7 @@ class PhoneController extends BaseController
             default:
                 $result = '';
         }
-        $redis->deleteString('phone_detail_' . $phone_num);
+        $redis->deleteString(Config::get('cache.prefix') .'phone_detail_' . $phone_num);
         if (!$result) {
             return show('切换失败,请稍候重试', '', 4000);
         } else {
