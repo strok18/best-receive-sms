@@ -98,7 +98,7 @@ Route::group('', function () use ($countrys){
     Route::post('hcaptcha', 'best/ReCaptcha/hcaptcha');
     Route::post('report', 'best/Message/report');
     Route::get('spi', 'best/Check/index'); //蜘蛛重命名
-    Route::get('verify', 'admin20161108/Login/verify'); //验证码
+    Route::get('verify', 'simple20161108/Login/verify'); //验证码
 
     Route::post('heartbeat', 'index/Index/heartBeat');
 
