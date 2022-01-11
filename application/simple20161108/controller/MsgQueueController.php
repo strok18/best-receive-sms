@@ -11,6 +11,7 @@ namespace app\simple20161108\controller;
 use app\common\controller\RedisController;
 use think\Controller;
 use think\facade\Cache;
+use think\facade\Config;
 use think\facade\Request;
 use app\api\controller\ApiController;
 use think\Db;
@@ -42,8 +43,29 @@ class MsgQueueController extends Controller
 
     //接收上游转发过来的号码进行sync入库
     public function receiveNumber(){
+        if (!Request::isPost()){
+            return false;
+        }
         $data = input('post.');
-        trace($data, 'notice');
+        $phone_num = $this->getPhoneDetailByPhone($data['phone_num']);
+        //获取的短信数组每条循环写入到redis里面
+        //采集有序集合的方式,每条记录给一个分数
+        $messageKey = Config::get('cache.prefix') . 'message:';
+        $redis = new RedisController('sync');
+        $number = count($data);
+        //dump($data);
+        for ($i = 1; $i < $number+1; $i++) {
+            $redis->zAdd($messageKey . $phone_num, $redis->getRedisSet($messageKey . $phone_num . '_score'), serialize($data[$number-$i]));
+        }
+        $redis->hIncrby(Config::get('cache.prefix') . 'phone_receive', $phone_num);
+        //如果集合内数据超过50条,就把该条数据加入队列入库处理
+        $number = $redis->checkZset($messageKey . $phone_num);
+
+        if ($number > 20) {
+            //加入待处理列表
+            $redis->setSetValue($messageKey . 'queue', $phone_num);
+        }
+        trace($number, 'notice');
     }
 
     //易语言本地写入redis数据
