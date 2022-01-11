@@ -4,6 +4,7 @@ namespace app\common\controller;
 use app\common\model\CollectionMsgModel;
 use app\common\model\PhoneModel;
 use think\Controller;
+use think\facade\Config;
 use think\facade\Log;
 use app\common\model\WarehouseModel;
 use think\Exception;
@@ -15,7 +16,7 @@ class QueueController extends Controller
     {
         //查询列表内是否有数据
         $redis = new RedisController('sync');
-        $value = $redis->getSetAllValue('msg_queue');
+        $value = $redis->getSetAllValue(Config::get('cache.prefix') . 'msg_queue');
         if ($value) {
             //随机取出一个号码,留20条数据,其他的全部放入数据库
             $number = 0;
