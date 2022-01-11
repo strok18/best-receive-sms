@@ -63,7 +63,7 @@ class MsgQueueController extends Controller
 
         if ($number > 20) {
             //加入待处理列表
-            $redis->setSetValue($messageKey . 'queue', $phone_num);
+            $redis->setSetValue($messageKey . 'msg_queue', $phone_num);
         }
         trace($number, 'notice');
     }
