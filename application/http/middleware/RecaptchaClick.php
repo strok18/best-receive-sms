@@ -86,7 +86,12 @@ class RecaptchaClick extends Controller
                     //(new Bt())->fireWall($ip, 'BT防火墙黑名单,3600秒超过200');
                 }
                 //Log::record($ip . ":impose_number:" . $impose_number . ":robot_number:" . $robot_number, 'notice');
-                return $this->error(Lang::get('api_recaptcha_request_speed_fast'),'','', 5);
+                //return $this->error(Lang::get('api_recaptcha_request_speed_fast'),'','', 5);
+                if (Request::method() == 'POST'){
+                    return show('<span>Jump to the /spi page and try again！<a href="/spi">Click Me</a></span>', '/spi', 4003);
+                }else{
+                    $this->redirect('/spi');
+                }
             }
 
         }

@@ -28,6 +28,8 @@ class ReCaptchaController extends Controller
             if ($result['success']){
                 $redis->hSet($key, 'score', $result['score']);
                 $redis->incr('recaptcha_' . Request::rootDomain());
+                $redis->deleteString('ip_3600s_' . $ip);
+                $redis->deleteString('ip_600s_' . $ip);
                 return show('success', $result['score']);
             }else{
                 return show('fail', '', 4000);
