@@ -80,12 +80,12 @@ class RecaptchaClick extends Controller
 
             if ($ip_1s > 3 || $ip_600s > 100){
                 
-                $redis->redisNumber('impose_' . $ip, 1800);
+
                 if ($ip_3600s > 150){
+                    $redis->redisNumber('impose_' . $ip, 1800);
                     $redis->redisNumber('robot_' . $ip, 21600);
                     //(new Bt())->fireWall($ip, 'BT防火墙黑名单,3600秒超过200');
                 }
-                //Log::record($ip . ":impose_number:" . $impose_number . ":robot_number:" . $robot_number, 'notice');
                 //return $this->error(Lang::get('api_recaptcha_request_speed_fast'),'','', 5);
                 if (Request::method() == 'POST'){
                     return show('<span>Jump to the /spi page and try again！<a href="/spi">Click Me</a></span>', '/spi', 4003);
