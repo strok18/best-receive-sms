@@ -31,7 +31,7 @@ class MsgQueueController extends Controller
     protected function getPhoneDetailByPhone($phone){
         $result = Db::table('phone')
             ->where('phone_num', $phone)
-            ->cache(60*60)
+            //->cache(60*60)
             ->field('uid,phone_num')
             ->select();
         if (count($result) == 1){
