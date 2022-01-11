@@ -276,7 +276,7 @@ class ApiController extends Controller
     {
         //获取的短信数组每条循环写入到redis里面
         //采集有序集合的方式,每条记录给一个分数
-        $redis = new RedisController();
+        $redis = new RedisController('sync');
         $number = count($data);
         //dump($data);
         for ($i = 1; $i < $number+1; $i++) {

@@ -66,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Hot number start-->
                 <div class="col-sm-12 d-none" id="hot_number">
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="row">
@@ -97,7 +98,7 @@
                                         </a>
                                         <h3 class="card-title number-font" style="margin-top: 5px;">
                                             <a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}/{$vo.uid}" title="Receive sms {$vo['country']['en_title']}">
-                                                <span>{$vo.uid}</span>
+                                                <span class="fs-5">{$vo.uid}</span>
                                             </a>
                                         </h3>
                                     </div>
@@ -110,6 +111,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Hot number end-->
 
                 <div class="col-sm-12">
                     <div class="row mt-3" style="margin-left: 10px;">

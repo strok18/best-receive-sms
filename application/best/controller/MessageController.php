@@ -54,7 +54,7 @@ class MessageController extends Controller
             $phone_online_time = $redis->redisCheck('phone_online_time');
             //上新，仅上架，不展示信息，预售号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
-            $this->assign('empty', '<div><img src="/static/web/images/time-down.svg" class="img-fluid"><div class="text-center text-danger fs-2 fw-bold">Number online countdown<br><span class="fs-1">'.gap_times($phone_online_time, 'en').'</span></div></div>');
+            $this->assign('empty', '<div><img src="/static/web/images/time-down.svg" class="img-fluid"><div class="text-center text-secondary fs-2 fw-bold">Number online countdown<br><span class="fs-1 text-danger">'.gap_times($phone_online_time, 'en').'</span></div></div>');
             (new RedisController())->hIncrby('phone_click', $phone_num);
             $message_data = '';
         }else{

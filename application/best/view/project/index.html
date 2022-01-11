@@ -34,7 +34,7 @@
                                 {notempty name="data"}
                                 <tr>
                                     <th scope="col">PROJECT</th>
-                                    <th scope="col">NUMBER</th>
+                                    <!--<th scope="col">NUMBER</th>-->
                                     <th scope="col">MESSAGE</th>
                                 </tr>
                                 {/notempty}
@@ -43,7 +43,7 @@
                                 {volist name="data" id="vo" empty="$empty"}
                                 <tr>
                                     <td class="p-3 align-middle"><a href="/receive-sms-from-{$vo.url}">{$vo.url}</a></td>
-                                    <td class="p-3 align-middle"><a href="#"><a href="/receive-sms-from-{$vo.en_title | strtolower}/{$vo.uid}">{$vo.uid}</a></a></td>
+                                    {php}/*<td class="p-3 align-middle"><a href="/receive-sms-from-{$vo.en_title | strtolower}/{$vo.uid}">{$vo.uid}</a></td>*/{/php}
                                     <td class="p-3 align-middle">{$vo.smsContent}</td>
                                 </tr>
                                 {/volist}

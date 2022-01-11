@@ -53,7 +53,7 @@ class RedisController extends Controller
     ];
     protected $config_sync = [
         //本地16699同步数据
-        'port' => 6379,
+        'port' => 28590,
         'host' => '127.0.0.1',
         'auth' => '',
     ];
