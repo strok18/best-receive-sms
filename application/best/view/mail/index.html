@@ -268,10 +268,11 @@
                 num++
                 click(3)
                 if (num > 30) {
-                    toast('Too many requests, automatic suspension', {type: 'danger', isClose: false})
+                    toast('{$Think.lang.api_many_request}', {type: 'secondary', isClose: false})
                     clearTimeout(auto)
                     auto = undefined
                     $('#receive_email').removeAttr('disabled')
+                    $("#receive_email_loading").addClass('d-none')
                 }
                 loading(false);
             }
