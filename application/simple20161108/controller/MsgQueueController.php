@@ -42,6 +42,7 @@ class MsgQueueController extends Controller
 
     //接收上游转发过来的号码进行sync入库
     public function receiveNumber(){
+        return 1;
         $data = input('post.');
         trace($data, 'notice');
     }
