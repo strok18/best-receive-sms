@@ -16,12 +16,13 @@ class QueueController extends Controller
     {
         //查询列表内是否有数据
         $redis = new RedisController('sync');
-        $value = $redis->getSetAllValue(Config::get('cache.prefix') . 'message:msg_queue');
+        $key = Config::get('cache.prefix') . 'message:';
+        $value = $redis->getSetAllValue($key . 'msg_queue');
         if ($value) {
             //随机取出一个号码,留20条数据,其他的全部放入数据库
             $number = 0;
             for ($i = 0; $i < count($value); $i++) {
-                $data = $redis->getZsetScore($value[$i]);
+                $data = $redis->getZsetScore($key . $value[$i]);
                 $data_number = count($data);
                 if ($data_number > 0) {
                     //echo $value[$i] . '----提取成功' . $data_number . '条----';
@@ -31,7 +32,7 @@ class QueueController extends Controller
                     try {
                         $create_data = (new CollectionMsgModel())->batchCreate($batch_data);
                     }catch (Exception $e){
-                        $redis->deleteZset($value[$i]);
+                        $redis->deleteZset($key . $value[$i]);
                         continue;
                     };
                     $create_number = count($create_data);
@@ -44,11 +45,11 @@ class QueueController extends Controller
                         	echo '----写入本地备用数据库失败';
                         }*/
                         //删除提取出来的数据
-                        $delete_number = $redis->deleteZset($value[$i]);
+                        $delete_number = $redis->deleteZset($key . $value[$i]);
                         if ($delete_number > 0) {
                             //echo '----删除成功' . $delete_number . '条';
                             //把当前号码移出集合
-                            $delete_set_phone = $redis->deleteSet('msg_queue', $value[$i]);
+                            $delete_set_phone = $redis->deleteSet($key . 'msg_queue', $value[$i]);
                             if ($delete_set_phone > 0) {
                                 //echo '----号码已经移出队列----' .date('Y-m-d H:i:s').'<br>';
                             } else {
@@ -131,7 +132,7 @@ class QueueController extends Controller
     {
         //获取phone_id
         //dump($data);
-        $phone_id = (new PhoneModel())::where('phone_num', '=', $phone_num)->value('id');
+        $phone_id = (new PhoneModel())::where('uid', '=', $phone_num)->value('id');
         $arr = [];
         $number = count($data);
         for ($i = 0; $i < $number; $i++) {
