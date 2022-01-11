@@ -65,7 +65,6 @@ class MsgQueueController extends Controller
             //加入待处理列表
             $redis->setSetValue($messageKey . 'msg_queue', $phone_num);
         }
-        trace($number, 'notice');
     }
 
     //易语言本地写入redis数据
