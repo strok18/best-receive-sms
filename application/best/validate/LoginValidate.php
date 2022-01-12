@@ -1,6 +1,6 @@
 <?php
 
-namespace app\mys\validate;
+namespace app\best\validate;
 
 
 use think\Validate;
