@@ -79,7 +79,7 @@ class MessageController extends Controller
                         }
                         $message_data[$key]['smsDate'] = gap_times($sms_date, 'en', 'ago');
                     }else{
-                        $message_data[$key]['smsDate'] = '1 months ago';
+                        $message_data[$key]['smsDate'] = 'expired';
                     }
                 }
             }
