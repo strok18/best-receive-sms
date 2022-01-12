@@ -102,6 +102,7 @@ class MessageController extends Controller
         $this->assign('phone_info', $phone_info);
         $this->assign('phone_data', (new PhoneModel())->getCountryPhone('hot'));
         $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
+        $this->assign('mClick', (new RedisController())->hMget('ip:click:' . real_ip(), ['message_click', 'score']));
         return $this->fetch();
     }
 

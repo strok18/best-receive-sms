@@ -401,7 +401,8 @@ function buttonLoading(buttonID, type = true){
 function loadScript(callback, url) {
 	let urls = {
 		jquery: '//'+ window.location.host + '/static/web/js/jquery-3.6.0.min.js',
-		copy: '//' + window.location.host + '/static/web/js/clipboard.min.js'
+		copy: '//' + window.location.host + '/static/web/js/clipboard.min.js',
+		recaptcha: 'https://recaptcha.net/recaptcha/api.js?render=6Lf71VQcAAAAAG1lsIdsb3aeTivSf_rkKUKaCu7V',
 	};
 	if (url === undefined){
 		url = urls.jquery;

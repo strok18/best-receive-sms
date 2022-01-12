@@ -63,13 +63,16 @@ class RecaptchaClick extends Controller
                 //第二次访问，start自增
                 $redis->hSet($key_ip_click, 'message_click', $click_ip['message_click'] + 1);
                 //判断score是否存在
-                if (!$click_ip['score']){
-                    if (Request::method() == 'POST'){
-                        return show('<span>Jump to the /spi page and try again！<a href="/spi">Click Me</a></span>', '/spi', 4003);
+                //可以请求十次，十次之后，需要recaptcha验证一下分数，静默请求？
+                if ($click_ip['message_click'] > 10){
+                    if (!$click_ip['score']){
+                        if (Request::method() == 'POST'){
+                            return show('<span>Jump to the /spi page and try again！<a href="/spi">Click Me</a></span>', '/spi', 4003);
+                        }
+                        $this->redirect('/spi');
+                    }elseif($click_ip['score'] < 0.2){
+                        $this->redirect('/spi');
                     }
-                    $this->redirect('/spi');
-                }elseif($click_ip['score'] < 0.2){
-                    $this->redirect('/spi');
                 }
             }
             

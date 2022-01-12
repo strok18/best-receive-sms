@@ -205,9 +205,6 @@
 <!-- main content end-->
 <script src="/static/web/js/clipboard.min.js" crossorigin="anonymous"></script>
 <script>
-    function messageInit(){
-        document.getElementById('copy').setAttribute('data-clipboard-text', {$phone_info['phone_num']});
-    }
     function report(phone_num) {
         loadScript(function () {
             let reportHtml = `
@@ -282,6 +279,30 @@
         }else {
             hot.classList.add('d-none');
         }
+    }
+    function messageInit(){
+        let va = {:json_encode($mClick)};
+        if (va.message_click > 5 && va.message_click < 10){
+            if (!va.score || va.score < 0.3){
+                loadScript(function () {
+                    grecaptcha.ready(function() {
+                        var renderKey = '6Lf71VQcAAAAAG1lsIdsb3aeTivSf_rkKUKaCu7V'
+                        grecaptcha.execute(renderKey, {action: 'bestCheck'}).then(function(token) {
+                            loadScript(function () {
+                                $.ajax({
+                                    url: '/recaptcha',
+                                    type: 'post',
+                                    data: {token:token, page:'check'},
+                                    success: function (e) {
+                                    }
+                                })
+                            })
+                        })
+                    })
+                }, 'recaptcha')
+            }
+        }
+        document.getElementById('copy').setAttribute('data-clipboard-text', {$phone_info['phone_num']});
     }
 </script>
 {include file="../application/best/view/foot.html" /}
