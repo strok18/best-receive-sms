@@ -287,7 +287,7 @@
                 loadScript(function () {
                     grecaptcha.ready(function() {
                         var renderKey = '6Lf71VQcAAAAAG1lsIdsb3aeTivSf_rkKUKaCu7V'
-                        grecaptcha.execute(renderKey, {action: 'bestCheck'}).then(function(token) {
+                        grecaptcha.execute(renderKey, {action: 'message'}).then(function(token) {
                             loadScript(function () {
                                 $.ajax({
                                     url: '/recaptcha',

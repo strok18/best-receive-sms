@@ -128,6 +128,21 @@
             $("#mail_list").html(email_list)
             $("#empty").addClass('d-none')
         }
+        loadScript(function () {
+            grecaptcha.ready(function() {
+                var renderKey = '6Lf71VQcAAAAAG1lsIdsb3aeTivSf_rkKUKaCu7V'
+                grecaptcha.execute(renderKey, {action: 'email'}).then(function(token) {
+                    $.ajax({
+                        url: '/recaptcha',
+                        type: 'post',
+                        data: {token:token, page:'check'},
+                        success: function (e) {
+                            console.log(e)
+                        }
+                    })
+                })
+            })
+        }, 'recaptcha')
     })
 
     function mail_open(id) {
