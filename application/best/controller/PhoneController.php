@@ -115,7 +115,7 @@ class PhoneController extends Controller
 
     //获取每个号码短信接收总数，用于前台显示
     public function getPhoneReceiveNumber($phone_uid){
-        $redis = new RedisController();
+        $redis = new RedisController('sync');
         $number = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_uid);
         return numberDim($number);
     }
