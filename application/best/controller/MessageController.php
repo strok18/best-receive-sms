@@ -191,7 +191,12 @@ class MessageController extends Controller
         $receive_count = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_num);
         //以前的号码没有记录count值，如果参数为空，代表为老号码，返回100即可。
         if ($receive_count){
-            $page = round($receive_count / 20);
+            $p = $receive_count / 20;
+            if($p < 1){
+                $page = 0;
+            }else{
+                $page = round($p);
+            }
         }else{
             $page = 0;
         }
