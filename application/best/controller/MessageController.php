@@ -120,14 +120,9 @@ class MessageController extends Controller
         $phone_hour = $this->phoneOnlineHour($phone_info['create_time'], $phone_num);
         $page_url = 'receive-sms-from-'.$en_title.'/' . $phone_info['uid'];
         if (empty($page)){
-            $result_sms = (new ApiController())->getSMS($phone_num);
-            $result_sms = json_decode($result_sms->getContent(), true);
-
-            if($result_sms['error_code'] != 0){
-                return $this->error($result_sms['msg']);
-            }
-            $result_sms = $result_sms['data'];
-            //Log::write($result_sms, 'notice');
+            $this->spiderQueue($phone_info);
+            $result_sms = $this->getMsg($phone_num);
+            
             /*//验证码生成图片
             $result_sms_count = count($result_sms);
             if ($result_sms_count > 0){
@@ -259,6 +254,62 @@ class MessageController extends Controller
             return show(Lang::get('message_api_random_fail'), '', 4000);
         }
         return show(Lang::get('common_success'), Request::domain() . '/receive-sms-from-'.$phone_num_info['country']['en_title'].'/' . $phone_num);
+    }
+    
+    /**
+     * 提交蜘蛛队列请求
+    */
+    protected function spiderQueue($phone_info){
+        $key_phone_click = Config::get('cache.prefix') . 'click:' . $phone_info['uid'];
+        //频率限制
+        //每个号码10秒钟只能请求一次
+        if ((new RedisController())->exists($key_phone_click)){
+            return false;
+        }
+        //如果是爬虫，也不提交请求
+        if ((new RedisController('sync'))->sIsMember('spider', real_ip())){
+            return false;
+        }
+        //如果voice号，也不需要提交
+        $warehouse = $phone_info['warehouse']['title'];
+        if ($warehouse == 'ATLAS' || $warehouse == 'Voice'){
+            return false;
+        }
+        
+        $params = [
+            'from' => 'best',
+            'phone_num' => $phone_info['phone_num'],
+            'phone_id' => $phone_info['phone_id'],
+            'bh' => $phone_info['country']['bh'],
+            'site' => $phone_info['warehouse']['title']
+        ];
+        
+        $redis = new RedisController();
+        $url = $redis->redisCheck(Config::get('cache.prefix') . 'curl_url');
+        if ($url){
+            $curl = asyncRequest($url, 'POST', $params);
+            if ($curl){
+                $redis->setex($key_phone_click, 15, 1);
+            }
+        }else{
+            trace('远程请求地址不存在', 'notice');
+        }
+    }
+
+    /**
+     * redis读取号码缓存
+     * @param $phone_num
+     * @param int $num
+     * @return array
+     */
+    protected function getMsg($phone_num, $num = 19){
+        $redis = new RedisController('sync');
+        $result = $redis->zRevRange(Config::get('cache.prefix') . 'message:' . $phone_num, 0, $num);
+        $data = array();
+        for ($i = 0; $i < count($result); $i++) {
+            $data[$i] = unserialize($result[$i]);
+        }
+        return $data;
     }
 
 }

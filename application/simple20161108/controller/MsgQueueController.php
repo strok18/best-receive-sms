@@ -48,6 +48,9 @@ class MsgQueueController extends Controller
         }
         $data = input('post.');
         $phone_num = $this->getPhoneDetailByPhone($data[0]['PhoNum']);
+        if (!$phone_num){
+            return '号码不存在';
+        }
         //获取的短信数组每条循环写入到redis里面
         //采集有序集合的方式,每条记录给一个分数
         $messageKey = Config::get('cache.prefix') . 'message:';

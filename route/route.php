@@ -13,14 +13,14 @@ use think\facade\Route;
 $sub_domain = get_subdomain();
 $domain = get_domain();
 
-if ($sub_domain == 'simple161108'){
+if ($sub_domain == 'best20161108'){
 	// blog子域名绑定到blog模块
-	Route::domain('simple161108', 'simple20161108');
+	Route::domain('best20161108', 'simple20161108');
 	Route::get('verify', 'simple20161108/Login/verify'); //验证码
 	return;
 }
 
-//Route::get('simple20161108', 'index/NoFound/index'); //仅允许域名访问
+Route::get('simple20161108', 'index/NoFound/index'); //仅允许域名访问
 
 if ($sub_domain == 'appapi'){
     Route::post('phone', 'appapi/Phone/getPhone');

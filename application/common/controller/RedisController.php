@@ -464,6 +464,16 @@ class RedisController extends Controller
         $result = self::$redis->exists($key);
         return $result;
     }
+    
+    /**
+     * 查看键是否存在，
+     * 若 key 存在返回 1 ，否则返回 0 。
+     * @param $key
+     * @return mixed
+     */
+    public function exists($key){
+        return self::$redis->exists($key);
+    }
 
     //查询是否存在并且返回该值
     public function searchReturnValue($key){

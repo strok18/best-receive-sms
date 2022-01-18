@@ -86,6 +86,57 @@ function curl_get($url = '') {
     return $data;
 }
 
+/**
+ * 异步curl
+ * @param string $url
+ * @param string $type
+ * @param array $param
+ * @return false|int|string
+ */
+function asyncRequest(string $url, string $type = 'GET', array $param = [])
+{
+    $url_info = parse_url($url);
+    $host = $url_info['host'];
+    $path = $url_info['path'];
+    if ($type == 'POST'){
+        $query = isset($param) ? http_build_query($param) : '';
+    }
+    $port = 80;
+    $errno = 0;
+    $errstr = '';
+    $timeout = 30; //连接超时时间（S）
+
+    $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
+    //$fp = stream_socket_client("tcp://".$host.":".$port, $errno, $errstr, $timeout);
+
+    if (!$fp) {
+        logs('连接失败', 'async_request_logs');
+        return '连接失败';
+    }
+
+    if ($errno || !$fp) {
+        logs($errstr, 'async_request_logs');
+        return $errstr;
+    }
+
+    stream_set_blocking($fp, 0); //非阻塞
+    stream_set_timeout($fp, 10);//响应超时时间（S）
+    $out = $type . ' ' . $path . " HTTP/1.1\r\n";
+    $out .= "host:" . $host . "\r\n";
+    if ($type == 'GET'){
+        $out .= "connection:close\r\n\r\n";
+    }else{
+        $out .= "content-length:" . strlen($query) . "\r\n";
+        $out .= "content-type:application/x-www-form-urlencoded\r\n";
+        $out .= "connection:close\r\n\r\n";
+        $out .= $query;
+    }
+    $result = @fputs($fp, $out);
+    usleep(1000); // 延迟1毫秒，如果没有这延时，可能在nginx服务器上就无法执行成功
+    @fclose($fp);
+    return $result;
+}
+
 function generateIP(){
     $ip2id= round(rand(600000, 2550000) / 10000); //第一种方法，直接生成
     $ip3id= round(rand(600000, 2550000) / 10000);
@@ -437,7 +488,7 @@ function checkSpider($ip)
         //反向dns检测
         $rdns = gethostbyaddr($ip);
         if (regSpider($rdns)){
-            (new \app\common\controller\RedisController('master'))->setSetValue('spider', $ip);
+            (new \app\common\controller\RedisController('sync'))->setSetValue('spider', $ip);
             return true;
         }
     }
@@ -461,7 +512,7 @@ function regSpider($agent){
      * bytespider-60-8-123-10.crawl.bytedance.com 头条
      * ip-54-36-148-76.a.ahrefs.com
      */
-    if (preg_match('/(?:Sogou|360Spider|YisouSpider|shenmaspider|bingbot|Baiduspider|Googlebot|msnbot|Yahoo|Yandex|MJ12bot|Teoma|Bytespider|YoudaoBot|Voila|BSpider|twiceler|Heritrix|Alexa|Ask|Exabot|Custo|OutfoxBot|yacy|SurveyBot|legs|lwp-trivial|Nutch|StackRambler|Netcraft|MSIECrawler|larbin|AhrefsBot|ahrefs)/iu', $agent)){
+    if (preg_match('/(?:Sogou|360Spider|YisouSpider|shenmaspider|bingbot|Baiduspider|Googlebot|msnbot|Yahoo|Yandex|MJ12bot|Teoma|Bytespider|YoudaoBot|Voila|BSpider|twiceler|Heritrix|Alexa|Ask|Exabot|Custo|OutfoxBot|yacy|SurveyBot|legs|lwp-trivial|Nutch|StackRambler|Netcraft|MSIECrawler|larbin|AhrefsBot|ahrefs|BingPreview)/iu', $agent)){
         return true;
     }
     return false;
