@@ -55,7 +55,7 @@ function curl_post($url = '', $param = '') {
     curl_setopt($ch, CURLOPT_REFERER, $url);//模拟来路
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
     curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $curlPost);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($curlPost));
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10 );//连接超时，这个数值如果设置太短可能导致数据请求不到就断开了
     $data = curl_exec($ch);//运行curl
     curl_close($ch);
@@ -93,7 +93,66 @@ function curl_get($url = '') {
  * @param array $param
  * @return false|int|string
  */
-function asyncRequest(string $url, string $type = 'GET', array $param = [])
+function asyncRequest($url, $method = 'GET', array $param = [], $headers = array()) {
+
+    $parse = parse_url($url);
+
+    isset($parse['host']) ||$parse['host'] = '';
+    isset($parse['path']) || $parse['path'] = '';
+    isset($parse['query']) || $parse['query'] = '';
+    isset($parse['port']) || $parse['port'] = '';
+
+    $path = $parse['path'] ? $parse['path'].($parse['query'] ? '?'.$parse['query'] : '') : '/';
+    $host = $parse['host'];
+
+    //协议
+    if ($parse['scheme'] == 'https') {
+        $version = '1.1';
+        $port = empty($parse['port']) ? 443 : $parse['port'];
+        $host = 'ssl://'.$host;
+    } else {
+        $version = '1.0';
+        $port = empty($parse['port']) ? 80 : $parse['port'];
+    }
+
+    //Headers
+    $headers[] = "Host: {$parse['host']}";
+    $headers[] = 'Connection: Close';
+    $headers[] = "User-Agent: fsockopen";
+    $headers[] = 'Accept: */*';
+
+    //包体信息
+    if ($method == 'POST') {
+        if(is_array($param)){
+            $param = http_build_query($param);
+        }
+        $headers[] = "Content-type: application/x-www-form-urlencoded";
+        $headers[] = 'Content-Length: '.strlen($param);
+        $out = "POST $path HTTP/$version\r\n".join("\r\n", $headers)."\r\n\r\n".$param;
+    } else {
+        $out = "GET $path HTTP/$version\r\n".join("\r\n", $headers)."\r\n\r\n";
+    }
+
+    //发送请求
+    $limit = 0;
+    $fp = fsockopen($host, $port, $errno, $errstr, 30);
+
+    if (!$fp) {
+        exit('Fsockopen failed to establish socket connection: '.$url);
+    } else {
+        $header = $content = '';
+        //集阻塞/非阻塞模式流,$block==true则应用流模式
+        stream_set_blocking($fp, true);
+        //设置流的超时时间
+        stream_set_timeout($fp, 10);
+        $result = fwrite($fp, $out);
+        usleep(500); // 延迟1毫秒，如果没有这延时，可能在nginx服务器上就无法执行成功
+        fclose($fp);
+        return $result;
+    }
+}
+
+function asyncRequest1(string $url, string $type = 'GET', array $param = [])
 {
     $url_info = parse_url($url);
     $host = $url_info['host'];
@@ -215,6 +274,7 @@ function is_crawler() {
             "Teoma",
             "Fish search",
             'AhrefsBot',
+            'YandexBot',
         );
         foreach($spiderSite as $val) {
             $str = strtolower($val);
@@ -429,7 +489,7 @@ function gap_times($time, $lang = 'zh', $type = 'later')
         ['zh' => '星期', 'en' => 'week'],
         ['zh' => '天', 'en' => 'day'],
         ['zh' => '小时', 'en' => 'hour'],
-        ['zh' => '分钟', 'en' => 'minutes'],
+        ['zh' => '分钟', 'en' => 'min'],
         ['zh' => '秒', 'en' => 'second'],
         ['zh' => $zh_later_value, 'en' => $en_later_value],
     ];
@@ -512,7 +572,7 @@ function regSpider($agent){
      * bytespider-60-8-123-10.crawl.bytedance.com 头条
      * ip-54-36-148-76.a.ahrefs.com
      */
-    if (preg_match('/(?:Sogou|360Spider|YisouSpider|shenmaspider|bingbot|Baiduspider|Googlebot|msnbot|Yahoo|Yandex|MJ12bot|Teoma|Bytespider|YoudaoBot|Voila|BSpider|twiceler|Heritrix|Alexa|Ask|Exabot|Custo|OutfoxBot|yacy|SurveyBot|legs|lwp-trivial|Nutch|StackRambler|Netcraft|MSIECrawler|larbin|AhrefsBot|ahrefs|BingPreview)/iu', $agent)){
+    if (preg_match('/(?:Sogou|360Spider|YisouSpider|shenmaspider|bingbot|Baiduspider|Googlebot|msnbot|Yahoo|Yandex|MJ12bot|Teoma|Bytespider|YoudaoBot|Voila|BSpider|twiceler|Heritrix|Alexa|Ask|Exabot|Custo|OutfoxBot|yacy|SurveyBot|legs|lwp-trivial|Nutch|StackRambler|Netcraft|MSIECrawler|larbin|AhrefsBot|ahrefs|YandexBot|BingPreview)/iu', $agent)){
         return true;
     }
     return false;

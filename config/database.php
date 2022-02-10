@@ -15,9 +15,9 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => env('DATABASE.DATABASE', 'mys'),
+    'database'        => env('DATABASE.DATABASE', 'best'),
     // 用户名
-    'username'        => env('DATABASE.USERNAME', 'mys'),
+    'username'        => env('DATABASE.USERNAME', 'best'),
     // 密码
     'password'        => env('DATABASE.PASSWORD', 'CZDAH0uf8I75WxyXh6VV'),
     // 端口

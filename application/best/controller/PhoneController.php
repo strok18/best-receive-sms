@@ -77,16 +77,22 @@ class PhoneController extends Controller
         $result = $result->toArray();
 
         //预置广告位
-        /*$count = count($result['data']);
+        $count = count($result['data']);
         if ($count > 4){
             array_splice($result['data'], 4, 0, 'Adsense');
-        }*/
+        }
 
         //copy phone_num
         $js_data = [];
         $k = 0;
         $current_title = (new CountryController())->countryLangTitle();
         for($i = 0; $i < count($result['data']); $i++){
+            if($count > 4){
+                if($i == 4){
+                    continue;
+                }
+            }
+            
             $result['data'][$i]['country_title'] = $result['data'][$i]['country'][$current_title];
             $result['data'][$i]['phone_encryption'] = phoneEncryption((string)$result['data'][$i]['phone_num']);
             $result['data'][$i]['bh_encryption'] = phoneEncryption((string)$result['data'][$i]['country']['bh']);

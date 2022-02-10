@@ -50,7 +50,7 @@ class MessageController extends Controller
         $phone_num = $phone_info['uid'];
 
         if ($phone_info['type'] == 2){
-            $redis = new RedisController('sync');
+            $redis = new RedisController();
             $phone_online_time = $redis->redisCheck('phone_online_time');
             //上新，仅上架，不展示信息，预售号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
@@ -154,12 +154,12 @@ class MessageController extends Controller
         }
 
         //广告设置
-        /*if (count($result_sms) > 2){
+        if (count($result_sms) > 2){
             array_splice($result_sms, 2, 0, 'Adsense');
         }
         if (count($result_sms) > 14){
             array_splice($result_sms, 10, 0, 'Adsense');
-        }*/
+        }
         return ['page_list'=>$page_list, 'result_sms'=>$result_sms];
     }
 
@@ -266,8 +266,13 @@ class MessageController extends Controller
         if ((new RedisController())->exists($key_phone_click)){
             return false;
         }
+        //如果号码离线，不提交
+        if($phone_info['display'] == 0 || $phone_info['online'] == 0 || $phone_info['show'] == 0){
+            return false;
+        }
+        $redis_sync = new RedisController('sync');
         //如果是爬虫，也不提交请求
-        if ((new RedisController('sync'))->sIsMember('spider', real_ip())){
+        if ($redis_sync->sIsMember('spider', real_ip())){
             return false;
         }
         //如果voice号，也不需要提交
@@ -276,6 +281,7 @@ class MessageController extends Controller
             return false;
         }
         
+        
         $params = [
             'from' => 'best',
             'phone_num' => $phone_info['phone_num'],
@@ -283,13 +289,16 @@ class MessageController extends Controller
             'bh' => $phone_info['country']['bh'],
             'site' => $phone_info['warehouse']['title']
         ];
-        
         $redis = new RedisController();
         $url = $redis->redisCheck(Config::get('cache.prefix') . 'curl_url');
         if ($url){
-            $curl = asyncRequest($url, 'POST', $params);
-            if ($curl){
-                $redis->setex($key_phone_click, 15, 1);
+            try {
+                $curl = asyncRequest($url, 'POST', $params);
+                if ($curl){
+                    $redis->setex($key_phone_click, 5, 1);
+                }
+            }catch (\Exception $e){
+                trace('远程请求地址请求出错', 'notice');
             }
         }else{
             trace('远程请求地址不存在', 'notice');

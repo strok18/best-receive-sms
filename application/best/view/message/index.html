@@ -127,7 +127,7 @@
                             </ol>
                         </nav>
                     </div>
-                    <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
+                    <div class="message-card card text-center border-0 shadow mb-4 bg-white rounded">
                         <div class="card-body">
                             <table class="table table-striped table-hover text-start">
 
@@ -142,31 +142,45 @@
                                 </thead>
                                 <tbody>
                                 {volist name="data" id="vo" empty="$empty"}
-                                <tr>
-                                    <td class="p-3 align-middle little-font">
-                                        <?php if(array_key_exists('url',$vo)){?>
-                                        <?php if($vo['url'] !== ''){?>
-                                        <a href="/receive-sms-from-{$vo.url}">{$vo.url}</a>
-                                        <?php }else{?>
-                                        *{$vo.smsNumber|substr=-5}
-                                        <?php }?>
-                                        <?php }else{?>
-                                        *{$vo.smsNumber|substr=-5}
-                                        <?php }?>
-                                    </td>
-                                    <td class="p-3 align-middle">
-                                        {if $vo.smsContent == '已屏蔽'}This short message verification code violation, has been blocked.
-                                        {else /}<?php echo strip_tags($vo['smsContent'], "<img>") ?>
-                                        {/if}
-                                    </td>
-                                    <td class="p-3 align-middle little-font" style="width: 13%">
-                                        {$vo.smsDate}
-                                    </td>
-                                </tr>
+                                {if $i == 3}
+                                    <tr align="center">
+                                        <td colspan="3" class="p-0">
+                                            {include file="../application/template/adsense/best-message-middle-1.html" /}
+                                        </td>
+                                    </tr>
+                                {elseif $i == 11 /}
+                                    <tr align="center">
+                                        <td colspan="3" class="p-0">
+                                            {include file="../application/template/adsense/best-message-middle-2.html" /}
+                                        </td>
+                                    </tr>
+                                {else /}
+                                    <tr>
+                                        <td class="p-3 align-middle little-font">
+                                            <?php if(array_key_exists('url',$vo)){?>
+                                            <?php if($vo['url'] !== ''){?>
+                                            <a href="/receive-sms-from-{$vo.url}">{$vo.url}</a>
+                                            <?php }else{?>
+                                            *{$vo.smsNumber|substr=-5}
+                                            <?php }?>
+                                            <?php }else{?>
+                                            *{$vo.smsNumber|substr=-5}
+                                            <?php }?>
+                                        </td>
+                                        <td class="p-3 align-middle text-break">
+                                            {if $vo.smsContent == '已屏蔽'}This short message verification code violation, has been blocked.
+                                            {else /}<?php echo strip_tags($vo['smsContent'], "<img>") ?>
+                                            {/if}
+                                        </td>
+                                        <td class="p-3 align-middle little-font" style="width: 13%">
+                                            {$vo.smsDate}
+                                        </td>
+                                    </tr>
+                                {/if}
                                 {/volist}
                                 </tbody>
                             </table>
-                            <div class="text-start">
+                            <div class="text-start px-2 pb-3">
                                 {volist name="country_list" id="country" empty=""}
                                 <span class="badge bg-primary link-white"><a href="/{$country | strtolower}-phone-number" title="receive sms from {$country} phone number">{$country}</a></span>
                                 {/volist}
@@ -183,11 +197,11 @@
                         </div>
                     </div>
                 </div>
-
-
+                
                 <div class="container my-3 d-none">
                     <img src="" class="img-thumbnail" alt="...">
                 </div>
+                
                 <!-- Phone list end -->
                 <!-- Page start -->
                 <div class="container">

@@ -432,8 +432,8 @@ class PhoneModel extends BaseModel
                     ->where('show', '=', 1)
                     ->where('type', '=', 1)
                     ->where('display', '=', 1)
+                    ->order('sort', 'desc')
                     ->order('online', 'desc')
-                    ->order('en_sort', 'desc')
                     ->order('id', 'desc')
                     ->paginate(8, false, [
                         'page'=>$page?:1,
@@ -454,6 +454,7 @@ class PhoneModel extends BaseModel
                         ->where('show', '=', 1)
                         ->where('type', '=', 1)
                         ->whereTime('create_time', 'month')
+                        ->order('sort', 'desc')
                         ->order('id', 'desc')
                         ->paginate(50, false, [
                             'page'=>$page?:1,
@@ -467,6 +468,7 @@ class PhoneModel extends BaseModel
                     ->where('show', '=', 1)
                     ->where('type', '=', 1)
                     ->where('display', '=', 1)
+                    ->order('sort', 'desc')
                     ->order('id', 'desc')
                     ->limit(8)
                     ->select();
@@ -477,8 +479,8 @@ class PhoneModel extends BaseModel
                     ->where('display', '=', 1)
                     ->where('type', '=', 1)
                     ->where('show', '=', 1)
+                    ->order('sort', 'desc')
                     ->order('online', 'desc')
-                    ->order('en_sort', 'desc')
                     ->order('id', 'desc')
                     ->paginate(8, false, [
                         'page'=>$page?:1,
@@ -610,7 +612,7 @@ class PhoneModel extends BaseModel
             ->where('online', 1)
             ->where('show', 1)
             ->where('type', 2)
-            ->cache('upcoming_number',3600)
+            ->cache('upcoming_number',1800)
             ->count();
     }
 }

@@ -120,19 +120,30 @@ a:active {
 	.email-font {
 		font-size: 3rem;
 	}
-}
 
+}
 
 @media only screen and (max-width: 768px) {
 	.email-font {
 		font-size: 2rem;
 	}
+
 }
 
-
+/*小于576px*/
 @media only screen and (max-width: 576px) {
 	.email-font {
 		font-size: 1.5rem;
+	}
+	.card-body{
+		padding: 10px 0 0 0;
+	}
+}
+
+/*大于576px*/
+@media only screen and (min-width: 576px) {
+	.message-card{
+		padding: 20px;
 	}
 }
 

@@ -22,6 +22,11 @@
         <div class="container">
             <div class="row">
                 {volist name="data" id="vo" empty="$empty"}
+                {if $i == 5}
+                    <div class="col-sm-12 mb-3">
+                    {include file="../application/template/adsense/best-index-middle-1.html" /}
+                    </div>
+                {else /}
                 <div class="col-sm-6">
                     <div class="card text-center border-0 shadow p-3 mb-4 bg-white rounded">
                         <div class="bg-white d-flex flex-row justify-content-between">
@@ -36,9 +41,11 @@
                                 </svg>
                                     </span>
                                 {else /}
-                                <span style="color: #8D8D8D"><img height="13px" src="/static/sms/images/offline.png" data-bs-toggle="tooltip" data-bs-placement="top" title="offline number"></span>
+                                <span style="color: #8D8D8D"><img height="13px" src="/static/web/images/offline.png" data-bs-toggle="tooltip" data-bs-placement="top" title="offline number"></span>
                                 {/if}
-
+                                {if ((time() - strtotime($vo['create_time'])) < 86400*15)}
+                                <span style="color: #8D8D8D"><img height="15px" src="/static/web/images/new.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="Last Updated Number"></span>
+                                {/if}
                             </div>
                             <div class="">
                                 <p class="card-text little-font text-uppercase" title="{$vo['country_title']} {$Think.lang.common_phone_number}"><a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">{$vo['country_title']}</a></p>
@@ -76,6 +83,7 @@
                         </div>
                     </div>
                 </div>
+                {/if}
                 {/volist}
                 <!-- Phone list end -->
 
@@ -122,7 +130,7 @@
                 </svg>
                 <h6>GLOBAL MOBILE PHONE NUMBER</h6>
                 <p class="fs-ms text-muted mb-0">
-                    We Can Receive Sms Online From Everywhere To Our Free Phone Numbers In <a href="/usa-phone-number" title="receive sms from usa phone number">USA</a> <a href="/france-phone-number" title="receive sms from france number">France</a> <a href="/uk-phone-number" title="receive sms from uk phone number">UK</a> <a href="/sweden-phone-number" title="receive sms from sweden phone number">Sweden</a> <a href="/netherlands-phone-number" title="receive sms netherlands from phone number">Netherlands</a> <a href="/china-phone-number" title="receive sms from china phone number">China</a> <a href="/hongkong-phone-number" title="receive sms from hongkong phone number">Hong Kong</a> <a href="/taiwan-phone-number" title="receive sms from taiwan phone number">TaiWan</a> <a href="/germany-phone-number" title="receive sms from germany phone number">Germany</a> <a href="/myanmar-phone-number" title="receive sms from myanmar phone number">Myanmar</a> <a href="/vietnam-phone-number" title="receive sms from vietnam phone number">Vietnam</a> <a href="/thailand-phnoe-number" title="receive sms from thailand phone number">Thailand</a> <a href="/philippines-phone-number" title="receive sms from philippines phone number">Philippines</a> <a href="/india-phone-number" title="receive sms from india phone number">India</a> <a href="/australia-phone-number" title="receive sms from australia phone number">Australia</a> <a href="/malaysia-phone-number" title="receive sms from malaysia phone number">Malaysia</a> <a href="/japan-phone-number" title="receive sms from japan phone number">Japan</a> <a href="/korea-phone-number" title="receive sms from south korea phone number">South Korea</a> <a href="/brazil-phone-nubmer" title="receive sms from brazil phone number">Brazil</a> <a href="/canada-phone-number" title="receive sms from canada phone number">Canada</a> <a href="/poland-phone-number" title="receive sms from poland phone number">Poland</a> And <a href="/country">Many More Country</a>. With Our Free Virtual Phone Numbers You Can Verify Your Accounts On Almost All Websites. Verify Your <a href="/receive-sms-from-facebook" title="receive sms from Facebook">Facebook</a> <a href="/receive-sms-from-twitter" title="receive sms from twitter">Twitter</a> <a href="/receive-sms-from-google" title="receive sms from google">Google</a> <a href="/receive-sms-from-telegram" title="receive sms from telegram">Telegram</a> <a href="/receive-sms-from-wechat" title="receive sms from wechat">Wechat</a> <a href="/receive-sms-from-alipay" title="receive sms from Alipay">Alipay</a> <a href="/receive-sms-from-ebay" title="receive sms from eBay">eBay</a> <a href="/receive-sms-from-baidu" title="receive sms from baidu">Bdidu</a> <a href="/receive-sms-from-instagram" title="receive sms from instagram">instagram</a> <a href="/receive-sms-from-paypal" title="receive sms from Paypal">Paypal</a> <a href="/receive-sms-from-vk" title="receive sms from vk">VK</a> <a href="/receive-sms-from-iqiyi" title="receive sms from iqiyi">iQiyi</a> And <a href="/receive-sms-from">And More Account</a>.
+                    We Can Receive Sms Online From Everywhere To Our Free Phone Numbers In <a href="/usa-phone-number" title="receive sms from usa phone number">USA</a> <a href="/france-phone-number" title="receive sms from france number">France</a> <a href="/uk-phone-number" title="receive sms from uk phone number">UK</a> <a href="/sweden-phone-number" title="receive sms from sweden phone number">Sweden</a> <a href="/netherlands-phone-number" title="receive sms netherlands from phone number">Netherlands</a> <a href="/china-phone-number" title="receive sms from china phone number">China</a> <a href="/hongkong-phone-number" title="receive sms from hongkong phone number">Hong Kong</a> <a href="/taiwan-phone-number" title="receive sms from taiwan phone number">TaiWan</a> <a href="/germany-phone-number" title="receive sms from germany phone number">Germany</a> <a href="/myanmar-phone-number" title="receive sms from myanmar phone number">Myanmar</a> <a href="/vietnam-phone-number" title="receive sms from vietnam phone number">Vietnam</a> <a href="/thailand-phone-number" title="receive sms from thailand phone number">Thailand</a> <a href="/philippines-phone-number" title="receive sms from philippines phone number">Philippines</a> <a href="/india-phone-number" title="receive sms from india phone number">India</a> <a href="/australia-phone-number" title="receive sms from australia phone number">Australia</a> <a href="/malaysia-phone-number" title="receive sms from malaysia phone number">Malaysia</a> <a href="/japan-phone-number" title="receive sms from japan phone number">Japan</a> <a href="/korea-phone-number" title="receive sms from south korea phone number">South Korea</a> <a href="/brazil-phone-number" title="receive sms from brazil phone number">Brazil</a> <a href="/canada-phone-number" title="receive sms from canada phone number">Canada</a> <a href="/poland-phone-number" title="receive sms from poland phone number">Poland</a> And <a href="/country">Many More Country</a>. With Our Free Virtual Phone Numbers You Can Verify Your Accounts On Almost All Websites. Verify Your <a href="/receive-sms-from-facebook" title="receive sms from Facebook">Facebook</a> <a href="/receive-sms-from-twitter" title="receive sms from twitter">Twitter</a> <a href="/receive-sms-from-google" title="receive sms from google">Google</a> <a href="/receive-sms-from-telegram" title="receive sms from telegram">Telegram</a> <a href="/receive-sms-from-wechat" title="receive sms from wechat">Wechat</a> <a href="/receive-sms-from-alipay" title="receive sms from Alipay">Alipay</a> <a href="/receive-sms-from-ebay" title="receive sms from eBay">eBay</a> <a href="/receive-sms-from-baidu" title="receive sms from baidu">Bdidu</a> <a href="/receive-sms-from-instagram" title="receive sms from instagram">instagram</a> <a href="/receive-sms-from-paypal" title="receive sms from Paypal">Paypal</a> <a href="/receive-sms-from-vk" title="receive sms from vk">VK</a> <a href="/receive-sms-from-iqiyi" title="receive sms from iqiyi">iQiyi</a> And <a href="/receive-sms-from">And More Account</a>.
                 </p>
             </div>
             <div class="col-md-6 mb-grid-gutter pb-2">

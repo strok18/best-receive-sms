@@ -68,7 +68,7 @@ function clickLoading(){
 	for(let i in list)
 	{
 		list[i].onclick=function() {
-			loading(true);
+			loading(true, 5);
 		};
 	}
 }
