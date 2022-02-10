@@ -4,6 +4,7 @@ window.onload = function () {
 	clickLoading();
 	unload();
 	stretchBottom();
+	adWidth();
 	if (typeof copyPhone === 'function'){
 		copyPhone();
 	}
@@ -45,6 +46,15 @@ function init() {
 	}
 }
 
+//left right自适应广告位宽度
+function adWidth(){
+	let windows_width = screen.width;
+	if (windows_width > 1400){
+		document.getElementById('main-right').style.width = ((windows_width - document.getElementById('container-ad').offsetWidth)/2)-30 + 'px';
+		document.getElementById('main-left').style.width = ((windows_width - document.getElementById('container-ad').offsetWidth)/2)-75 + 'px';
+		(adsbygoogle = window.adsbygoogle || []).push({});
+	}
+}
 //底部拉伸
 function stretchBottom(){
 	let windows_height = screen.availHeight;

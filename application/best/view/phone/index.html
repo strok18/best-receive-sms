@@ -20,11 +20,11 @@
     <!-- Phone list start -->
     <div class="phone mt-4">
         <div class="container">
-            <div class="row">
+            <div class="row" id="container-ad">
                 {volist name="data" id="vo" empty="$empty"}
                 {if $i == 5}
                     <div class="col-sm-12 mb-3">
-                    {include file="../application/template/adsense/best-index-middle-1.html" /}
+                        {include file="../application/template/adsense/best-index-middle-1.html" /}
                     </div>
                 {else /}
                 <div class="col-sm-6">
@@ -44,7 +44,7 @@
                                 <span style="color: #8D8D8D"><img height="13px" src="/static/web/images/offline.png" data-bs-toggle="tooltip" data-bs-placement="top" title="offline number"></span>
                                 {/if}
                                 {if ((time() - strtotime($vo['create_time'])) < 86400*15)}
-                                <span style="color: #8D8D8D"><img height="15px" src="/static/web/images/new.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="Last Updated Number"></span>
+                                <span style="color: #8D8D8D"><img height="15px" src="/static/web/images/new.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="Recent updates phone number"></span>
                                 {/if}
                             </div>
                             <div class="">

@@ -205,3 +205,13 @@ a:active {
 .about a:link{
 	color: #6c757d;
 }
+.main-right{
+	position:fixed;
+	right:15px;
+	top:90px;
+}
+.main-left{
+	position:fixed;
+	left:60px;
+	top:90px;
+}
