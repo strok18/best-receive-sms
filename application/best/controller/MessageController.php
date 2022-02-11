@@ -266,6 +266,7 @@ class MessageController extends Controller
         if ((new RedisController())->exists($key_phone_click)){
             return false;
         }
+        //trace(json_encode($phone_info), 'notice');
         //如果号码离线，不提交
         if($phone_info['display'] == 0 || $phone_info['online'] == 0 || $phone_info['show'] == 0){
             return false;
@@ -295,7 +296,7 @@ class MessageController extends Controller
             try {
                 $curl = asyncRequest($url, 'POST', $params);
                 if ($curl){
-                    $redis->setex($key_phone_click, 5, 1);
+                    $redis->setex($key_phone_click, 15, 1);
                 }
             }catch (\Exception $e){
                 trace('远程请求地址请求出错', 'notice');
