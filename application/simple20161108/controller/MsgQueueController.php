@@ -69,6 +69,14 @@ class MsgQueueController extends Controller
             $redis->setSetValue($messageKey . 'msg_queue', $phone_num);
         }
     }
+    
+    //如果请求错误，回调通知，删除本地单个号码请求频率限制
+    public function callbackCurlFailNumber(){
+        $phone_num = input('post.phone_num');
+        $uid = (new PhoneModel())->getUidPhone($phone_num, 'phone_num');
+        $key_phone_click = Config::get('cache.prefix') . 'click:' . $uid;
+        return (new RedisController())->del($key_phone_click);
+    }
 
     //易语言本地写入redis数据
     public function insertLocalSms($PhoNum = null, $smsNumber = null, $smsContent = null){

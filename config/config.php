@@ -6,6 +6,7 @@
  * Time: 12:50
  */
 return [
+    'website' => 'be', //站点编号
     'geetest' => [
         'captcha_id' => '',
         'private_key' => ''

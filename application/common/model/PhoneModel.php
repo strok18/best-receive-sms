@@ -544,7 +544,7 @@ class PhoneModel extends BaseModel
     public function getPhoneDetailByUID($uid){
         $phone_detail_key = Config::get('cache.prefix') . 'phone_detail_' . $uid;
         //$result = Cache::get($phone_detail_key);
-        $redis = new RedisController('sync');
+        $redis = new RedisController();
         $result = $redis->redisCheck($phone_detail_key);
         if ($result){
             return unserialize($result);
@@ -563,6 +563,22 @@ class PhoneModel extends BaseModel
         }
         return $result;
     }
+    
+    /**
+     * 根据uid或者phone_num查询对方 缓存
+     * @param $value
+     * @param string $type
+     * @return mixed
+     */
+    public function getUidPhone($value, $type = 'uid'){
+        if ($type == 'uid'){
+            $search = 'phone_num';
+        }else{
+            $search = 'uid';
+        }
+        return self::where($type, $value)->cache(1800)->value($search);
+    }
+
 
     /**
      * 重构，根据phone查询号码详情，并缓存
@@ -579,7 +595,7 @@ class PhoneModel extends BaseModel
         }
         $phone_detail_key = Config::get('cache.prefix') . 'phone_detail_' . $uid;
         //$result = Cache::get($phone_detail_key);
-        $redis = new RedisController('sync');
+        $redis = new RedisController();
         $result = $redis->redisCheck($phone_detail_key);
         if ($result){
             return unserialize($result);

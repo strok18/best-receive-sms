@@ -33,12 +33,13 @@ a:active {
 
 @font-face {
 	font-family: 'number';
+	font-display: block;
 	src: url('numberfont/fontello.eot');
 	src: url('numberfont/fontello.eot') format('embedded-opentype'),
-		url('numberfont/fontello.woff2') format('woff2'),
-		url('numberfont/fontello.woff') format('woff'),
-		url('numberfont/fontello.ttf') format('truetype'),
-		url('numberfont/fontello.svg') format('svg');
+	url('numberfont/fontello.woff2') format('woff2'),
+	url('numberfont/fontello.woff') format('woff'),
+	url('numberfont/fontello.ttf') format('truetype'),
+	url('numberfont/fontello.svg') format('svg');
 }
 
 .number-font {
@@ -78,7 +79,7 @@ a:active {
 }
 
 .top:focus{
-	box-shadow:none!important;   
+	box-shadow:none!important;
 }
 
 /* 分页颜色更改 */
@@ -112,7 +113,7 @@ a:active {
 	z-index: -1;
 }
 
- .email-font {
+.email-font {
 	font-size: 3rem;
 }
 

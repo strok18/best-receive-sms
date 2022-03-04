@@ -97,7 +97,7 @@ class PhoneController extends Controller
             $result['data'][$i]['phone_encryption'] = phoneEncryption((string)$result['data'][$i]['phone_num']);
             $result['data'][$i]['bh_encryption'] = phoneEncryption((string)$result['data'][$i]['country']['bh']);
             //添加每个号码的获取数量
-            $result['data'][$i]['receive_total'] = $this->getPhoneReceiveNumber($result['data'][$i]['uid']);
+            $result['data'][$i]['receive_total'] = $this->getPhoneReceiveNumber($result['data'][$i]['phone_num']);
             if (isset($result['data'][$i]['uid'])) {
                 $js_data[$k]['phone_num'] = $result['data'][$i]['phone_num'];
                 $js_data[$k]['uid'] = $result['data'][$i]['uid'];
@@ -114,7 +114,7 @@ class PhoneController extends Controller
         //dump($result['data']);
         $this->assign('js_data', $js_data);
         $this->assign('phone_heads', $this->generateHeads($country_data, $title_page));
-        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" class="w-25"><p class="fw-bold">'.Lang::get('common_no_phone_number').'</p></div>');
+        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" style="width: 200px;"><p class="fw-bold">'.Lang::get('common_no_phone_number').'</p></div>');
         $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch();
     }
@@ -122,7 +122,7 @@ class PhoneController extends Controller
     //获取每个号码短信接收总数，用于前台显示
     public function getPhoneReceiveNumber($phone_uid){
         $redis = new RedisController('sync');
-        $number = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_uid);
+        $number = $redis->hGet('phone_receive', $phone_uid);
         return numberDim($number);
     }
 

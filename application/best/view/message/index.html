@@ -26,10 +26,12 @@
 
                         </div>
                         <div class="card-body">
-                            <p class="card-text number-font fs-2">
+                            <div>
                                 <a href="{$Request.domain}/{$phone_info['country']['en_title'] | strtolower}-phone-number">
-                                    <img src="/static/web/images/flag/{$phone_info['country']['bh']}.svg" width="8%" class="" alt="{$phone_info['country']['en_title']} phone number">
+                                    <img src="/static/web/images/flag/{$phone_info['country']['bh']}.svg" width="100px" class="" alt="{$phone_info['country']['en_title']} phone number">
                                 </a>
+                            </div>
+                            <p class="card-text number-font fs-2 mb-0">
                                 <span>
                                     <span class="fs-4">+{$phone_info.bh_encryption | raw}</span>
                                     <span>{$phone_info.phone_encryption | raw}</span>

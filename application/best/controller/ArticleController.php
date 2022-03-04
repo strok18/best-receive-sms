@@ -23,7 +23,7 @@ class ArticleController extends LangBaseController
         //$this->assign('rel_url', (new RelUrlController())->relUrl1('Article'));
         $this->assign('title', Lang::get('article_title'));
         $this->assign('article_heads', $this->generateHeads());
-        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg"><p class="fw-bold">'.Lang::get('common_no_blog_data').'</p></div>');
+        $this->assign('empty', '<div class="text-center"><img src="/static/web/images/empty.svg" style="width: 200px;"><p class="fw-bold">'.Lang::get('common_no_blog_data').'</p></div>');
         $this->assign('upcomingNumber', (new PhoneModel())->getUpcomingNumber());
         return $this->fetch('index', compact('article'));
     }

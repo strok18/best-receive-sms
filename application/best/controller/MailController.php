@@ -24,7 +24,7 @@ class MailController extends Controller
         }*/
         
         $redis = new RedisController('sync');
-        $mails_data = $redis->zRevRange(Config::get('cache.prefix') . 'mails', 0 , 10);
+        $mails_data = $redis->zRevRange('be:mails', 0 , 10);
         $mails = [];
         foreach ($mails_data as $key => $value){
             $mails[$key]['site'] = $value;

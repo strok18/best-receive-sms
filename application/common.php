@@ -86,14 +86,38 @@ function curl_get($url = '') {
     return $data;
 }
 
+function asyncRequest($url, $method = 'POST', array $param = []) {
+    if (empty($url) || empty($param)) {
+        return false;
+    }
+    $postUrl = $url;
+    $curlPost = $param;
+    $ch = curl_init();//初始化curl
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // 使用自动跳转
+    curl_setopt($ch, CURLOPT_NOSIGNAL,true);
+    curl_setopt($ch, CURLOPT_TIMEOUT_MS, 200); // 设置超时限制防止死循环
+    curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
+    curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
+    curl_setopt($ch, CURLOPT_REFERER, $url);//模拟来路
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//要求结果为字符串且输出到屏幕上
+    curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($curlPost));
+    //curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1 );//连接超时，这个数值如果设置太短可能导致数据请求不到就断开了
+    $data = curl_exec($ch);//运行curl
+    curl_close($ch);
+    return $data;
+}
+
 /**
- * 异步curl
+ * 异步curl  fsockopen
  * @param string $url
  * @param string $type
  * @param array $param
  * @return false|int|string
  */
-function asyncRequest($url, $method = 'GET', array $param = [], $headers = array()) {
+function asyncRequestFS($url, $method = 'GET', array $param = [], $headers = array()) {
 
     $parse = parse_url($url);
 
@@ -135,7 +159,7 @@ function asyncRequest($url, $method = 'GET', array $param = [], $headers = array
 
     //发送请求
     $limit = 0;
-    $fp = fsockopen($host, $port, $errno, $errstr, 30);
+    $fp = fsockopen($host, $port, $errno, $errstr, 4);
 
     if (!$fp) {
         exit('Fsockopen failed to establish socket connection: '.$url);
@@ -144,7 +168,7 @@ function asyncRequest($url, $method = 'GET', array $param = [], $headers = array
         //集阻塞/非阻塞模式流,$block==true则应用流模式
         stream_set_blocking($fp, true);
         //设置流的超时时间
-        stream_set_timeout($fp, 10);
+        stream_set_timeout($fp, 4);
         $result = fwrite($fp, $out);
         usleep(500); // 延迟1毫秒，如果没有这延时，可能在nginx服务器上就无法执行成功
         fclose($fp);
@@ -541,14 +565,14 @@ function checkSpider($ip)
         }*/
 
         //redis蜘蛛池检测
-        if ((new \app\common\controller\RedisController('sync'))->sIsMember('spider', $ip)){
+        if ((new \app\common\controller\RedisController())->sIsMember('spider', $ip)){
             return true;
         }
 
         //反向dns检测
         $rdns = gethostbyaddr($ip);
         if (regSpider($rdns)){
-            (new \app\common\controller\RedisController('sync'))->setSetValue('spider', $ip);
+            (new \app\common\controller\RedisController())->setSetValue('spider', $ip);
             return true;
         }
     }

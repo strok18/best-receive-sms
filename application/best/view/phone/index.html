@@ -33,7 +33,7 @@
                             <div>
                                 {if $vo.online == 1}
                                 <span title="online number">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
                                      fill="currentColor" class="bi bi-reception-4 text-success"
                                      viewBox="0 0 16 16">
                                     <path
@@ -41,10 +41,10 @@
                                 </svg>
                                     </span>
                                 {else /}
-                                <span style="color: #8D8D8D"><img height="13px" src="/static/web/images/offline.png" data-bs-toggle="tooltip" data-bs-placement="top" title="offline number"></span>
+                                <span style="color: #8D8D8D"><img height="13px" width="20px" src="/static/web/images/offline.png" data-bs-toggle="tooltip" data-bs-placement="top" title="offline number"></span>
                                 {/if}
                                 {if ((time() - strtotime($vo['create_time'])) < 86400*15)}
-                                <span style="color: #8D8D8D"><img height="15px" src="/static/web/images/new.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="Recent updates phone number"></span>
+                                <span style="color: #8D8D8D"><img height="15px" width="40px" src="/static/web/images/new.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="Recent updates phone number"></span>
                                 {/if}
                             </div>
                             <div class="">
@@ -53,7 +53,7 @@
                         </div>
                         <div class="card-body">
                             <a class="click_loading" href="{$Request.domain}/{$vo.country.en_title | strtolower}-phone-number" title="{$Think.lang.common_temporary_phone_number} {$vo['country_title']}">
-                                <img class="w-50 country-flag" src="/static/web/images/flag/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.svg"
+                                <img width="256px" class="country-flag" src="/static/web/images/flag/<?php if($vo['country']['id'] == 11){echo 'Canada';}else{echo $vo['country']['bh'];};?>.svg"
                                      alt="{$vo['country_title']}{$Think.lang.common_number}">
                             </a>
                             <h3 class="card-title number-font" style="margin-top: 5px;">

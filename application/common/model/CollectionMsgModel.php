@@ -9,7 +9,7 @@ use Overtrue\Pinyin\Pinyin;
 
 class CollectionMsgModel extends BaseModel
 {
-	protected $connection = 'db_master_write';
+	protected $connection = 'db_history';
 	
     //批量新增
     public function batchCreate($data){
@@ -118,7 +118,7 @@ class CollectionMsgModel extends BaseModel
      * 获取项目短信，如果redis不存在，就从数据库读取。有效
      */
     public function getProjectMessage($project){
-        $result = Db::connect('db_master_write')
+        /*$result = Db::connect('db_master_write')
             ->table('collection_msg')
             ->where('url', '=', $project)
             ->field('p.id,p.uid,p.phone_num,m.smsContent,m.url,c.en_title')
@@ -129,7 +129,15 @@ class CollectionMsgModel extends BaseModel
             ->limit(20)
             ->cache(86400)
             ->select();
-        return $result;
+        return $result;*/
+        return Db::connect('db_history')
+            ->table('collection_msg')
+            ->where('url', '=', $project)
+            ->where('from', 2)
+            ->group('phone_id')
+            ->limit(20)
+            ->cache(86400)
+            ->select();
     }
     
     //序列化处理

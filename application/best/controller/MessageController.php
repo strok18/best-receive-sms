@@ -50,8 +50,8 @@ class MessageController extends Controller
         $phone_num = $phone_info['uid'];
 
         if ($phone_info['type'] == 2){
-            $redis = new RedisController();
-            $phone_online_time = $redis->redisCheck('phone_online_time');
+            $redis = new RedisController('sync');
+            $phone_online_time = $redis->redisCheck('be:phone_online_time');
             //上新，仅上架，不展示信息，预售号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
             $this->assign('empty', '<div><img src="/static/web/images/time-down.svg" class="img-fluid"><div class="text-center text-secondary fs-2 fw-bold">Number online countdown<br><span class="fs-1 text-danger">'.gap_times($phone_online_time, 'en').'</span></div></div>');
@@ -117,11 +117,11 @@ class MessageController extends Controller
         $queue_controller = new QueueController();
         $en_title = strtolower($phone_info['country']['en_title']);
         //号码上线天数，以便设置页数
-        $phone_hour = $this->phoneOnlineHour($phone_info['create_time'], $phone_num);
+        $phone_hour = $this->phoneOnlineHour($phone_info['create_time'], $phone_info['phone_num']);
         $page_url = 'receive-sms-from-'.$en_title.'/' . $phone_info['uid'];
         if (empty($page)){
             $this->spiderQueue($phone_info);
-            $result_sms = $this->getMsg($phone_num);
+            $result_sms = $this->getMsg($phone_info['phone_num']);
             
             /*//验证码生成图片
             $result_sms_count = count($result_sms);
@@ -147,7 +147,7 @@ class MessageController extends Controller
             }
 
         }else{
-            $message_data = (new CollectionMsgModel())->getHistorySms($phone_info['id'], $phone_num, $this->getPhoneSmsTotal($phone_num));
+            $message_data = (new CollectionMsgModel())->getHistorySms($phone_info['uid'], $phone_num, $this->getPhoneSmsTotal($phone_info['phone_num']));
             //dump($message_data);
             $page_list = $message_data->render();
             $result_sms = $message_data->toArray()['data'];
@@ -166,7 +166,7 @@ class MessageController extends Controller
     //获取号码总数
     public function getPhoneSmsTotal($phone_num){
         $redis = new RedisController('sync');
-        $receive_count = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_num);
+        $receive_count = $redis->hGet('phone_receive', $phone_num);
         if (!$receive_count){
             $receive_count = 0;
         }
@@ -184,7 +184,7 @@ class MessageController extends Controller
         $hour = round((time() - $phone_date)/3600);*/
         //按接收条数确定页数
         $redis = new RedisController('sync');
-        $receive_count = $redis->hGet(Config::get('cache.prefix') . 'phone_receive', $phone_num);
+        $receive_count = $redis->hGet('phone_receive', $phone_num);
         //以前的号码没有记录count值，如果参数为空，代表为老号码，返回100即可。
         if ($receive_count){
             $p = $receive_count / 20;
@@ -266,14 +266,12 @@ class MessageController extends Controller
         if ((new RedisController())->exists($key_phone_click)){
             return false;
         }
-        //trace(json_encode($phone_info), 'notice');
         //如果号码离线，不提交
         if($phone_info['display'] == 0 || $phone_info['online'] == 0 || $phone_info['show'] == 0){
             return false;
         }
-        $redis_sync = new RedisController('sync');
         //如果是爬虫，也不提交请求
-        if ($redis_sync->sIsMember('spider', real_ip())){
+        if ((new RedisController())->sIsMember('spider', real_ip())){
             return false;
         }
         //如果voice号，也不需要提交
@@ -282,24 +280,30 @@ class MessageController extends Controller
             return false;
         }
         
-        
+        if ($warehouse == 'Storytrain'){
+            $mode = 'yi';
+        }else{
+            $mode = 'guzzle';
+        }
         $params = [
-            'from' => 'best',
+            'from' => 'https://best20161108.iyunzhi.top/msg_queue/',
             'phone_num' => $phone_info['phone_num'],
             'phone_id' => $phone_info['phone_id'],
             'bh' => $phone_info['country']['bh'],
-            'site' => $phone_info['warehouse']['title']
+            'site' => $phone_info['warehouse']['title'],
+            'mode' => $mode
         ];
+        
         $redis = new RedisController();
         $url = $redis->redisCheck(Config::get('cache.prefix') . 'curl_url');
         if ($url){
             try {
-                $curl = asyncRequest($url, 'POST', $params);
-                if ($curl){
-                    $redis->setex($key_phone_click, 15, 1);
-                }
+                asyncRequest($url, 'POST', $params);
+                $redis->setex($key_phone_click, 30, 1);
             }catch (\Exception $e){
+                trace($e->getMessage(), 'error');
                 trace('远程请求地址请求出错', 'notice');
+                curl_get("http://notice.bilulanlv.com/?key=qywsxxl&title=Crawler-connection-failed");
             }
         }else{
             trace('远程请求地址不存在', 'notice');
@@ -314,7 +318,7 @@ class MessageController extends Controller
      */
     protected function getMsg($phone_num, $num = 19){
         $redis = new RedisController('sync');
-        $result = $redis->zRevRange(Config::get('cache.prefix') . 'message:' . $phone_num, 0, $num);
+        $result = $redis->zRevRange('message:' . $phone_num, 0, $num);
         $data = array();
         for ($i = 0; $i < count($result); $i++) {
             $data[$i] = unserialize($result[$i]);

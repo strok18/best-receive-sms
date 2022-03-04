@@ -51,7 +51,7 @@ class ProjectController extends Controller
     public function getRecommend(){
         //获取推荐关键字
         $redis = new RedisController('sync');
-        $redis_key = Config::get('cache.prefix') . 'project_recommend';
+        $redis_key = 'be:project_recommend';
         return $redis->getSetAllValue($redis_key);
     }
 
