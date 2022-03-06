@@ -36,7 +36,7 @@ class MessageController extends Controller
             return $this->error(Lang::get('common_fail'));
         }
         $phone_info = (new PhoneModel())->getPhoneDetailByUID($phone_num);
-        if(!$phone_info){
+        if(!$phone_info || $phone_info['show'] == 0){
             return $this->error(Lang::get('api_no_number'));
         }
         //临时301跳转

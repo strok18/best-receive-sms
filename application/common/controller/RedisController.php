@@ -58,10 +58,10 @@ class RedisController extends Controller
         'auth' => '',
     ];
     protected $config_master = [
-        //需要远程同步交流的数据库
-        'port' => 16699,
-        'host' => '150.158.96.247',
-        'auth' => 'r39iO6SE2uMYM5c54Kw9',
+        //需要更改远程同步交流的数据库
+        'port' => 17480,
+        'host' => '23.239.2.123',
+        'auth' => 'PjKnXgXGTyp85Synh9wq',
     ];
 
 

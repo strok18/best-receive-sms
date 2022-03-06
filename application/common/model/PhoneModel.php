@@ -542,23 +542,23 @@ class PhoneModel extends BaseModel
 
     //重构，根据uid查询号码详情，并缓存
     public function getPhoneDetailByUID($uid){
-        $phone_detail_key = Config::get('cache.prefix') . 'phone_detail_' . $uid;
+        //传过来的是uid，首先需要先获取到对应的phone_num
+        $phone_num = $this->getUidPhone($uid, 'uid');
+        $phone_detail_key = 'be:phone_detail:' . $phone_num;
         //$result = Cache::get($phone_detail_key);
-        $redis = new RedisController();
-        $result = $redis->redisCheck($phone_detail_key);
+        $result = (new RedisController('sync'))->redisCheck($phone_detail_key);
         if ($result){
             return unserialize($result);
         }else{
             $result = self::with(['country', 'warehouse'])
-                ->where('uid', '=', $uid)
+                ->where('phone_num', $phone_num)
                 ->where('show', '=', 1)
                 ->find();
             if (!$result){
                 return $result;
             }
-            if(!$result->isEmpty()){
-                //(new RedisController('master'))->redisSetCache($phone_detail_key, serialize($result->toArray()), 6*3600);
-                $redis->redisSetCache($phone_detail_key, serialize($result->toArray()), 6*3600);
+            if($result && !$result->isEmpty()){
+                (new RedisController('master'))->set($phone_detail_key, serialize($result->toArray()));
             }
         }
         return $result;
@@ -576,7 +576,7 @@ class PhoneModel extends BaseModel
         }else{
             $search = 'uid';
         }
-        return self::where($type, $value)->cache(1800)->value($search);
+        return self::where($type, $value)->cache(3600)->value($search);
     }
 
 
