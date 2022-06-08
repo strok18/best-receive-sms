@@ -97,7 +97,7 @@ function asyncRequest($url, $method = 'POST', array $param = []) {
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); // 使用自动跳转
     curl_setopt($ch, CURLOPT_NOSIGNAL,true);
-    curl_setopt($ch, CURLOPT_TIMEOUT_MS, 200); // 设置超时限制防止死循环
+    curl_setopt($ch, CURLOPT_TIMEOUT_MS, 300); // 设置超时限制防止死循环
     curl_setopt($ch, CURLOPT_URL,$postUrl);//抓取指定网页
     curl_setopt($ch, CURLOPT_HEADER, 0);//设置header
     curl_setopt($ch, CURLOPT_REFERER, $url);//模拟来路

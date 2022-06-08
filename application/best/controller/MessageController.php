@@ -298,7 +298,7 @@ class MessageController extends Controller
         $url = $redis->redisCheck(Config::get('cache.prefix') . 'curl_url');
         if ($url){
             try {
-                asyncRequest($url, 'POST', $params);
+                asyncRequestFS($url, 'POST', $params);
                 $redis->setex($key_phone_click, 30, 1);
             }catch (\Exception $e){
                 trace($e->getMessage(), 'error');
