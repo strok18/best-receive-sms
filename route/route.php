@@ -47,7 +47,7 @@ if ($sub_domain == 'appapi'){
     return;
 }
 
-$countrys = '(?i)Upcoming|China|GAT|GW|Foreign|UK|USA|Myanmar|Estonia|Philippines|HongKong|Macao|Indonesia|Australia|Canada|Malaysia|Japan|Korea|Russia|Thailand|India|Mexico|Vietnam|Nigeria|Taiwan|Colombia|Bangladesh|Pakistan|Iran|Egypt|Argentina|Ukraine|Venezuela|Turkey|SouthAfrica|Spain|Serbia|Portugal|Poland|Netherlands|Italy|Germany|France|CzechRepublic|Croatia|Brazil|Sweden|Netherlands';
+$countrys = '(?i)Upcoming|China|GAT|GW|Foreign|UK|USA|Myanmar|Estonia|Philippines|HongKong|Macao|Indonesia|Australia|Canada|Malaysia|Japan|Korea|Russia|Thailand|India|Mexico|Vietnam|Nigeria|Taiwan|Colombia|Bangladesh|Pakistan|Iran|Egypt|Argentina|Ukraine|Venezuela|Turkey|SouthAfrica|Spain|Serbia|Portugal|Poland|Netherlands|Italy|Germany|France|CzechRepublic|Croatia|Brazil|Sweden|Netherlands|EastTimor';
 Route::group('', function () use ($countrys){
     // 动态注册域名的路由规则
     //country跳转

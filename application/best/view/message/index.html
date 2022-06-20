@@ -161,13 +161,21 @@
                                     <tr>
                                         <td class="p-3 align-middle little-font">
                                             <?php if(array_key_exists('url',$vo)){?>
-                                            <?php if($vo['url'] !== ''){?>
-                                            <a href="/receive-sms-from-{$vo.url}">{$vo.url}</a>
+                                                <?php if($vo['url'] !== ''){?>
+                                                    <a href="/receive-sms-from-{$vo.url}">{$vo.url}</a>
+                                                <?php }else{?>
+                                                    <?php if(is_numeric($vo['smsNumber'])) {?>
+                                                        *{$vo.smsNumber|substr=-5}
+                                                    <?php }else{?>
+                                                        <a href="/receive-sms-from-{$vo.smsNumber}">{$vo.smsNumber}</a>
+                                                    <?php }?>
+                                                <?php }?>
                                             <?php }else{?>
-                                            *{$vo.smsNumber|substr=-5}
-                                            <?php }?>
-                                            <?php }else{?>
-                                            *{$vo.smsNumber|substr=-5}
+                                                <?php if(is_numeric($vo['smsNumber'])) {?>
+                                                    *{$vo.smsNumber|substr=-5}
+                                                <?php }else{?>
+                                                    <a href="/receive-sms-from-{$vo.smsNumber}">{$vo.smsNumber}</a>
+                                                <?php }?>
                                             <?php }?>
                                         </td>
                                         <td class="p-3 align-middle text-break">
