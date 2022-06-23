@@ -164,7 +164,7 @@
                                                 <?php if($vo['url'] !== ''){?>
                                                     <a href="/receive-sms-from-{$vo.url}">{$vo.url}</a>
                                                 <?php }else{?>
-                                                    <?php if(is_numeric($vo['smsNumber'])) {?>
+                                                    <?php if(is_numeric($vo['smsNumber']) || strlen($vo['smsNumber']) > 9) {?>
                                                         *{$vo.smsNumber|substr=-5}
                                                     <?php }else{?>
                                                         <a href="/receive-sms-from-{$vo.smsNumber}">{$vo.smsNumber}</a>
