@@ -104,6 +104,7 @@ return [
     'message_main_table_from' => 'FROM',
     'message_main_table_message' => 'MESSAGE',
     'message_main_table_time' => 'TIME',
+    'vip_number_hint' => 'vip number, you need to use it in the APP',
 
     'country_title' => 'Free receive sms online disposable fake virtual temporary mobile phone number from all country',
     'country_description' => 'Free Fake Virtual Temporary Phone Number for Receive Sms Online,including China, Korea, Us, India, Russia, Uk,France, Germany, Japan, Philippines, Brazil And More Outside Country, Receive Sms Free with No Register.',

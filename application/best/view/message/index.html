@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <!-- Hot number end-->
-
+                <!-- Phone list start -->
                 <div class="col-sm-12">
                     <div class="row mt-3" style="margin-left: 10px;">
                         <nav aria-label="breadcrumb" class="fw-bold">
@@ -131,8 +131,8 @@
                     </div>
                     <div class="message-card card text-center border-0 shadow mb-4 bg-white rounded">
                         <div class="card-body">
+                            
                             <table class="table table-striped table-hover text-start">
-
                                 <thead>
                                 {notempty name="data"}
                                 <tr>
@@ -191,6 +191,7 @@
                                 {/volist}
                                 </tbody>
                             </table>
+                            
                             <div class="text-start px-2 pb-3">
                                 {volist name="country_list" id="country" empty=""}
                                 <span class="badge bg-primary link-white"><a href="/{$country | strtolower}-phone-number" title="receive sms from {$country} phone number">{$country}</a></span>

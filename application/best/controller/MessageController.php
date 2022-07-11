@@ -26,6 +26,8 @@ class MessageController extends Controller
     ];
     
     public function index(){
+        //Cache::clear('phonePage');
+        //trace('清除缓存phonePage', 'notice');
         $phone_num = Request::param('phone_num');
         $page = Request::param('page');
         if ($page > 100){
@@ -36,6 +38,7 @@ class MessageController extends Controller
             return $this->error(Lang::get('common_fail'));
         }
         $phone_info = (new PhoneModel())->getPhoneDetailByUID($phone_num);
+        //trace($phone_info, 'notice');
         if(!$phone_info || $phone_info['show'] == 0){
             return $this->error(Lang::get('api_no_number'));
         }
@@ -48,14 +51,20 @@ class MessageController extends Controller
         
         //兼容uid和id
         $phone_num = $phone_info['uid'];
-
+        
         if ($phone_info['type'] == 2){
+            // 预告号码
             $redis = new RedisController('sync');
             $phone_online_time = $redis->redisCheck('be:phone_online_time');
             //上新，仅上架，不展示信息，预售号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
             $this->assign('empty', '<div><img src="/static/web/images/time-down.svg" class="img-fluid"><div class="text-center text-secondary fs-2 fw-bold">Number online countdown<br><span class="fs-1 text-danger">'.gap_times($phone_online_time, 'en').'</span></div></div>');
             (new RedisController())->hIncrby('phone_click', $phone_num);
+            $message_data = '';
+        }elseif($phone_info['type'] == 3){
+            // vip号码
+            $pageData = ['page_list' => '', 'result_sms' => ''];
+            $this->assign('empty', '<div><img src="/static/web/images/usePhone.svg" class="img-fluid"><div class="text-center text-danger fs-2 fw-bold">'.Lang::get('vip_number_hint').'<br><span class="fs-1 text-danger"></span></div></div> <div style="margin-bottom:50px"><img src="/static/web/images/appstore-apple-on.svg" height="60"><a href="../download/ReceiveSMS1822.apk" target="_blank"><img src="/static/web/images/appstore-apk.svg" height="60"></a><a href="" target="_blank"><img src="/static/web/images/appstore-android-on.svg" height="60"></a></div>');
             $message_data = '';
         }else{
             //获取页面数据
@@ -235,9 +244,9 @@ class MessageController extends Controller
             return $this->error('号码不存在');
         }
         $phone_num = $phone_info['phone_num'];
-        //把提交的号码保存进入redis. respore_1814266666
-        $redis = new RedisController();
-        $redis_key = config('cache.prefix') . 'report:' . $phone_num;
+        //把提交的号码保存进入redis. repore_1814266666
+        $redis = new RedisController('master');
+        $redis_key = 'report:' . $phone_num;
         $return = $redis->redisNumber($redis_key, 172800);
         if (!$return){
             return show(Lang::get('feedback_failed'), '', 4000);
@@ -295,7 +304,9 @@ class MessageController extends Controller
         ];
         
         $redis = new RedisController();
-        $url = $redis->redisCheck(Config::get('cache.prefix') . 'curl_url');
+        $redis->lpush('spider_sync_queue', json_encode($params));
+        $redis->setex($key_phone_click, 20, 1);
+        /*$url = $redis->redisCheck(Config::get('cache.prefix') . 'curl_url');
         if ($url){
             try {
                 asyncRequestFS($url, 'POST', $params);
@@ -307,7 +318,7 @@ class MessageController extends Controller
             }
         }else{
             trace('远程请求地址不存在', 'notice');
-        }
+        }*/
     }
 
     /**

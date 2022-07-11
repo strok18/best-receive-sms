@@ -44,8 +44,11 @@
                                 <span style="color: #8D8D8D"><img height="13px" width="20px" src="/static/web/images/offline.png" data-bs-toggle="tooltip" data-bs-placement="top" title="offline number"></span>
                                 {/if}
                                 {if ((time() - strtotime($vo['create_time'])) < 86400*15)}
-                                <span style="color: #8D8D8D"><img height="15px" width="40px" src="/static/web/images/new.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="Recent updates phone number"></span>
+                                    <span style="color: #8D8D8D"><img height="15px" src="/static/web/images/new.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="Recent updates phone number"></span>
                                 {/if}
+                                {if $vo['type'] == 3}
+                                    <span style="color: #8D8D8D"><img height="15px" src="/static/web/images/vip.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="vip phone number"></span>
+                                {/if}    
                             </div>
                             <div class="">
                                 <p class="card-text little-font text-uppercase" title="{$vo['country_title']} {$Think.lang.common_phone_number}"><a class="click_loading" href="{$Request.domain}/receive-sms-from-{$vo.country.en_title | strtolower}">{$vo['country_title']}</a></p>

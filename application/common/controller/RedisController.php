@@ -762,4 +762,11 @@ class RedisController extends Controller
         //return $key;
         return self::$redis->rename($key, $new_key);
     }
+    
+    // List队列左边队头添加数据
+    public function lpush($key, $value){
+        return self::$redis->lpush($key, $value);
+    }
+    
+    
 }
