@@ -2,7 +2,6 @@
 
 namespace app\best\controller;
 
-
 use app\api\controller\ApiController;
 use app\common\controller\ReCaptchaController;
 use app\common\controller\RedisController;
@@ -18,6 +17,7 @@ use app\common\controller\BreadCrumbController;
 use app\common\controller\QueueController;
 use think\Controller;
 use think\facade\Log;
+use think\Db;
 
 class MessageController extends Controller
 {
@@ -56,15 +56,20 @@ class MessageController extends Controller
             // 预告号码
             $redis = new RedisController('sync');
             $phone_online_time = $redis->redisCheck('be:phone_online_time');
+            $state = $redis->redisCheck('be:phone_online_state');
             //上新，仅上架，不展示信息，预售号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
             $this->assign('empty', '<div><img src="/static/web/images/time-down.svg" class="img-fluid"><div class="text-center text-secondary fs-2 fw-bold">Number online countdown<br><span class="fs-1 text-danger">'.gap_times($phone_online_time, 'en').'</span></div></div>');
             (new RedisController())->hIncrby('phone_click', $phone_num);
             $message_data = '';
+            
+            // 到达预定时间，自动上架
+            $this->autoUpdatePhone($phone_online_time, $state);
+            
         }elseif($phone_info['type'] == 3){
             // vip号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
-            $this->assign('empty', '<div><img src="/static/web/images/usePhone.svg" class="img-fluid"><div class="text-center text-danger fs-2 fw-bold">'.Lang::get('vip_number_hint').'<br><span class="fs-1 text-danger"></span></div></div> <div style="margin-bottom:50px"><img src="/static/web/images/appstore-apple-on.svg" height="60"><a href="../download/ReceiveSMS1822.apk" target="_blank"><img src="/static/web/images/appstore-apk.svg" height="60"></a><a href="" target="_blank"><img src="/static/web/images/appstore-android-on.svg" height="60"></a></div>');
+            $this->assign('empty', '<div><img src="/static/web/images/usePhone.svg" class="img-fluid"><div class="text-center text-danger fs-2 fw-bold">'.Lang::get('vip_number_hint').'<br><span class="fs-1 text-danger"></span></div></div> <div style="margin-bottom:50px"><img src="/static/web/images/appstore-apple-on.svg" height="60"><a href="../download/ReceiveSMS1827.apk" target="_blank"><img src="/static/web/images/appstore-apk.svg" height="60" style="display:"></a><a href="https://play.google.com/store/apps/details?id=top.receivesms.app" target="_blank"><img src="/static/web/images/appstore-android-on.svg" height="60"></a></div>');
             $message_data = '';
         }else{
             //获取页面数据
@@ -335,6 +340,32 @@ class MessageController extends Controller
             $data[$i] = unserialize($result[$i]);
         }
         return $data;
+    }
+    
+    // 预告号码自动上架处理
+    // 根据phone_online_status判断,是否上线
+    public function autoUpdatePhone($time, $state){
+        $second = 10;//time() - $time;
+        if($state == 'await' && $second > 0){
+            trace('开始自动上线号码', 'notice');
+            (new RedisController('master'))->setStringValue('be:phone_online_state', 'running');
+            try{
+                $data = Db::table('phone')->where('type', 2)->select();
+                if(count($data) > 0){
+                    foreach($data as $value){
+                        Db::table('phone')->where('id', $value['id'])->update(['type' => 1, 'display' => 1]);
+                        (new RedisController('master'))->deleteString('be:phone_detail:' . $value['phone_num']);
+                    }
+                    (new RedisController())->delRedis('phonePage*');
+                    
+                    (new RedisController('master'))->setStringValue('be:phone_online_state', 'online');
+                }
+                
+            } catch (\Exception $e){
+                trace($e->getMessage(), 'error');
+                (new RedisController('master'))->setStringValue('be:phone_online_state', 'await');
+            }
+        }
     }
 
 }

@@ -253,43 +253,11 @@ class RedisController extends Controller
         }
     }
 
-    //清除redis  web和小程序前端缓存json
-    public function delRedis($arr = [])
+    public function delRedis($prefix = '', $arr = [])
     {
         if (empty($arr)) {
-            //self::$redis->del(self::$redis->keys('web*'));
-            //self::$redis->del(self::$redis->keys('xcx*'));
             $prefix = config('cache.prefix');
-            self::$redis->del(self::$redis->keys($prefix . 'phonePage*'));
-/*            self::$redis->del(self::$redis->keys($prefix . 'www.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'ru.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'ja.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'ko.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'es.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'fr.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'de.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'ar.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'vi.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'bd.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'it.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'ir.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'id.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'pt.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'in.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'my.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'az.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'al.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'pk.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'tr.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'th.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'za.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'mm.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'tz.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'ua.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'pl.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'uz.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'se.my*'));
-            self::$redis->del(self::$redis->keys($prefix . 'nl.my*'));*/
+            self::$redis->del(self::$redis->keys($prefix . $prefix));
         }
         $result = self::$redis->del($arr);
         return $result;

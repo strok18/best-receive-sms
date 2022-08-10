@@ -64,11 +64,11 @@ return [
     'db_master_write' => [
         'type'            => 'mysql',
         // 服务器地址
-        'hostname'        => env('database.MASTER_HOSTNAME', '23.239.2.123'),
+        'hostname'        => env('database.MASTER_HOSTNAME', '108.61.219.93'),
         // 数据库名
-        'database'        => env('database.MASTER_DATABASE', 'mys'),
+        'database'        => env('database.MASTER_DATABASE', 'best'),
         // 用户名
-        'username'        => env('database.MASTER_USERNAME', 'mys'),
+        'username'        => env('database.MASTER_USERNAME', 'best'),
         // 密码
         'password'        => env('database.MASTER_PASSWORD', 'CZDAH0uf8I75WxyXh6VV'),
         // 端口
