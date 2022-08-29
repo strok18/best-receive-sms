@@ -86,9 +86,9 @@ return [
         // 服务器地址
         'hostname'        => '127.0.0.1',
         // 数据库名
-        'database'        => 'history',
+        'database'        => 'historysms',
         // 用户名
-        'username'        => 'history',
+        'username'        => 'historysms',
         // 密码
         'password'        => 'CZDAH0uf8I75WxyXh6VV',
         // 端口

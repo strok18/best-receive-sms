@@ -397,8 +397,8 @@ class PhoneModel extends BaseModel
                     ->where('type', '=', 1)
                     ->whereOr('type', '=', 3)
                     ->where('display', '=', 1)
-                    ->order('sort', 'desc')
                     ->order('online', 'desc')
+                    ->order('sort', 'desc')
                     ->order('id', 'desc')
                     ->paginate(8, false, [
                         'page'=>$page?:1,
@@ -433,6 +433,7 @@ class PhoneModel extends BaseModel
                     ->where('show', '=', 1)
                     //->where('type', '=', 1)
                     ->where('display', '=', 1)
+                    ->order('online', 'desc')
                     ->order('sort', 'desc')
                     ->order('id', 'desc')
                     ->limit(8)
@@ -444,8 +445,8 @@ class PhoneModel extends BaseModel
                     ->where('display', '=', 1)
                     //->where('type', '=', 1)
                     ->where('show', '=', 1)
-                    ->order('sort', 'desc')
                     ->order('online', 'desc')
+                    ->order('sort', 'desc')
                     ->order('id', 'desc')
                     ->paginate(8, false, [
                         'page'=>$page?:1,

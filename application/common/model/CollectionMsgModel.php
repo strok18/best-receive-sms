@@ -69,12 +69,12 @@ class CollectionMsgModel extends BaseModel
      * @param $total 显示的总数，用以确定分页数量
      */
     public function getHistorySms($phone_id, $phone_num, $total_num){
-        return self::where('phone_id', '=', $phone_id)
-            ->order('id', 'desc')
-            ->cache(86400)
-            ->paginate(20, (int)$total_num, [
+        return self::where('phone_id', '=', $phone_num)
+            ->order('id', 'asc')
+            //->cache(86400)
+            ->paginate(30, (int)$total_num, [
                 'page'=>Request::param('page')?:1,
-                'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."/".$phone_num."/[PAGE]"
+                'path'=>Request::domain()."/receive-sms-from-".Request::param('country')."/".$phone_id."/[PAGE]"
             ]);
     }
 
@@ -118,26 +118,36 @@ class CollectionMsgModel extends BaseModel
      * 获取项目短信，如果redis不存在，就从数据库读取。有效
      */
     public function getProjectMessage($project){
-        /*$result = Db::connect('db_master_write')
+        $project = Db::connect('db_history')
             ->table('collection_msg')
             ->where('url', '=', $project)
-            ->field('p.id,p.uid,p.phone_num,m.smsContent,m.url,c.en_title')
-            ->alias('m')
-            ->join(['phone'=>'p'], 'm.phone_id = p.id')
-            ->join(['country'=>'c'], 'p.country_id = c.id')
-            ->group('p.phone_num')
-            ->limit(20)
-            ->cache(86400)
-            ->select();
-        return $result;*/
-        return Db::connect('db_history')
-            ->table('collection_msg')
-            ->where('url', '=', $project)
-            ->where('from', 2)
+            //->where('from', 2) // 未规范前，为了区别B站和M站的号码，主要在project页使用
             ->group('phone_id')
-            ->limit(20)
+            ->limit(30)
+            ->order('id','asc')
             ->cache(86400)
             ->select();
+        $project_count = count($project);
+        $phone = Db::table('phone')
+                ->alias('p')
+                ->field('p.uid,c.en_title')
+                ->join(['country'=>'c'], 'p.country_id = c.id')
+                ->where('p.show', 1)
+                ->where('p.online', 1)
+                ->where('p.display', 1)
+                ->orderRaw('rand()')
+                ->limit(count($project))
+                ->cache(3600)
+                ->select();
+        $phone_count = count($phone);
+        
+        if($project_count == $phone_count){
+            for($i = 0; $i < $project_count; $i++){
+                $project[$i]['phone_id'] = $phone[$i]['uid'];
+                $project[$i]['country'] = strtolower($phone[$i]['en_title']);
+            }
+        }
+        return $project;
     }
     
     //序列化处理

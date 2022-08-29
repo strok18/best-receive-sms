@@ -69,7 +69,7 @@ class MessageController extends Controller
         }elseif($phone_info['type'] == 3){
             // vip号码
             $pageData = ['page_list' => '', 'result_sms' => ''];
-            $this->assign('empty', '<div><img src="/static/web/images/usePhone.svg" class="img-fluid"><div class="text-center text-danger fs-2 fw-bold">'.Lang::get('vip_number_hint').'<br><span class="fs-1 text-danger"></span></div></div> <div style="margin-bottom:50px"><img src="/static/web/images/appstore-apple-on.svg" height="60"><a href="../download/ReceiveSMS1827.apk" target="_blank"><img src="/static/web/images/appstore-apk.svg" height="60" style="display:"></a><a href="https://play.google.com/store/apps/details?id=top.receivesms.app" target="_blank"><img src="/static/web/images/appstore-android-on.svg" height="60"></a></div>');
+            $this->assign('empty', '<div><img src="/static/web/images/usePhone.svg" class="img-fluid"><div class="text-center text-danger fs-2 fw-bold">'.Lang::get('vip_number_hint').'<br><span class="fs-1 text-danger"></span></div></div> <div style="margin-bottom:50px"><img src="/static/web/images/appstore-apple-on.svg" height="60"><a href="../download/ReceiveSMS1832.apk" target="_blank"><img src="/static/web/images/appstore-apk.svg" height="60" style="display:"></a><a href="https://play.google.com/store/apps/details?id=top.receivesms.app" target="_blank"><img src="/static/web/images/appstore-android-on.svg" height="60"></a></div>');
             $message_data = '';
         }else{
             //获取页面数据
@@ -161,7 +161,7 @@ class MessageController extends Controller
             }
 
         }else{
-            $message_data = (new CollectionMsgModel())->getHistorySms($phone_info['uid'], $phone_num, $this->getPhoneSmsTotal($phone_info['phone_num']));
+            $message_data = (new CollectionMsgModel())->getHistorySms($phone_info['uid'], $phone_info['phone_num'], $this->getPhoneSmsTotal($phone_info['phone_num']));
             //dump($message_data);
             $page_list = $message_data->render();
             $result_sms = $message_data->toArray()['data'];
@@ -201,7 +201,7 @@ class MessageController extends Controller
         $receive_count = $redis->hGet('phone_receive', $phone_num);
         //以前的号码没有记录count值，如果参数为空，代表为老号码，返回100即可。
         if ($receive_count){
-            $p = $receive_count / 20;
+            $p = $receive_count / 40;
             if($p < 1){
                 $page = 0;
             }else{
@@ -332,7 +332,7 @@ class MessageController extends Controller
      * @param int $num
      * @return array
      */
-    protected function getMsg($phone_num, $num = 19){
+    protected function getMsg($phone_num, $num = 40){
         $redis = new RedisController('sync');
         $result = $redis->zRevRange('message:' . $phone_num, 0, $num);
         $data = array();
@@ -345,7 +345,7 @@ class MessageController extends Controller
     // 预告号码自动上架处理
     // 根据phone_online_status判断,是否上线
     public function autoUpdatePhone($time, $state){
-        $second = 10;//time() - $time;
+        $second = time() - $time;
         if($state == 'await' && $second > 0){
             trace('开始自动上线号码', 'notice');
             (new RedisController('master'))->setStringValue('be:phone_online_state', 'running');

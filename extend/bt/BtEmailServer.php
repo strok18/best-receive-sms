@@ -8,7 +8,7 @@ use think\facade\Request;
 class BtEmailServer
 {
     private $BT_KEY = "scRhvrY5POwPAclMRnEWOHWu5vECiBEh";  //接口密钥
-    private $BT_PANEL = "https://23.239.2.123:20520/";	   //当前服务器
+    private $BT_PANEL = "https://data.iyunzhi.top:20520/";	   //当前服务器
 
     //如果希望多台面板，可以在实例化对象时，将面板地址与密钥传入
     public function __construct($bt_key = null){
